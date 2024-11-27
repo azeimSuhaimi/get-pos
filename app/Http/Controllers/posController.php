@@ -14,13 +14,13 @@ use Illuminate\Support\Carbon;
 class posController extends Controller
 {
         
-        public function index()
-        {
-            $suspend = suspend::all();// get all suspend list
-            return view('pos.index',['suspend'=>$suspend]);
-        }//end method
+    public function index()
+    {
+        $suspend = suspend::all();// get all suspend list
+        return view('pos.index',['suspend'=>$suspend]);
+    }//end method
 
-            // add item to cart for list item selected
+    // add item to cart for list item selected
     public function add_item(Request $request)
     {
         // validation all input item add
@@ -45,7 +45,7 @@ class posController extends Controller
             else
             {
                 //add to cart item select
-                Cart::add($item->shortcode,$item->name, 1, $item->price,['cost' => $item->cost,'description' => $item->description, 'category' => $item->category]);
+                Cart::add($item->shortcode,$item->name, 1, $item->price,['cost' => $item->cost,'description' => $item->description, 'category' => $item->category, 'remark' => '']);
                 return redirect(route('pos'));
             }
 
@@ -128,14 +128,14 @@ class posController extends Controller
         return redirect()->back()->with('error', 'Item remove have a problem.');
     }//end method
 
-        // remove all item in cart
-        public function remove_all(Request $request)
-        {
-            Cart::destroy();
-            return redirect(route('pos'))->with('success', ' new sale created.');
-        }//end method
+    // remove all item in cart
+    public function remove_all(Request $request)
+    {
+        Cart::destroy();
+        return redirect(route('pos'))->with('success', ' new sale created.');
+    }//end method
 
-            // suspend all items select in cart 
+    // suspend all items select in cart 
     public function suspend(Request $request)
     {
         // check in cart exist or not
@@ -163,6 +163,7 @@ class posController extends Controller
                 $suspend->cost = $row->options->cost;
                 $suspend->description = $row->options->description;
                 $suspend->category = $row->options->category;
+                $suspend->remark = $row->options->remark;
                 $suspend->save();
             }
 
@@ -224,7 +225,7 @@ class posController extends Controller
         foreach($suspend_details as $row)
         {
             //add to cart
-            Cart::add($row->shortcode, $row->name, $row->quantity, $row->price,['cost' => $row->cost,'description' => $row->description, 'category' => $row->category]);
+            Cart::add($row->shortcode, $row->name, $row->quantity, $row->price,['cost' => $row->cost,'description' => $row->description, 'category' => $row->category, 'remark' => $row->remark]);
 
             $row->delete(); // delete item in suspend table
         }
@@ -234,6 +235,58 @@ class posController extends Controller
 
         return redirect(route('pos'));
 
+    }//end method
+
+    public function add_remark(Request $request)
+    {
+        // check id input exist
+        $validated = $request->validate([
+    
+            'rowid' => 'required',  // Ensure rowid exists in the cart
+        ]);
+
+        $data = [
+            'rowid' => $validated['rowid'],
+            'remark' => cart::get($validated['rowid']),
+        ];
+
+        return view('pos.add_remark',$data);
+    }//end method
+
+    public function update_remark(Request $request)
+    {
+        $validated = $request->validate([
+    
+            'rowid' => 'required',  // Ensure rowid exists in the cart
+            'remark' => 'required',           // Validate remark
+            'cost' => 'required',                    // Validate cost
+            'description' => 'nullable',      // Validate description
+            'category' => 'required',        // Validate category
+        ]);
+
+        // Get the current cart item
+        $cartItem = Cart::get($validated['rowid']);
+        
+        if (!$cartItem) {
+            return redirect()->back()->with('error', 'Item not found in cart.');
+        }
+
+        // Merge the updated fields into the current options
+        $updatedOptions =  [
+            'remark' => $validated['remark'],
+            'cost' => $validated['cost'],
+            'description' => $validated['description'],
+            'category' => $validated['category'],
+        ];
+
+        //Cart::update($validated['rowid'], ['remark' => $validated['remark']]);
+
+        // Update the cart item with the merged options
+        Cart::update($validated['rowid'], [
+            'options' => $updatedOptions
+        ]);
+
+        return redirect(route('pos'))->with('success', 'remark add to items');
     }//end method
 
 }//end class

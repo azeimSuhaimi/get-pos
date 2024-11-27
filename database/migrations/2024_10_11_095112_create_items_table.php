@@ -22,6 +22,7 @@ return new class extends Migration
             $table->double('cost');
             $table->double('price');
             $table->boolean('status')->default(true);
+            
             $table->timestamps();
             $table->string('user_email');
 

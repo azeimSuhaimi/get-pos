@@ -102,6 +102,7 @@ class invoice_voidController extends Controller
             $invoice_detail_void->cost = $row->cost;
             $invoice_detail_void->description = $row->description;
             $invoice_detail_void->category = $row->category;
+            $invoice_detail_void->remark = $row->remark;
             $invoice_detail_void->user_email = $row->user_email;
             $invoice_detail_void->save();
 

@@ -45,6 +45,7 @@
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>#</th>
+                    <th>#</th>
                     <th>Subtotal Item</th>
                 </tr>
             </thead>
@@ -87,8 +88,23 @@
                                     <button type="submit" class="btn btn-danger">Remove</button>
                                 </form>
                             </td>
+                            <td>
+                                
+                                <form onsubmit="confirmAndSubmit(this)" action="{{route('pos.add.remark')}}" method="get">
+                                    @csrf
+                                    <input type="hidden" name="rowid"  value="{{$row->rowId}}">
+                                    
+                                    <button type="submit" class="btn btn-info">Remark</button>
+                                </form>
+                            </td>
                             <td rowspan="{{$loop->iteration}}">{{$row->subtotal()}}</td>
                         </tr>
+
+                        @if ($row->options->remark !== '')
+                            <tr>
+                                <td colspan="8">{{$row->options->remark}}</td>
+                            </tr>
+                        @endif
 
                     @endforeach
                 @endif
@@ -96,17 +112,17 @@
 
             <tfoot>
                 <tr >
-                    <th  colspan="5">&nbsp;</th>
+                    <th  colspan="6">&nbsp;</th>
                     <th>Subtotal</th>
                     <th><?php echo Cart::subtotal(); ?></td>
                 </tr>
                 <tr>
-                    <th colspan="5">&nbsp;</th>
+                    <th colspan="6">&nbsp;</th>
                     <th>Tax</th>
                     <th><?php echo Cart::tax(); ?></td>
                 </tr>
                 <tr>
-                    <th colspan="5">&nbsp;</th>
+                    <th colspan="6">&nbsp;</th>
                     <th>Total</th>
                     <th><?php echo Cart::total(); ?></td>
                 </tr>

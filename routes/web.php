@@ -168,6 +168,9 @@ Route::controller(posController::class)->group(function () {
     Route::get('/pos_suspend_view','suspend_view')->name('pos.suspend.list')->middleware(['auth']);
     Route::post('/pos_unsuspend','unsuspend')->name('pos.unsuspend')->middleware(['auth']);
 
+    Route::get('/pos_add_remark','add_remark')->name('pos.add.remark')->middleware(['auth']);
+    Route::post('/pos_update_remark','update_remark')->name('pos.update.remark')->middleware(['auth']);
+
 });//end group
 
 

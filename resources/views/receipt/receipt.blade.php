@@ -56,14 +56,19 @@
 
                   @foreach ($invoice_detail as $row)
       
-                  <tr>
-                      <td>{{$loop->iteration}}</td>
-                      <td>{{$row->shortcode}}</td>
-                      <td>{{$row->name}}</td>
-                      <td>{{$row->price}}</td>
-                      <td>{{$row->quantity}}</td>
-                          <td>{{$row->quantity * $row->price}}</td>
-                      </tr>
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$row->shortcode}}</td>
+                        <td>{{$row->name}}</td>
+                        <td>{{$row->price}}</td>
+                        <td>{{$row->quantity}}</td>
+                        <td>{{$row->quantity * $row->price}}</td>
+                    </tr>
+                    @if ($row->remark !== '')
+                        <tr>
+                            <td colspan="8">{{$row->remark}}</td>
+                        </tr>
+                    @endif
                   @endforeach
 
                   <tr>

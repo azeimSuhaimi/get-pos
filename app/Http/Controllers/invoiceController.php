@@ -354,7 +354,6 @@ class invoiceController extends Controller
             //store data to list item buy
             $invoice_detail = new invoice_detail;
             $invoice_detail->invoice_id = $bill_id;
-            
             $invoice_detail->shortcode = $row->id;
             $invoice_detail->name = $row->name;
             $invoice_detail->quantity = $row->qty;
@@ -362,6 +361,7 @@ class invoiceController extends Controller
             $invoice_detail->cost = $row->options->cost;
             $invoice_detail->description = $row->options->description;
             $invoice_detail->category = $row->options->category;
+            $invoice_detail->remark = $row->options->remark;
             $invoice_detail->user_email = auth()->user()->email;
             $invoice_detail->save();
 

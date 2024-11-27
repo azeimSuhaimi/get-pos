@@ -21,6 +21,7 @@ return new class extends Migration
             $table->double('cost');
             $table->string('description')->nullable();
             $table->string('category');
+            $table->text('remark')->nullable();
             $table->timestamps();
         });
     }

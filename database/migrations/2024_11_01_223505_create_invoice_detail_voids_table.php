@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('invoice_detail_voids', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_id');
-
             $table->string('shortcode');
             $table->string('name');
             $table->string('quantity');
@@ -22,6 +21,7 @@ return new class extends Migration
             $table->double('cost');
             $table->string('description')->nullable();
             $table->string('category');
+            $table->text('remark')->nullable();
             $table->string('user_email');
             $table->timestamps();
         });
