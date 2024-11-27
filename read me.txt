@@ -1,0 +1,14 @@
+
+
+Laravel 10
+php version 8.1
+
+template
+https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/#download
+
+bootstrap 5
+
+cart
+https://packagist.org/packages/hardevine/shoppingcart
+
+toyyibpay

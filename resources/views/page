@@ -1,0 +1,16 @@
+@extends('layouts.main_layout')
+ 
+@section('title', 'Login page')
+ 
+@section('content')
+
+@include('partials.popup')
+
+
+
+@endsection
+
+
+activity_log::addActivity('Change Password',' change it password to new');
+
+//////////////////////////////////////////////////////////////
