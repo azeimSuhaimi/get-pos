@@ -103,13 +103,13 @@ class DatabaseSeeder extends Seeder
 
         DB::table('items')->insert([
 
-            'name' => 'atan bakar',//
-            'shortcode' => 'mee segere',//
+            'name' => 'roti bakar',//
+            'shortcode' => 'w001',//
             'picture' => 'empty.png',//
             'category' => 'retail',//
             'cost' => 5,//
             'price' => 6,//
-            'quantity' => 0,//
+            'quantity' => 50,//
             'user_email' => 'abu22'.'@gmail.com',//
         ]);
 
