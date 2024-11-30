@@ -74,20 +74,18 @@
 
         <div class="card-title">Daily Sale Report | <strong>Date: </strong>{{\Carbon\Carbon::parse($date)->format('d-m-Y')}}
         
-          <!--
+          
           <div class="filter">
             <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
               <li class="dropdown-header text-start">
-                <h6>Filter</h6>
+                <h6>PDF</h6>
               </li>
         
-              <li><a class="dropdown-item" href="#" id="filter-today">Today</a></li>
+              <li><a class="dropdown-item" target="_blank" href="{{route('daily.sale.report.pdf')}}?date={{$date}}" id="filter-today">Print</a></li>
               
-              <li><a class="dropdown-item" href="#" id="filter-month">This Month</a></li>
-              <li><a class="dropdown-item" href="#" id="filter-year">This Year</a></li>
             </ul>
-          </div> -->
+          </div> 
         
         </div>
 

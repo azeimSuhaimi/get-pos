@@ -30,6 +30,7 @@ use App\Http\Controllers\salereportController;
 Route::controller(salereportController::class)->group(function () {
 
     Route::get('/dailysalereport','daily_sale_report')->name('daily.sale.report')->middleware(['auth']);
+    Route::get('/dailysalereportpdf','daily_sale_report_pdf')->name('daily.sale.report.pdf')->middleware(['auth']);
 
 
 });//end group
