@@ -22,7 +22,7 @@
             <div class="col-12">
                 <label for="email" class="form-label">Email Address</label>
                 <div class="input-group has-validation">
-                    <span class="input-group-text" id="inputGroupPrepend">@</span>
+                    
                     <input type="text" name="email" class="form-control @error('email') is-invalid @enderror " id="email" value="{{ old('email') }}" required>
                     <div class="invalid-feedback">Please enter your email.</div>
                     @error('email')
