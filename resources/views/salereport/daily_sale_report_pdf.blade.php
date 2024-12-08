@@ -1,11 +1,20 @@
+
+<div style="text-align: center;margin: 0;"> <h2 style="margin: 0;">{{$company->company_name}}</h2></div>
+<div style="text-align: center;margin: 0;"> <h4 style="margin: 0;">Company No : {{$company->company_id}}</h4></div>
+<div style="text-align: center;margin: 0;"> <h4 style="margin: 0;">{{$company->address}}, {{$company->city}}</h4></div>
+<div style="text-align: center;margin: 0;"> <h4 style="margin: 0;">{{$company->poscode}}, {{$company->state}}, {{$company->country}}.</h4></div>
+<div style="text-align: center;margin: 0;"> <h4 style="margin: 0;">Phone No : {{$company->phone}}</h4></div>
+
+<br>
+<br>
+
 <div class="card">
 
 
 
     <div class="card-body">
 
-
-
+      
       <div class="card-title">Daily Sale Report | <strong>Date: </strong>{{\Carbon\Carbon::parse($date)->format('d-m-Y')}}
       
 
@@ -32,6 +41,20 @@
           <tr>
               <td><strong>Total Tax</strong></td>
               <td>RM {{ number_format($totaltax, 2) }}</td>
+          </tr>
+      </tbody>
+  </table>
+
+  <h2>expense Summary</h2>
+  <table class="table table-bordered table-striped">
+      <tbody>
+          <tr>
+              <td><strong>Total expense</strong></td>
+              <td>RM {{ number_format($totalexpense, 2) }}</td>
+          </tr>
+          <tr>
+              <td><strong>Total count expense</strong></td>
+              <td>{{ $countexpense }}</td>
           </tr>
       </tbody>
   </table>

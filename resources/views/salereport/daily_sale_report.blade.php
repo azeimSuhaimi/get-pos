@@ -113,6 +113,20 @@
         </tbody>
     </table>
 
+    <h2>expense Summary</h2>
+    <table class="table table-bordered table-striped">
+        <tbody>
+            <tr>
+                <td><strong>Total expense</strong></td>
+                <td>RM {{ number_format($totalexpense, 2) }}</td>
+            </tr>
+            <tr>
+                <td><strong>Total count expense</strong></td>
+                <td>{{ $countexpense }}</td>
+            </tr>
+        </tbody>
+    </table>
+
     <!-- Sales by Payment Type Section -->
     <h2>Sales by Payment Type</h2>
     <table class="table table-bordered table-striped">

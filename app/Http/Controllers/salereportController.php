@@ -11,8 +11,11 @@ use App\Models\payment_method;
 use App\Models\customer;
 use App\Models\purchase_detail;
 use App\Models\activity_log;
-            // reference the Dompdf namespace
-            use Dompdf\Dompdf;
+use App\Models\company;
+use App\Models\expense;
+
+// reference the Dompdf namespace
+use Dompdf\Dompdf;
 
 class salereportController extends Controller
 {
@@ -32,6 +35,9 @@ class salereportController extends Controller
             $Start = Carbon::createFromFormat('Y-m-d', $validated['date'])->startOfDay();  // First moment of the day (00:00:00)
             $End = Carbon::createFromFormat('Y-m-d', $validated['date'])->endOfDay();
 
+            $countexpense = expense::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->count('amount');
+            $totalexpense = expense::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->sum('amount');
+
             $totalsale = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('subtotal');
             $totaltransaction = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->count('invoice_id');
             $totalgrosssale = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('total');
@@ -46,6 +52,8 @@ class salereportController extends Controller
 
             $data = [
                 'request' => $request,
+                'countexpense' => $countexpense,
+                'totalexpense' => $totalexpense,
                 'date' => $validated['date'],
                 'totalsale' => $totalsale,
                 'totaltransaction' => $totaltransaction,
@@ -70,9 +78,16 @@ class salereportController extends Controller
                 'date' => 'required|date',
             ]);
 
+            $company = company::where('user_email',auth()->user()->email)->first();
+
+           
+
             // Create Carbon instances for the start and end of the day
             $Start = Carbon::createFromFormat('Y-m-d', $validated['date'])->startOfDay();  // First moment of the day (00:00:00)
             $End = Carbon::createFromFormat('Y-m-d', $validated['date'])->endOfDay();
+
+            $countexpense = expense::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->count('amount');
+            $totalexpense = expense::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->sum('amount');
 
             $totalsale = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('subtotal');
             $totaltransaction = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->count('invoice_id');
@@ -87,6 +102,9 @@ class salereportController extends Controller
             ->get();
 
             $data = [
+                'company' => $company,
+                'countexpense' => $countexpense,
+                'totalexpense' => $totalexpense,
                 'request' => $request,
                 'date' => $validated['date'],
                 'totalsale' => $totalsale,

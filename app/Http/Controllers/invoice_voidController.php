@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 use App\Models\invoice;
 use App\Models\invoice_detail;
@@ -16,11 +17,30 @@ use App\Models\activity_log;
 
 class invoice_voidController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $invoice = invoice::where('user_email',auth()->user()->email)->where('status',true)->whereDate('created_at', today())->orderBy('created_at','desc')->get();
+        $data = [
+            'request' => $request,
+        ];
 
-        return view('invoice_void.index',['invoice' => $invoice]);
+        if($request->input('date') != null)
+        {
+            $validated = $request->validate([
+                'date' => 'required|date',
+            ]);
+
+            // Create Carbon instances for the start and end of the day
+            $Start = Carbon::createFromFormat('Y-m-d', $validated['date'])->startOfDay();  // First moment of the day (00:00:00)
+            $End = Carbon::createFromFormat('Y-m-d', $validated['date'])->endOfDay();
+            $invoice = invoice::where('user_email',auth()->user()->email)->where('status',true)->whereBetween('created_at', [$Start,$End])->orderBy('created_at','desc')->get();
+        }
+        else{
+
+            $invoice = invoice::where('user_email',auth()->user()->email)->where('status',true)->whereDate('created_at', today())->orderBy('created_at','desc')->get();
+        }
+
+
+        return view('invoice_void.index',['invoice' => $invoice,'request' => $request,]);
     }// end method
 
     public function view(Request $request)

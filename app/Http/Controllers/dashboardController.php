@@ -12,6 +12,7 @@ use App\Models\payment_method;
 use App\Models\customer;
 use App\Models\purchase_detail;
 use App\Models\activity_log;
+use App\Models\company;
 
 use App\Mail\send_receipt;
 
@@ -94,7 +95,10 @@ class dashboardController extends Controller
             'email' => 'required|email',
         ]);
 
+        $company = company::where('user_email',auth()->user()->email)->first();
+
         $datas = [
+            'company' => $company,
             'invoice' => invoice::firstWhere('invoice_id', $validated['invoice_id']),
             'invoice_detail' => invoice_detail::where('invoice_id', $validated['invoice_id'])->get(),
             'payment_method' => payment_method::where('invoice_id', $validated['invoice_id'])->get()

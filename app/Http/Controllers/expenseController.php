@@ -50,7 +50,7 @@ class expenseController extends Controller
 
             activity_log::addActivity('add new details expense ',' add new expense '.$validated['description']);
     
-            return back()->with('success','Add new expense ');
+            return redirect(route('expense'))->with('success','Add new expense ');
         }// end method
 
                 //edit expense page

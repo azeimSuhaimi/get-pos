@@ -57,6 +57,7 @@ class send_receipt extends Mailable
         return new Content(
             view: 'mail.payment_receipt',
             with: [
+                'company' => $this->datas['company'],
                 'invoice' => $this->datas['invoice'],
                 'invoice_detail' => $this->datas['invoice_detail'],
                 'payment_method' => $this->datas['payment_method'],
