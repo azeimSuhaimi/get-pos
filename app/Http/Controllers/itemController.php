@@ -45,7 +45,7 @@ class itemController extends Controller
             })],
             'quantity' => 'required|integer',
             'cost' => 'required|numeric',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|gte:cost',
             'description' => 'required|string',
             'category' => 'required',
             

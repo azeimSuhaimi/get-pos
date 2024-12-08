@@ -22,7 +22,7 @@
         <h5 class="card-title">Create New Item</h5>
   
         <!-- Multi Columns Form -->
-        <form class="row g-3" method="POST" onsubmit="confirmAndSubmit(this)" action="{{route('item.store')}}">
+        <form id="priceForm" class="row g-3" method="POST" onsubmit="confirmAndSubmit(this)" action="{{route('item.store')}}">
   
           @csrf
           <div class="col-md-12">
@@ -100,6 +100,33 @@
             <button type="reset" class="btn btn-secondary">Reset</button>
           </div>
         </form><!-- End Multi Columns Form -->
+
+        <script>
+          document.getElementById('priceForm').addEventListener('submit', function(event) {
+              // Get the values of cost and price
+              let cost = parseFloat(document.getElementById('cost').value);
+              let price = parseFloat(document.getElementById('price').value);
+              
+              // Check if cost is greater than price or price is less than cost
+              if (cost > price) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Cost cannot be greater than price.",
+                });
+                  event.preventDefault();  // Prevent form submission
+              } else if (price < cost) {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Price cannot be less than cost.",
+                });
+                  alert('');
+                  event.preventDefault();  // Prevent form submission
+              }
+          });
+      </script>
+
   
       </div>
   </div>

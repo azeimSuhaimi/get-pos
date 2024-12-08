@@ -50,7 +50,7 @@
                       <td><img src="items/{{$item->picture}}" style="width:50px; height: 40px;"></td>
                       <td>{{$item->shortcode}}</td>
                       <td>{{$item->name}}</td>
-                      <td>{{$item->retail}}</td>
+                      <td>{{$item->price}}</td>
                       <td>{{$item->quantity}}</td>
                       <td>{{$item->status == true ? 'Active':'Deactive'}}</td>
                       <td>

@@ -24,7 +24,7 @@
 
             @if (Request::is('item_edit'))
                 
-                <form class="submit" onsubmit="confirmAndSubmit(this)" action="{{route('item.update.image')}}" method="post" enctype="multipart/form-data">
+                <form  class="submit" onsubmit="confirmAndSubmit(this)" action="{{route('item.update.image')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id" value="{{$items->id}}">
 
@@ -65,7 +65,7 @@
 
         <div class="card-body">
 
-            <form class="row g-3" onsubmit="confirmAndSubmit(this)" action="{{route('item.update')}}" method="post">
+            <form id="priceForm" class="row g-3" onsubmit="confirmAndSubmit(this)" action="{{route('item.update')}}" method="post">
 
                 @csrf
 
@@ -242,6 +242,32 @@
 
 
             </form>
+
+            <script>
+                document.getElementById('priceForm').addEventListener('submit', function(event) {
+                    // Get the values of cost and price
+                    let cost = parseFloat(document.getElementById('cost').value);
+                    let price = parseFloat(document.getElementById('price').value);
+                    
+                    // Check if cost is greater than price or price is less than cost
+                    if (cost > price) {
+                      Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Cost cannot be greater than price.",
+                      });
+                        event.preventDefault();  // Prevent form submission
+                    } else if (price < cost) {
+                      Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Price cannot be less than cost.",
+                      });
+                        alert('');
+                        event.preventDefault();  // Prevent form submission
+                    }
+                });
+            </script>
 
             @if (Request::is('item_edit'))
                 <form id="item_status" onsubmit="confirmAndSubmit(this)" action="{{route('item.status')}}" method="post">
