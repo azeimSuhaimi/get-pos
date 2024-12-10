@@ -149,33 +149,33 @@
             <?php $u = $loop->iteration; ?>
         @endforeach 
 
-        <div class="card-footer text-center py-3">
-            <form class="mt-2"  action="{{route('invoice')}}" method="get">
+        <div class="card-footer d-flex text-center ">
+            <form class="mt-2 p-2"  action="{{route('invoice')}}" method="get">
                 @csrf
-                <div class="d-grid mt-2">
+                <div class=" mt-2">
                     <button class="{{Cart::total() <= 0 ? 'disabled':''}} btn btn-primary " type="submit">Invoice</button>
                 </div>
               </form>
       
-              <form id="new_sale" class="mt-2" onsubmit="confirmAndSubmit(this)" action="{{route('pos.remove.all')}}" method="post">
+              <form id="new_sale" class="mt-2 p-2" onsubmit="confirmAndSubmit(this)" action="{{route('pos.remove.all')}}" method="post">
                 @csrf
-                <div class="d-grid mt-2">
+                <div class=" mt-2 ">
                     <button class="{{$i >= 1 ? '':'disabled'}} btn btn-primary " type="submit">New Sales</button>
                 </div>
               </form>
       
-                <form id="suspend_bill" class="mt-2" onsubmit="confirmAndSubmit(this)" action="{{route('pos.suspend')}}" method="post">
+                <form id="suspend_bill" class="mt-2 p-2" onsubmit="confirmAndSubmit(this)" action="{{route('pos.suspend')}}" method="post">
                   @csrf
                   <input type="hidden" name="qty" value="{{$i}}">
-                  <div class="d-grid mt-2">
+                  <div class=" mt-2">
                     <button class="{{$i >= 1 ? '':'disabled'}} btn btn-primary " type="submit">Suspend Bill</button>
                   </div>
                 </form>
       
-                <form id="suspend_view" class="mt-2" onsubmit="confirmAndSubmit(this)" action="{{route('pos.suspend.list')}}" method="get">
+                <form id="suspend_view" class="mt-2 p-2" onsubmit="confirmAndSubmit(this)" action="{{route('pos.suspend.list')}}" method="get">
                   @csrf
                   <input type="hidden" name="qty" value="{{$i}}">
-                  <div class="d-grid mt-2">
+                  <div class=" mt-2">
                     <button class="{{$u >= 1 ? '':'disabled'}} btn btn-primary " type="submit">Resume Suspend Bill</button>
                   </div>
                 </form>

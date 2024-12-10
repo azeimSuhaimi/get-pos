@@ -77,47 +77,47 @@
             </tfoot>
         </table>
     </div>
-    <div class="card-footer text-center py-3">
+    <div class="card-footer text-center d-flex">
         
         <?php $i = 0?>
         @foreach (Cart::content() as $row)
             <?php $i = $loop->iteration; ?>
         @endforeach
 
-        <form class="" action="{{route('invoice.cash.method')}}" method="get">
+        <form class="p-2" action="{{route('invoice.cash.method')}}" method="get">
             @csrf
-            <div class="d-grid mt-2"><button type="submit" class="btn btn-primary btn-block">Cash</button></div>
+            <div class=" mt-2"><button type="submit" class="btn btn-primary btn-block">Cash</button></div>
             
         </form>
 
-        <form class="" action="{{route('invoice.digital.method')}}" method="get">
+        <form class="p-2" action="{{route('invoice.digital.method')}}" method="get">
             @csrf
-            <div class="d-grid mt-2"><button type="submit" class="btn btn-primary btn-block">Digital Pay</button></div>
+            <div class=" mt-2"><button type="submit" class="btn btn-primary btn-block">Digital Pay</button></div>
             
         </form>
 
-        <form class="" action="{{route('invoice.hybrid.method')}}" method="get">
+        <form class="p-2" action="{{route('invoice.hybrid.method')}}" method="get">
             @csrf
-            <div class="d-grid mt-2"><button type="submit" class="btn btn-primary btn-block">Hybrid</button></div>
+            <div class=" mt-2"><button type="submit" class="btn btn-primary btn-block">Hybrid</button></div>
             
         </form>
 
-        <form class="" action="{{route('invoice.toyyibpay.method')}}" method="get">
+        <form class="p-2" action="{{route('invoice.toyyibpay.method')}}" method="get">
             @csrf
-            <div class="d-grid mt-2"><button type="submit" class="btn btn-primary btn-block">Toyyip pay</button></div>
+            <div class=" mt-2"><button type="submit" class="btn btn-primary btn-block">Toyyip pay</button></div>
             
         </form>
 
-        <form id="new_sale" class="mt-2" onsubmit="confirmAndSubmit(this)" action="{{route('pos.remove.all')}}" method="post">
+        <form id="new_sale" class=" p-2" onsubmit="confirmAndSubmit(this)" action="{{route('pos.remove.all')}}" method="post">
             @csrf
-            <div class="d-grid mt-2"><button class="{{$i >= 1 ? '':'disabled'}} btn btn-primary btn-block" type="submit">New Sales</button></div>
+            <div class=" mt-2"><button class="{{$i >= 1 ? '':'disabled'}} btn btn-primary btn-block" type="submit">New Sales</button></div>
             
           </form>
   
-            <form id="suspend_bill" class="mt-2" onsubmit="confirmAndSubmit(this)" action="{{route('pos.suspend')}}" method="post">
+            <form id="suspend_bill" class=" p-2" onsubmit="confirmAndSubmit(this)" action="{{route('pos.suspend')}}" method="post">
               @csrf
               <input type="hidden" name="qty" value="{{$i}}">
-              <div class="d-grid mt-2"><button class="{{$i >= 1 ? '':'disabled'}} btn btn-primary btn-block" type="submit">Suspend Bill</button></div>
+              <div class=" mt-2"><button class="{{$i >= 1 ? '':'disabled'}} btn btn-primary btn-block" type="submit">Suspend Bill</button></div>
               
             </form>
 
