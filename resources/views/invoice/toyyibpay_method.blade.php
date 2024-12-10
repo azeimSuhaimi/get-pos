@@ -39,11 +39,11 @@
                 </div>
     
                 <div class="mb-3">
-                    <h5 class="card-title text-center text-uppercase font-weight-bold">tax : {{Cart::tax()}}</h5>
+                    <h5 class="card-title text-center text-uppercase font-weight-bold">tax : {{round(Cart::tax() * 20)/ 20}}</h5>
                 </div>
         
                 <div class="mb-3">
-                    <h5 class="card-title text-center text-uppercase font-weight-bold">total : {{Cart::total()}}</h5>
+                    <h5 class="card-title text-center text-uppercase font-weight-bold">total : {{round(Cart::total() * 20)/ 20}}</h5>
                 </div>
             </div>
             <div class="col-md-5 ">

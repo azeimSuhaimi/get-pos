@@ -153,7 +153,7 @@ class invoiceController extends Controller
         {
             // validation for amount page
             $validated = $request->validate([
-                'amount' => 'required|numeric|gte:'.Cart::total(),
+                'amount' => 'required|numeric|gte:'.round(Cart::total() * 20)/ 20,
                 'payment_type' => 'required',
             ]);
         }
@@ -172,7 +172,7 @@ class invoiceController extends Controller
         {
             // validation for amount page
             $validated = $request->validate([
-                'amount' => 'required|numeric|lt:'.Cart::total(),
+                'amount' => 'required|numeric|lt:'.round(Cart::total() * 20)/ 20,
                 'reference_no' => 'required|string',
                 'payment_type' => 'required',
                 'HYBRID' => 'required',
@@ -205,8 +205,8 @@ class invoiceController extends Controller
         $invoice->user_email = auth()->user()->email;
         
         $invoice->subtotal = Cart::subtotal();
-        $invoice->tax = Cart::tax();
-        $invoice->total = Cart::total();
+        $invoice->tax = round(Cart::tax() * 20)/ 20;
+        $invoice->total = round(Cart::total() * 20)/ 20;
 
         if($request->input('TOYYIBPAY') == 'TOYYIBPAY')
         {
@@ -248,7 +248,7 @@ class invoiceController extends Controller
             $payment_method = new payment_method;
             $payment_method->invoice_id = $bill_id;
             $payment_method->payment_type = $validated['payment_type'];
-            $payment_method->tender = Cart::total();
+            $payment_method->tender = round(Cart::total() * 20)/ 20;
             $payment_method->reference_no = $validated['reference_no'];
             $payment_method->status = true;
             $payment_method->user_email = auth()->user()->email;
@@ -270,7 +270,7 @@ class invoiceController extends Controller
             $payment_method = new payment_method;
             $payment_method->invoice_id = $bill_id;
             $payment_method->payment_type = $validated['payment_type'];
-            $payment_method->tender = Cart::total() - $validated['amount'];
+            $payment_method->tender = round(Cart::total() * 20)/ 20 - $validated['amount'];
             $payment_method->reference_no = $validated['reference_no'];
             $payment_method->status = true;
             $payment_method->user_email = auth()->user()->email;
@@ -290,7 +290,7 @@ class invoiceController extends Controller
                 'billDescription'=>'Online Payment Method System P.O.S',
                 'billPriceSetting'=>0,
                 'billPayorInfo'=>0,
-                'billAmount'=>Cart::total() * 100,
+                'billAmount'=>round(Cart::total() * 20)/ 20 * 100,
                 'billReturnUrl'=>route('invoice.payment.status'), //tukar link disini
                 'billCallbackUrl'=>route('invoice'),
                 'billExternalReferenceNo' => $bill_id , // reference number sendiri bukan toyyyipay punya macam number resit

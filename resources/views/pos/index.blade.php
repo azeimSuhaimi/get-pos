@@ -119,17 +119,26 @@
                 <tr>
                     <th colspan="6">&nbsp;</th>
                     <th>Tax</th>
-                    <th><?php echo Cart::tax(); ?></td>
+                    <th><?php echo round(Cart::tax() * 20) / 20; ?></td>
                 </tr>
                 <tr>
                     <th colspan="6">&nbsp;</th>
                     <th>Total</th>
-                    <th><?php echo Cart::total(); ?></td>
+                    <th><?php echo round(Cart::total() * 20) / 20; ?></td>
                 </tr>
     
                 
             </tfoot>
         </table>
+
+        <?php 
+            $number = 7.26;
+
+            // Multiply by 20, round to nearest integer, then divide by 20
+            $rounded = round(Cart::total() * 20) / 20;
+
+            //echo $rounded; // Output: 7.25
+            ?>
 
         <?php $i = 0?>
         @foreach (Cart::content() as $row)

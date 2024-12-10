@@ -49,7 +49,7 @@
                         <td>{{$loop->iteration}}</td>
                         <td>{{$row->bill_id}}</td>
                         <td>{{$row->user_email}}</td>
-                        <td>{{$row->total}}</td>
+                        <td>{{round($row->total * 20) / 20}}</td>
                         <td>
                             <form onsubmit="confirmAndSubmit(this)" class="submit" action="{{route('pos.unsuspend')}}" method="post">
                                 @csrf

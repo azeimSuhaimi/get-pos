@@ -65,12 +65,12 @@
                 <tr>
                     <th colspan="4">&nbsp;</th>
                     <th>Tax</th>
-                    <th><?php echo Cart::tax(); ?></td>
+                    <th><?php echo round(Cart::tax() * 20)/ 20 ?></td>
                 </tr>
                 <tr>
                     <th colspan="4">&nbsp;</th>
                     <th>Total</th>
-                    <th><?php echo Cart::total(); ?></td>
+                    <th><?php echo round(Cart::total() * 20)/ 20 ?></td>
                 </tr>
     
                 
