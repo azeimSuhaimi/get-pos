@@ -113,5 +113,41 @@ class DatabaseSeeder extends Seeder
             'user_email' => 'abu22'.'@gmail.com',//
         ]);
 
+        DB::table('payment_types')->insert([
+            'payment_name' => 'DEBIT',//
+        ]);
+
+        DB::table('payment_types')->insert([
+            'payment_name' => 'CREDIT',//
+        ]);
+
+        DB::table('payment_types')->insert([
+            'payment_name' => 'DUIT NOW',//
+        ]);
+
+        DB::table('payment_types')->insert([
+            'payment_name' => 'TOUCH N GO',//
+        ]);
+
+        DB::table('payment_types')->insert([
+            'payment_name' => 'MAE PAY',//
+        ]);
+
+        DB::table('payment_types')->insert([
+            'payment_name' => 'GRAB PAY',//
+        ]);
+
+        DB::table('payment_types')->insert([
+            'payment_name' => 'BOOTS PAY',//
+        ]);
+
+        DB::table('payment_types')->insert([
+            'payment_name' => 'SHOPEE PAY',//
+        ]);
+
+        DB::table('payment_types')->insert([
+            'payment_name' => 'SATEL PAY',//
+        ]);
+
     }
 }

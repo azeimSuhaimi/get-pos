@@ -105,10 +105,9 @@
                         <label for="payment_type" class="form-label">payment type</label>
                         <select class="form-control @error('payment_type') is-invalid @enderror" name="payment_type" id="payment_type">
                             <option ></option>
-                            <option value="debit" @selected(old('payment_type') == 'debit')>debit</option>
-                            <option value="credit" @selected(old('payment_type') == 'credit')>credit</option>
-                            <option value="tng" @selected(old('payment_type') == 'tng')>touch n go</option>
-                            <option value="duitnow" @selected(old('payment_type') == 'duitnow')>duitnow</option>
+                            @foreach ($payment_type as $row)
+                                <option value="{{$row->payment_name}}" @selected(old('payment_type') == $row->payment_name) >{{$row->payment_name}}</option>
+                            @endforeach
                         </select>
                         @error('payment_type')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>

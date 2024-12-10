@@ -16,7 +16,7 @@ use App\Models\company;
 use App\Models\item;
 use App\Models\suspend;
 use App\Models\suspend_details;
-
+use App\Models\payment_type;
 use App\Models\invoice;
 use App\Models\invoice_detail;
 use App\Models\payment_method;
@@ -58,26 +58,28 @@ class invoiceController extends Controller
     {
         //get all list custmer data
         $customer = customer::where('user_email',auth()->user()->email)->get();
+        $payment_type = payment_type::all();
 
         // check total amount in cart exist or not
         if(Cart::total() <= 0)
         {
             return redirect()->back()->with('error', 'item cannot empty  to create bill!!!');
         }
-        return view('invoice.digital_method',['customer'=>$customer,'request'=>$request]);
+        return view('invoice.digital_method',['customer'=>$customer,'request'=>$request, 'payment_type' => $payment_type]);
     }//end method
 
     public function hybrid_method(Request $request)
     {
         //get all list custmer data
         $customer = customer::where('user_email',auth()->user()->email)->get();
-
+        $payment_type = payment_type::all();
+        
         // check total amount in cart exist or not
         if(Cart::total() <= 0)
         {
             return redirect()->back()->with('error', 'item cannot empty  to create bill!!!');
         }
-        return view('invoice.hybrid_method',['customer'=>$customer,'request'=>$request]);
+        return view('invoice.hybrid_method',['customer'=>$customer,'request'=>$request, 'payment_type' => $payment_type]);
     }//end method
 
     public function toyyibpay_method(Request $request)

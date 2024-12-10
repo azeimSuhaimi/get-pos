@@ -107,7 +107,7 @@
                     @endif
 
 
-                    @if ($pay->payment_type == 'debit')
+                    @if ($pay->payment_type == 'DEBIT')
                         <tr>
                             <td colspan="4">&nbsp;</td>
                             <td>{{$pay->payment_type}}</td>
@@ -123,7 +123,7 @@
 
                     @endif
 
-                    @if ($pay->payment_type == 'credit')
+                    @if ($pay->payment_type == 'CREDIT')
                         <tr>
                             <td colspan="4">&nbsp;</td>
                             <td>{{$pay->payment_type}}</td>
@@ -138,7 +138,7 @@
 
                     @endif
 
-                    @if ($pay->payment_type == 'duitnow')
+                    @if ($pay->payment_type == 'DUIT NOW')
                         <tr>
                             <td colspan="4">&nbsp;</td>
                             <td>{{$pay->payment_type}}</td>
@@ -154,7 +154,7 @@
 
                     @endif
 
-                    @if ($pay->payment_type == 'tng')
+                    @if ($pay->payment_type == 'TOUCH N GO')
                         <tr>
                             <td colspan="4">&nbsp;</td>
                             <td>{{$pay->payment_type}}</td>
@@ -167,6 +167,77 @@
                             <td>{{$pay->reference_no}}</td>
                         </tr>
 
+                    @endif
+
+                    @if ($pay->payment_type == 'SHOPEE PAY')
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                            <td>{{$pay->payment_type}}</td>
+                            <td>{{$pay->tender}}</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                            <td>Reference No</td>
+                            <td>{{$pay->reference_no}}</td>
+                        </tr>
+                    @endif
+
+                    @if ($pay->payment_type == 'MAE PAY')
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                            <td>{{$pay->payment_type}}</td>
+                            <td>{{$pay->tender}}</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                            <td>Reference No</td>
+                            <td>{{$pay->reference_no}}</td>
+                        </tr>
+
+                    @endif
+
+                    @if ($pay->payment_type == 'GRAB PAY')
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                            <td>{{$pay->payment_type}}</td>
+                            <td>{{$pay->tender}}</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                            <td>Reference No</td>
+                            <td>{{$pay->reference_no}}</td>
+                        </tr>
+                    @endif
+
+                    @if ($pay->payment_type == 'BOOTS PAY')
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                            <td>{{$pay->payment_type}}</td>
+                            <td>{{$pay->tender}}</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                            <td>Reference No</td>
+                            <td>{{$pay->reference_no}}</td>
+                        </tr>
+                    @endif
+
+                    @if ($pay->payment_type == 'SATEL PAY')
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                            <td>{{$pay->payment_type}}</td>
+                            <td>{{$pay->tender}}</td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="4">&nbsp;</td>
+                            <td>Reference No</td>
+                            <td>{{$pay->reference_no}}</td>
+                        </tr>
                     @endif
 
                     @if ($pay->payment_type == 'TOYYIBPAY')
