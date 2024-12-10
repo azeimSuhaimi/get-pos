@@ -116,6 +116,7 @@ class dashboardController extends Controller
             'order_id' => 'required',
             'billcode' => 'required',
             'status_id' => 'required',
+            'transaction_id' => 'required'
             ]);
 
             $some_data = array(
@@ -136,7 +137,10 @@ class dashboardController extends Controller
               $obj = json_decode($result);
               //echo $result;
 
+              $company = company::where('user_email',auth()->user()->email)->first();
+
         $datas = [
+            'company' => $company,
             'status_id' => $validated['status_id'],
             'billcode' => $validated['billcode'],
             'invoice_id' => $validated['order_id'],
@@ -150,12 +154,12 @@ class dashboardController extends Controller
 
             if($invoice->status == false && $validated['status_id'] == 1)
             {
-                // store payment cash type 
+                
                 $payment_method = new payment_method;
                 $payment_method->invoice_id = $validated['order_id'];
                 $payment_method->payment_type = 'TOYYIBPAY';
                 $payment_method->tender = invoice::where('invoice_id', $validated['order_id'])->first()->total;
-                $payment_method->reference_no = $validated['billcode'];
+                $payment_method->reference_no = $validated['transaction_id'];
                 $payment_method->status = true;
                 $payment_method->user_email = auth()->user()->email;
                 $payment_method->save();

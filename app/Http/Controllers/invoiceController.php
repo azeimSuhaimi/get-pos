@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Validation\Rule;
 
 use App\Mail\toyyibpay_link;
-
+use App\Models\company;
 use App\Models\item;
 use App\Models\suspend;
 use App\Models\suspend_details;
@@ -319,8 +320,10 @@ class invoiceController extends Controller
 
 
 
+            $company = company::where('user_email',auth()->user()->email)->first();
 
             $datas = [
+                'company' => $company,
                 'billcode'=> $obj[0]->BillCode,
                 'invoice' => invoice::firstWhere('invoice_id', $bill_id),
                 'invoice_detail' => invoice_detail::where('invoice_id', $bill_id)->get(),
@@ -441,9 +444,14 @@ class invoiceController extends Controller
 
     public function invoice_online_manual_process(Request $request)
     {
+            $user_email =auth()->user()->email;
+
             // validation for amount page
             $validated = $request->validate([
-                'reference_no' => 'required',
+                'reference_no' =>  ['required',Rule::unique('payment_methods')->where(function($query) use ($user_email)
+                {
+                    return $query->where('user_email', $user_email); // Adjust as necessary
+                })],
                 'invoice_id' => 'required',
             ]);
 

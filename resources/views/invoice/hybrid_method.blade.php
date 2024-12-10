@@ -87,7 +87,7 @@
 
                     <div class="mb-3">
 
-                        <input type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" id="amount" value="{{ old('amount') }}" placeholder="Amount Tendered">
+                        <input type="text" class="form-control @error('amount') is-invalid @enderror" name="amount" id="amount" value="{{ old('amount') }}" placeholder="Amount Tendered">
                         @error('amount')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
                         @enderror

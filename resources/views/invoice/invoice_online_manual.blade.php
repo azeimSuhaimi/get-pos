@@ -74,7 +74,7 @@
                     </div>
             
                     <div class="mb-3">
-                        <label for="reference_no" class="form-label">Reference No</label>
+                        <label for="reference_no" class="form-label">Reference No (Transaction ID)</label>
                         <input type="text" class="form-control @error('reference_no') is-invalid @enderror" name="reference_no" id="reference_no" value="{{ old('reference_no') }}" placeholder="reference no">
                         @error('reference_no')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>

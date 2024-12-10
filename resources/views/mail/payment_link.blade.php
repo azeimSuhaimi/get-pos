@@ -38,6 +38,14 @@
 </style>
 <div class="container">
     <div class="header">
+        <div style="text-align: center;margin: 0;"> <h2 style="margin: 0;">{{$company->company_name}}</h2></div>
+        <div style="text-align: center;margin: 0;"> <h4 style="margin: 0;">Company No : {{$company->company_id}}</h4></div>
+        <div style="text-align: center;margin: 0;"> <h4 style="margin: 0;">{{$company->address}}, {{$company->city}}</h4></div>
+        <div style="text-align: center;margin: 0;"> <h4 style="margin: 0;">{{$company->poscode}}, {{$company->state}}, {{$company->country}}.</h4></div>
+        <div style="text-align: center;margin: 0;"> <h4 style="margin: 0;">Phone No : {{$company->phone}}</h4></div>
+
+        <br>
+        
         <h2>Payment Request</h2>
     </div>
     <p>Subject: Payment Request for {{$invoice['reference_no']}}</p>

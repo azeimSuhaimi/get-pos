@@ -44,6 +44,7 @@ class toyyibpay_link extends Mailable
         return new Content(
             view: 'mail.payment_link',
             with: [
+                'company' => $this->datas['company'],
                 'invoice' => $this->datas['invoice'],
                 'invoice_detail' => $this->datas['invoice_detail'],
                 
