@@ -149,5 +149,17 @@ class DatabaseSeeder extends Seeder
             'payment_name' => 'SATEL PAY',//
         ]);
 
+        DB::table('payment_types')->insert([
+            'payment_name' => 'TOYYIBPAY',//
+        ]);
+
+        DB::table('payment_types')->insert([
+            'payment_name' => 'FOODPANDA',//
+        ]);
+
+        DB::table('payment_types')->insert([
+            'payment_name' => 'GRABFOOD',//
+        ]);
+
     }
 }

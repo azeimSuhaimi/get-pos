@@ -58,6 +58,7 @@ class send_receipt extends Mailable
             view: 'mail.payment_receipt',
             with: [
                 'company' => $this->datas['company'],
+                'payment_type' => $this->datas['payment_type'],
                 'invoice' => $this->datas['invoice'],
                 'invoice_detail' => $this->datas['invoice_detail'],
                 'payment_method' => $this->datas['payment_method'],

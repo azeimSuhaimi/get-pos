@@ -407,8 +407,10 @@ class invoiceController extends Controller
             $invoice = invoice::where('invoice_id',$request->input('invoice_id'))->first();
             $invoice_detail = invoice_detail::where('invoice_id',$request->input('invoice_id'))->get();
             $payment_method = payment_method::where('invoice_id',$request->input('invoice_id'))->get();
+            $payment_type = payment_type::all();
 
             $data = [
+                'payment_type' => $payment_type,
                 'invoice' => $invoice,
                 'invoice_detail' => $invoice_detail,
                 'payment_method' => $payment_method,

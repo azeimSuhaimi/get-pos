@@ -111,30 +111,13 @@
                 @endif
             @endif
 
-            @if ($pay->payment_type == 'debit')
-                <p><strong>{{$pay->payment_type}}</strong> {{$pay->tender}} </p>
-                <p><strong>Reference No:</strong> {{$pay->reference_no}}</p>
-            @endif
+            @foreach ( $payment_type as $row )
+                @if ($pay->payment_type == $row->payment_name)
+                    <p><strong>{{$pay->payment_type}}</strong> {{$pay->tender}} </p>
+                    <p><strong>Reference No:</strong> {{$pay->reference_no}}</p>
+                @endif
+            @endforeach
 
-            @if ($pay->payment_type == 'credit')
-                <p><strong>{{$pay->payment_type}}</strong> {{$pay->tender}} </p>
-                <p><strong>Reference No:</strong> {{$pay->reference_no}}</p>
-            @endif
-
-        @if ($pay->payment_type == 'tng')
-            <p><strong>{{$pay->payment_type}}</strong> {{$pay->tender}} </p>
-            <p><strong>Reference No:</strong> {{$pay->reference_no}}</p>
-        @endif
-
-        @if ($pay->payment_type == 'duitnow')
-            <p><strong>{{$pay->payment_type}}</strong> {{$pay->tender}} </p>
-            <p><strong>Reference No:</strong> {{$pay->reference_no}}</p>
-        @endif
-
-        @if ($pay->payment_type == 'TOYYIBPAY')
-            <p><strong>{{$pay->payment_type}}</strong> {{$pay->tender}} </p>
-            <p><strong>Reference No:</strong> {{$pay->reference_no}}</p>
-        @endif
 
         @endforeach
         

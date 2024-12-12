@@ -13,6 +13,7 @@ use App\Models\customer;
 use App\Models\purchase_detail;
 use App\Models\activity_log;
 use App\Models\company;
+use App\Models\payment_type;
 
 use App\Mail\send_receipt;
 
@@ -96,8 +97,10 @@ class dashboardController extends Controller
         ]);
 
         $company = company::where('user_email',auth()->user()->email)->first();
+        $payment_type = payment_type::all();
 
         $datas = [
+            'payment_type' => $payment_type,
             'company' => $company,
             'invoice' => invoice::firstWhere('invoice_id', $validated['invoice_id']),
             'invoice_detail' => invoice_detail::where('invoice_id', $validated['invoice_id'])->get(),
@@ -138,8 +141,10 @@ class dashboardController extends Controller
               //echo $result;
 
               $company = company::where('user_email',auth()->user()->email)->first();
-
+              $payment_type = payment_type::all();
+              
         $datas = [
+            'payment_type' => $payment_type,
             'company' => $company,
             'status_id' => $validated['status_id'],
             'billcode' => $validated['billcode'],
