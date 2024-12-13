@@ -16,6 +16,7 @@ use App\Http\Controllers\receiptController;
 use App\Http\Controllers\expenseController;
 use App\Http\Controllers\invoice_voidController;
 use App\Http\Controllers\salereportController;
+use App\Http\Controllers\customer_orderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -138,6 +139,21 @@ Route::controller(expenseController::class)->group(function () {
     Route::post('/expense_remove','remove')->name('expense.remove')->middleware(['auth']);
     
     
+
+});
+
+Route::controller(customer_orderController::class)->group(function () {
+
+    
+    Route::get('/customer_order_create','create')->name('customer_order.create')->middleware(['auth','verified']);
+    Route::post('/customer_order_store','store')->name('customer_order.store')->middleware(['auth']);
+    Route::get('/customer_order','index')->name('customer_order')->middleware(['auth']);
+    Route::post('/customer_order_update_contact','update_contact')->name('customer_order.update.contact')->middleware(['auth']);
+    Route::post('/customer_order_update_status','update_status')->name('customer_order.update.status')->middleware(['auth']);
+    Route::get('/customer_order_view','view')->name('customer_order.view')->middleware(['auth']);
+    Route::get('/customer_order_edit','edit')->name('customer_order.edit')->middleware(['auth']);
+    Route::post('/customer_order_update','update')->name('customer_order.update')->middleware(['auth']);
+    Route::post('/customer_order_remove','remove')->name('customer_order.remove')->middleware(['auth']);
 
 });
 

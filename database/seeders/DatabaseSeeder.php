@@ -161,5 +161,12 @@ class DatabaseSeeder extends Seeder
             'payment_name' => 'GRABFOOD',//
         ]);
 
+        DB::table('customer_orders')->insert([
+            'user_email' => 'abu22'.'@gmail.com',//
+            'name'=>'ddddd',
+            'phone'=>'014',
+            'item'=>'dsds',
+        ]);
+
     }
 }
