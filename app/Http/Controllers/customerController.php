@@ -33,7 +33,7 @@ class customerController extends Controller
         $validated = $request->validate([
             
             'name' => 'required|string',
-            'address' => 'required|string',
+            'address' => 'nullable|string',
             'phone' => ['required','numeric',Rule::unique('customers')->where(function($query) use ($user_email)
             {
                 return $query->where('user_email', $user_email); // Adjust as necessary

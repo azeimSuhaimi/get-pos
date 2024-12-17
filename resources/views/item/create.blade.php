@@ -8,7 +8,6 @@
 
 
 <div class="pagetitle">
-    <h1>All Item</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item "><a href="{{route('item')}}">All Items</a></li>
@@ -17,16 +16,27 @@
     </nav>
   </div><!-- End Page Title -->
   
+
+
+
   <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Create New Item</h5>
-  
+      <div class="card-body text-bg-light">
+        
+        <div class="pt-4 pb-2">
+            <h5 class="card-title text-center pb-0 fs-4">Create New Item</h5>
+            <p class="text-center small">Register Item Here</p>
+        </div>
+
+        <a href="{{route('item')}}" class="btn btn-primary ">BACK</a>
+
+
+
         <!-- Multi Columns Form -->
         <form id="priceForm" class="row g-3" method="POST" onsubmit="confirmAndSubmit(this)" action="{{route('item.store')}}">
   
           @csrf
           <div class="col-md-12">
-            <label for="name" class="form-label">Item Name</label>
+            <label for="name" class="form-label">Item Name <span class="text-danger">*</span></label>
             <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{  old('name') }}" name="name" id="name">
             @error('name')
                 <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -34,7 +44,7 @@
           </div>
   
           <div class="col-md-6">
-            <label for="shortcode" class="form-label">Item Shortcode</label>
+            <label for="shortcode" class="form-label">Item Shortcode <span class="text-danger">*</span></label>
             <input type="text" class="form-control @error('shortcode') is-invalid @enderror" value="{{  old('shortcode') }}" name="shortcode" id="shortcode">
             @error('shortcode')
                 <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -42,7 +52,7 @@
           </div>
   
           <div class="col-md-6">
-            <label for="quantity" class="form-label">Item Quantity</label>
+            <label for="quantity" class="form-label">Item Quantity <span class="text-danger">*</span></label>
             <input type="number" class="form-control @error('quantity') is-invalid @enderror" value="{{  old('quantity') }}" name="quantity" id="quantity">
             @error('quantity')
                 <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -50,7 +60,7 @@
           </div>
   
           <div class="col-md-6">
-            <label for="cost" class="form-label">Item Cost</label>
+            <label for="cost" class="form-label">Item Cost <span class="text-danger">*</span></label>
             <input type="number" class="form-control @error('cost') is-invalid @enderror" value="{{  old('cost') }}" name="cost" id="cost">
             @error('cost')
                 <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -58,7 +68,7 @@
           </div>
   
           <div class="col-md-6">
-            <label for="price" class="form-label">Item Price</label>
+            <label for="price" class="form-label">Item Price <span class="text-danger">*</span></label>
             <input type="number" class="form-control @error('price') is-invalid @enderror" value="{{  old('price') }}" name="price" id="price">
             @error('price')
                 <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -66,7 +76,7 @@
           </div>
   
           <div class="col-md-12">
-            <label for="description" class="form-label">Item Description</label>
+            <label for="description" class="form-label">Item Description <span class="text-danger">*</span></label>
             <input type="text" class="form-control @error('description') is-invalid @enderror" value="{{  old('description') }}" name="description" id="description">
             @error('description')
                 <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -76,7 +86,7 @@
 
   
           <div class="col-md-4">
-            <label for="category" class="form-label">Category</label>
+            <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
             <div class="form-check">
               <input class="form-check-input @error('category') is-invalid @enderror" type="radio" name="category" id="category" value="retail"  {{old('category') === 'retail' ? 'checked' : ''}}>
               <label class="form-check-label" for="category">

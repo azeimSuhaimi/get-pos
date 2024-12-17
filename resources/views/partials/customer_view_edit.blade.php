@@ -1,5 +1,5 @@
 <div class="pagetitle">
-    <h1>All Customer</h1>
+    
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item "><a href="{{route('customer')}}">All Customer</a></li>
@@ -22,13 +22,20 @@
 
   <div class="card">
 
-    <div class="card-header">
 
 
-        
-    </div>
+    <div class="card-body text-bg-light">
 
-    <div class="card-body">
+
+
+        <div class="row">
+            <div class="col-10">
+              <h1 class="card-title text fs-3">{{ $customer->name }}</h1>
+            </div>
+            <div class="col-2 mt-3">
+              <a href="{{route('customer')}}" class="btn btn-primary ">BACK</a>
+            </div>
+          </div>
 
         <form class="row g-3" onsubmit="confirmAndSubmit(this)" action="{{route('customer.update')}}" method="post">
 
@@ -48,7 +55,7 @@
             @endif
             @if (Request::is('customer_edit'))
                 <div class="col-md-12">
-                    <label for="name" class="form-label">Customer Name</label>
+                    <label for="name" class="form-label">Customer Name <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ $customer->name }}" name="name" id="name">
                     @error('name')
                         <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -67,7 +74,7 @@
             @endif
             @if (Request::is('customer_edit'))
                 <div class="col-md-6">
-                    <label for="email" class="form-label">Customer Email</label>
+                    <label for="email" class="form-label">Customer Email <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('email') is-invalid @enderror" value="{{ $customer->email }}" name="email" id="email">
                     @error('email')
                         <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -86,7 +93,7 @@
             @endif
             @if (Request::is('customer_edit'))
                 <div class="col-md-6">
-                    <label for="phone" class="form-label">Customer Phone</label>
+                    <label for="phone" class="form-label">Customer Phone <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('phone') is-invalid @enderror" value="{{ $customer->phone }}" name="phone" id="phone">
                     @error('phone')
                         <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -105,7 +112,7 @@
             @endif
             @if (Request::is('customer_edit'))
                 <div class="col-md-6">
-                    <label for="ic" class="form-label">Customer I.C</label>
+                    <label for="ic" class="form-label">Customer I.C <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('ic') is-invalid @enderror" value="{{ $customer->ic }}" name="ic" id="ic">
                     @error('ic')
                         <span class=" invalid-feedback mt-2">{{ $message }}</span>

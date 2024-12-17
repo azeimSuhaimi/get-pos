@@ -1,13 +1,12 @@
 @extends('layouts.main_layout')
  
-@section('title', 'Login page')
+@section('title', 'purchase details page')
  
 @section('content')
 
 @include('partials.popup')
 
 <div class="pagetitle">
-    <h1>List Customer Purchase</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item "><a href="{{route('customer')}}">All Customer</a></li>
@@ -20,13 +19,16 @@
 
 <div class="card">
 
-    <div class="card-header">
 
 
-        
-    </div>
+    <div class="card-body text-bg-light">
 
-    <div class="card-body">
+        <div class="pt-4 pb-2">
+            <h5 class="card-title text-center pb-0 fs-4">List Customer Purchase</h5>
+            <p class="text-center small">List Purchase Details</p>
+        </div>
+
+        <a href="{{route('customer')}}" class="btn btn-primary mb-4">BACK</a>
 
         <form class="row g-3" onsubmit="confirmAndSubmit(this)" action="{{route('customer.update')}}" method="post">
 

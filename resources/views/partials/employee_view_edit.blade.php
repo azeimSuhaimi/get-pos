@@ -1,5 +1,4 @@
 <div class="pagetitle">
-    <h1>All Employee</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item "><a href="{{route('employee')}}">All Employee</a></li>
@@ -18,9 +17,18 @@
     </nav>
   </div><!-- End Page Title -->
 
-    <div class="card">
+    <div class="card text-bg-light">
 
-        <div class="card-header">
+        <div class="row">
+            <div class="col-10">
+              <h1 class="card-title text fs-3">{{ $employee->name }}</h1>
+            </div>
+            <div class="col-2 mt-3">
+              <a href="{{route('employee')}}" class="btn btn-primary ">BACK</a>
+            </div>
+          </div>
+
+        <div class="card-header text-bg-light">
 
             @if (Request::is('employee_edit'))
                 
@@ -87,7 +95,7 @@
                 @endif
                 @if (Request::is('employee_edit'))
                     <div class="col-md-12">
-                        <label for="name" class="form-label">Employee Name</label>
+                        <label for="name" class="form-label">Employee Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ $employee->name }}" name="name" id="name">
                         @error('name')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -106,7 +114,7 @@
                 @endif
                 @if (Request::is('employee_edit'))
                     <div class="col-md-6">
-                        <label for="email" class="form-label">Employee Email</label>
+                        <label for="email" class="form-label">Employee Email <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('email') is-invalid @enderror" value="{{ $employee->email }}" name="email" id="email">
                         @error('email')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -125,7 +133,7 @@
                 @endif
                 @if (Request::is('employee_edit'))
                     <div class="col-md-6">
-                        <label for="phone" class="form-label">Employee Phone</label>
+                        <label for="phone" class="form-label">Employee Phone <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('phone') is-invalid @enderror" value="{{ $employee->phone }}" name="phone" id="phone">
                         @error('phone')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -144,7 +152,7 @@
                 @endif
                 @if (Request::is('employee_edit'))
                     <div class="col-md-6">
-                        <label for="ic" class="form-label">Employee I.C</label>
+                        <label for="ic" class="form-label">Employee I.C <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('ic') is-invalid @enderror" value="{{ $employee->ic }}" name="ic" id="ic">
                         @error('ic')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -163,7 +171,7 @@
                 @endif
                 @if (Request::is('employee_edit'))
                     <div class="col-md-6">
-                        <label for="work_id" class="form-label">Employee Work I.D</label>
+                        <label for="work_id" class="form-label">Employee Work I.D <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('work_id') is-invalid @enderror" value="{{ $employee->work_id }}" name="work_id" id="work_id">
                         @error('work_id')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -182,7 +190,7 @@
                 @endif
                 @if (Request::is('employee_edit'))
                     <div class="col-md-12">
-                        <label for="address" class="form-label">Employee Address</label>
+                        <label for="address" class="form-label">Employee Address <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('address') is-invalid @enderror" value="{{ $employee->address }}" name="address" id="address">
                         @error('address')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -201,7 +209,7 @@
                 @endif
                 @if (Request::is('employee_edit'))
                     <div class="col-md-12">
-                        <label for="address2" class="form-label">Employee Second Address</label>
+                        <label for="address2" class="form-label">Employee Second Address <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('address2') is-invalid @enderror" value="{{ $employee->address2 }}" name="address2" id="address2">
                         @error('address2')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -220,7 +228,7 @@
                 @endif
                 @if (Request::is('employee_edit'))
                     <div class="col-md-6">
-                        <label for="birthday" class="form-label">Employee Birthday</label>
+                        <label for="birthday" class="form-label">Employee Birthday <span class="text-danger">*</span></label>
                         <input type="date" class="form-control @error('birthday') is-invalid @enderror" value="{{ $employee->birthday  }}" name="birthday" id="birthday">
                         @error('birthday')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -232,14 +240,14 @@
                 @if (Request::is('employee_view'))
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="gender" class="form-label">Employee Gender</label>
+                            <label for="gender" class="form-label">Employee Gender </label>
                             <p class="text-danger text-uppercase">{{ $employee->gender }}</p>
                         </div>
                     </div>
                 @endif
                 @if (Request::is('employee_edit'))
                     <div class="col-md-6">
-                        <label for="gender" class="form-label">Gender</label>
+                        <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
                         <div class="form-check">
                             <input class="form-check-input @error('gender') is-invalid @enderror" type="radio" name="gender" id="gender" value="male"  {{$employee->gender === 'male' ? 'checked' : ''}}>
                             <label class="form-check-label" for="gender">
@@ -269,7 +277,7 @@
                 @endif
                 @if (Request::is('employee_edit'))
                     <div class="col-md-6">
-                        <label for="inputState" class="form-label">Position</label>
+                        <label for="inputState" class="form-label">Position <span class="text-danger">*</span></label>
                         <select name="position" class="form-select @error('position') is-invalid @enderror">
                             <option value="" selected>Choose...</option>
                             <option value="staff" @selected($employee->position === 'staff')>Staff</option>

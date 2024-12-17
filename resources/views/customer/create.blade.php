@@ -8,19 +8,21 @@
 
 <div class="card mb-3">
 
-    <div class="card-body">
+    <div class="card-body text-bg-light">
 
         <div class="pt-4 pb-2">
             <h5 class="card-title text-center pb-0 fs-4">Register Your Account</h5>
             <p class="text-center small">Register Member Here</p>
         </div>
 
+        <a href="{{route('customer')}}" class="btn btn-primary mb-4">BACK</a>
+
         <form class="submit" onsubmit="confirmAndSubmit(this)" action="{{route('customer.store')}}" method="post">
             @csrf
 
             <div class="form-floating mb-3 mb-md-4">
                 <input class="form-control @error('name') is-invalid @enderror" name="name" id="Name" type="text" value="{{ old('name') }}" />
-                <label for="name">Name</label>
+                <label for="name">Name <span class="text-danger">*</span></label>
                 @error('name')
                     <span class=" invalid-feedback mt-2">{{ $message }}</span>
                 @enderror
@@ -37,7 +39,7 @@
 
             <div class="form-floating mb-3 mb-md-4">
                 <input class="form-control @error('ic') is-invalid @enderror" name="ic" id="ic" type="text" value="{{ old('ic') }}" />
-                <label for="ic">I.C</label>
+                <label for="ic">I.C <span class="text-danger">*</span></label>
                 @error('ic')
                     <span class=" invalid-feedback mt-2">{{ $message }}</span>
                 @enderror
@@ -47,7 +49,7 @@
                 <div class="col-md-6">
                     <div class="form-floating mb-3 mb-md-0 ">
                         <input class="form-control @error('email') is-invalid @enderror" name="email" id="email" type="text" value="{{ old('email') }}" />
-                        <label for="email">Email</label>
+                        <label for="email">Email <span class="text-danger">*</span></label>
                         @error('email')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
                         @enderror
@@ -56,7 +58,7 @@
                 <div class="col-md-6">
                     <div class="form-floating">
                         <input class="form-control @error('phone') is-invalid @enderror" name="phone" id="phone" type="tel" value="{{ old('phone') }}" />
-                        <label for="phone">Phone</label>
+                        <label for="phone">Phone <span class="text-danger">*</span></label>
                         @error('phone')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
                         @enderror

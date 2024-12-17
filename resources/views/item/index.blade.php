@@ -20,16 +20,15 @@
     <div class="row">
       <div class="col-lg-12">
 
-        <div class="card">
+        <div class="card text-bg-light">
           <div class="card-body">
             <h5 class="card-title">All Items</h5>
-            <p>List all Items.</p>
 
-            <a href="{{route('item.create')}}" class="btn btn-primary mb-3">Create </a>
+            <a href="{{route('item.create')}}" class="btn btn-primary mb-3">ADD ITEM </a>
 
             <!-- Table with stripped rows -->
-            <table class="table datatable table-hover">
-              <thead>
+            <table class="table datatable table-hover ">
+              <thead >
                 <tr>
                     <th>No</th>
                     <th>Image</th>
@@ -39,7 +38,7 @@
                     <th>quantity</th>
                     <th>Status</th>
                     <th>Action</th>
-                    <th></th>
+                    
                 </tr>
               </thead>
               <tbody>
@@ -54,11 +53,15 @@
                       <td>{{$item->quantity}}</td>
                       <td>{{$item->status == true ? 'Active':'Deactive'}}</td>
                       <td>
-                            <a href="{{route('item.edit')}}?id={{$item->id}}" class="btn btn-primary rounded-pill waves-effect waves-light">Edit</a>
+                        <div class="btn-group" role="group" >
+                          <a href="{{route('item.edit')}}?id={{$item->id}}" class="btn btn-primary ">Edit</a>
+                          <a href="{{route('item.view')}}?id={{$item->id}}" class="btn btn-info">View</a>
+                          
+                        </div>
+
+                            
                       </td>
-                      <td>
-                        <a href="{{route('item.view')}}?id={{$item->id}}" class="btn btn-info rounded-pill waves-effect waves-light">View</a>
-                      </td>
+
                   </tr>
                 @endforeach
               </tbody>

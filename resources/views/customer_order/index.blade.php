@@ -15,10 +15,10 @@
     </nav>
   </div><!-- End Page Title -->
 
-  <a href="{{route('customer_order.create')}}" class="btn btn-primary rounded-pill waves-effect waves-light mb-2">Create</a>
+  <a href="{{route('customer_order.create')}}" class="btn btn-primary mb-2">Create</a>
 
 
-  <div class="card">
+  <div class="card text-bg-light">
     <div class="card-body">
       <h5 class="card-title">search by month</h5>
 
@@ -27,7 +27,7 @@
 
         @csrf
         <div class="row mb-3">
-            <label for="date" class="col-md-4 col-lg-3 col-form-label">Date</label>
+            <label for="date" class="col-md-4 col-lg-3 col-form-label">Date <span class="text-danger">*</span></label>
             <div class="col-md-8 col-lg-9">
               <input name="date" id="date" type="month" class="form-control @error('date') is-invalid @enderror" id="date" value="{{ $date == null ? '':$date }}">
               @error('date')
@@ -66,7 +66,7 @@
     <div class="row">
       <div class="col-lg-12">
 
-        <div class="card">
+        <div class="card text-bg-light">
           <div class="card-body">
             <h5 class="card-title">All customer order {{$date == null ? \Carbon\Carbon::now()->format('F Y'):\Carbon\Carbon::parse($date)->format('F Y')}}</h5>
             <p>List all customer order .</p>
@@ -84,9 +84,8 @@
                     <th>Email</th>
                     <th>Item</th>
                     <th>Remark</th>
-                    <th>Contact Status</th>
-                    <th>status Pickup</th>
                     <th>#</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -94,43 +93,45 @@
                   
                   <tr>
                       <td>{{$loop->iteration}}</td>
-                      <td>{{$row->created_at}}</td>
+                      <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-y')}}</td>
                       <td>{{$row->name}}</td>
                       <td>{{$row->phone}}</td>
                       <td>{{$row->email}}</td>
                       <td>{{$row->item}}</td>
                       <td>{{$row->remark}}</td>
                       <td>
+                        <div class="btn-group" role="group" aria-label="Basic example">
                           @if ($row->contact == false)
                             <form onsubmit="confirmAndSubmit(this)" action="{{route('customer_order.update.contact')}}" method="post">
                               @csrf
                               <input type="hidden" name='id' value="{{$row->id}}">
-                              <button class="btn btn-primary" type="submit">Check</button>
+                              <button class="btn btn-primary" type="submit">Contact</button>
                             </form>
                           @else
-                            <button class="btn btn-success">Check</button>
+                            <button class="btn btn-success">Contact Check </button>
                           @endif
-                            
-                      </td>
-                      <td>
-                        @if ($row->status == false)
-                          <form onsubmit="confirmAndSubmit(this)" action="{{route('customer_order.update.status')}}" method="post">
-                            @csrf
-                            <input type="hidden" name='id' value="{{$row->id}}">
-                            <button class="btn btn-primary" type="submit">Check</button>
-                          </form>
-                        @else
-                          <button class="btn btn-success">Check</button>
-                        @endif
-                      </td>
-                      <td>
-                        @if ($row->status == false)
-                          <form onsubmit="confirmAndSubmit(this)" action="{{route('customer_order.remove')}}" method="post">
+
+                          @if ($row->status == false)
+                            <form onsubmit="confirmAndSubmit(this)" action="{{route('customer_order.update.status')}}" method="post">
+                              @csrf
+                              <input type="hidden" name='id' value="{{$row->id}}">
+                              <button class="btn btn-primary" type="submit">pickup</button>
+                            </form>
+                          @else
+                            <button class="btn btn-success">pick up Check</button>
+                          @endif
+
+
+                          @if ($row->status == false)
+                            <form onsubmit="confirmAndSubmit(this)" action="{{route('customer_order.remove')}}" method="post">
                               @csrf
                               <input type="hidden" name='id' value="{{$row->id}}">
                               <button class="btn btn-danger" type="submit">Remove</button>
                             </form>
                           @endif
+                        </div>
+
+                            
                       </td>
                   </tr>
                 @endforeach

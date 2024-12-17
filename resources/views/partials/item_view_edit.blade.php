@@ -1,5 +1,4 @@
 <div class="pagetitle">
-    <h1>All Items</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item "><a href="{{route('item')}}">All Items</a></li>
@@ -18,9 +17,18 @@
     </nav>
   </div><!-- End Page Title -->
 
-    <div class="card">
+    <div class="card text-bg-light">
 
         <div class="card-header">
+
+            <div class="row">
+                <div class="col-10">
+                  <h1 class="card-title text fs-3">{{ $items->name }}</h1>
+                </div>
+                <div class="col-2 mt-3">
+                  <a href="{{route('item')}}" class="btn btn-primary ">BACK</a>
+                </div>
+              </div>
 
             @if (Request::is('item_edit'))
                 
@@ -85,7 +93,7 @@
                 @endif
                 @if (Request::is('item_edit'))
                     <div class="col-md-12">
-                        <label for="name" class="form-label">items Name</label>
+                        <label for="name" class="form-label">items Name <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" value="{{ $items->name }}" name="name" id="name">
                         @error('name')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -104,7 +112,7 @@
                 @endif
                 @if (Request::is('item_edit'))
                     <div class="col-md-6">
-                        <label for="shortcode" class="form-label">items shortcode</label>
+                        <label for="shortcode" class="form-label">items shortcode <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('shortcode') is-invalid @enderror" value="{{ $items->shortcode }}" name="shortcode" id="shortcode">
                         @error('shortcode')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -123,7 +131,7 @@
                 @endif
                 @if (Request::is('item_edit'))
                     <div class="col-md-6">
-                        <label for="quantity" class="form-label">items quantity</label>
+                        <label for="quantity" class="form-label">items quantity <span class="text-danger">*</span></label>
                         <input type="number" class="form-control @error('quantity') is-invalid @enderror" value="{{ $items->quantity }}" name="quantity" id="quantity">
                         @error('quantity')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -142,7 +150,7 @@
                 @endif
                 @if (Request::is('item_edit'))
                     <div class="col-md-6">
-                        <label for="cost" class="form-label">items cost</label>
+                        <label for="cost" class="form-label">items cost <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('cost') is-invalid @enderror" value="{{ $items->cost }}" name="cost" id="cost">
                         @error('cost')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -161,7 +169,7 @@
                 @endif
                 @if (Request::is('item_edit'))
                     <div class="col-md-6">
-                        <label for="price" class="form-label">items retail price</label>
+                        <label for="price" class="form-label">items retail price <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('price') is-invalid @enderror" value="{{ $items->price }}" name="price" id="price">
                         @error('price')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -180,7 +188,7 @@
                 @endif
                 @if (Request::is('item_edit'))
                     <div class="col-md-12">
-                        <label for="descriptions" class="form-label">items Description</label>
+                        <label for="descriptions" class="form-label">items Description <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('descriptions') is-invalid @enderror" value="{{ $items->description }}" name="descriptions" id="descriptions">
                         @error('descriptions')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -199,7 +207,7 @@
                 @endif
                 @if (Request::is('item_edit'))
                     <div class="col-md-6">
-                        <label for="category" class="form-label">Category</label>
+                        <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
                         <div class="form-check">
                             <input class="form-check-input @error('category') is-invalid @enderror" type="radio" name="category" id="categoryretail" value="retail"  {{$items->category === 'retail' ? 'checked' : ''}}>
                             <label class="form-check-label" for="categoryretail">
