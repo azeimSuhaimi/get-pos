@@ -15,7 +15,7 @@
     </nav>
   </div><!-- End Page Title -->
 
-  <div class="card">
+  <div class="card text-bg-light">
     <div class="card-body">
       <h5 class="card-title">Daily Sale</h5>
 
@@ -24,7 +24,7 @@
 
         @csrf
         <div class="row mb-3">
-            <label for="date" class="col-md-4 col-lg-3 col-form-label">Date</label>
+            <label for="date" class="col-md-4 col-lg-3 col-form-label">Date <span class="text-danger">*</span></label>
             <div class="col-md-8 col-lg-9">
               <input name="date" id="date" type="date" class="form-control @error('date') is-invalid @enderror" id="date" value="{{ old('date') }}">
               @error('date')
@@ -63,7 +63,7 @@
   <div class="row">
     <div class="col-lg-12">
 
-      <div class="card">
+      <div class="card text-bg-light">
         <div class="card-body">
           <h5 class="card-title">All Receipt </h5>
           <p>List all Receipt.</p>
@@ -107,7 +107,7 @@
     <div class="row">
       <div class="col-lg-12">
 
-        <div class="card">
+        <div class="card text-bg-light">
           <div class="card-body">
             <h5 class="card-title">All Receipt Today</h5>
             <p>List all Receipt.</p>

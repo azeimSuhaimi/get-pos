@@ -14,6 +14,7 @@ use App\Models\purchase_detail;
 use App\Models\activity_log;
 use App\Models\company;
 use App\Models\payment_type;
+use App\Models\item;
 
 use App\Mail\send_receipt;
 
@@ -69,8 +70,11 @@ class dashboardController extends Controller
 
         $invoice = invoice::whereBetween('created_at', [$todayStart,$todayEnd])->where('user_email',auth()->user()->email)->orderBy('created_at', 'desc')->get();
 
+        $items_low_stock = item::where('user_email',auth()->user()->email)->where('quantity','<',10)->where('category','retail')->orderBy('quantity','desc')->get();
+
         //echo $totalsaleToday;
         $data = [
+            'items_low_stock' => $items_low_stock,
             'totalsaleToday' => $totalsaleToday,
             'totalsaleYesterday' => $totalsaleYesterday,
             'totalsaleMonth' => $totalsaleMonth,

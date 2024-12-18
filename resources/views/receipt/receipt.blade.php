@@ -21,17 +21,19 @@
     <a href="{{route('pos')}}" class="btn btn-primary mb-2">New Sale</a>
   @endif
 
-  @if (Request::is('receipt_view'))
-      
-    <a href="{{route('receipt')}}" class="btn btn-danger mb-2">Close</a>
+    @if (Request::is('receipt_view'))
+    
+        <a href="{{route('receipt')}}" class="btn btn-danger mb-2">Close</a>
     @endif
 
-  <div class="card mb-4">
-      <div class="card-header">
-          <i class="fas fa-table me-1"></i>
-          Receipt
-      </div>
+  <div class="card text-bg-light mb-4">
+
       <div class="card-body">
+        <div class="pt-4 pb-2">
+            <h5 class="card-title text-center pb-0 fs-4">Receipt</h5>
+            
+        </div>
+
           <h1 class="card-title text-uppercase text-center font-weight-bold">Receipt</h1>
           <h5 class=" text-uppercase text-end font-weight-bold">bill id : {{$invoice->invoice_id}}</h5>
           <h5 class=" text-uppercase text-end font-weight-bold">date : {{$invoice->created_at}}</h5>
@@ -164,7 +166,7 @@
 
                 <div class="form-floating mb-3">
                     <input class="form-control @error('email') is-invalid @enderror" name="email" id="email" type="text" value="{{  old('email') }}" />
-                    <label for="email">Email : </label>
+                    <label for="email">Email <span class="text-danger">*</span> : </label>
                     @error('email')
                         <span class=" invalid-feedback mt-2">{{ $message }}</span>
                     @enderror

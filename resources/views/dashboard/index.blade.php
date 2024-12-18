@@ -24,7 +24,7 @@
 
           <!-- Sales Card -->
           <div class="col-xxl-4 col-md-12">
-            <div class="card info-card sales-card">
+            <div class="card text-bg-light  info-card sales-card">
 
               <div class="filter">
                 <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -63,7 +63,7 @@
           <!-- Customers Card -->
           <div class="col-xxl-4 col-xl-12">
 
-            <div class="card info-card customers-card">
+            <div class="card text-bg-light info-card customers-card">
 
               <div class="filter">
                 <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -80,7 +80,7 @@
               </div>
 
               <div class="card-body">
-                <h5 class="card-title" id="customer-title">Customers <span>| This Year</span></h5>
+                <h5 class="card-title" id="customer-title">Customers <span>| Today</span></h5>
 
                 <div class="d-flex align-items-center">
                   <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -103,7 +103,7 @@
 
           <!-- Recent Sales -->
           <div class="col-12">
-            <div class="card recent-sales overflow-auto">
+            <div class="card text-bg-light recent-sales overflow-auto">
 
               <!-- 
               <div class="filter">
@@ -156,7 +156,7 @@
 
           <!-- Top Selling -->
           <div class="col-12">
-            <div class="card top-selling overflow-auto">
+            <div class="card text-bg-light top-selling overflow-auto">
 
               <!--
               <div class="filter">
@@ -218,7 +218,7 @@
       <div class="col-lg-4">
 
         <!-- Recent Activity -->
-        <div class="card">
+        <div class="card text-bg-light">
           <div class="card-body">
             <h5 class="card-title">Recent Activity </h5>
             <div class="activity">
@@ -238,6 +238,28 @@
 
           </div>
         </div><!-- End Recent Activity -->
+
+        <!-- Recent stock low -->
+        <div class="card text-bg-light">
+          <div class="card-body">
+            <h5 class="card-title">Stock Lower </h5>
+            <div class="activity">
+
+              @foreach ($items_low_stock as $row)
+                
+                <div class="activity-item d-flex">
+                  <div class="activite-label">{{ $row->quantity }}</div>
+                  <i class='bi bi-circle-fill activity-badge text-{{ $loop->index % 5 == 0 ? 'success' : ($loop->index % 5 == 1 ? 'danger' : ($loop->index % 5 == 2 ? 'primary' : ($loop->index % 5 == 3 ? 'info' : 'warning'))) }} align-self-start'></i>
+                  <div class="activity-content">
+                    <a href="{{route('item.view')}}?id={{$row->id}}">{{$row->name}}</a>
+                  </div>
+                </div><!-- End activity item-->
+              @endforeach
+
+            </div>
+
+          </div>
+        </div><!-- End stock low -->
 
         <!-- Budget Report -->
         <!--<div class="card">

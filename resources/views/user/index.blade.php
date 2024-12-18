@@ -21,7 +21,7 @@
     <div class="row">
       <div class="col-xl-4">
 
-        <div class="card">
+        <div class="card text-bg-light">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
             <img src="profile/{{auth()->user()->picture}}" alt="Profile" class="rounded-circle">
@@ -42,7 +42,7 @@
 
       <div class="col-xl-8">
 
-        <div class="card">
+        <div class="card text-bg-light">
           <div class="card-body pt-3">
             <!-- Bordered Tabs -->
             <ul class="nav nav-tabs nav-tabs-bordered">

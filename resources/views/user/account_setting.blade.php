@@ -7,7 +7,7 @@
 @include('partials.popup')
 
 
-<div class="card">
+<div class="card text-bg-light">
     <div class="card-body">
       <h5 class="card-title">Setting Toyyip Pay</h5>
 
@@ -42,7 +42,7 @@
 </div>
 
 
-<div class="card">
+<div class="card text-bg-light">
   <div class="card-body">
     <h5 class="card-title">Setting Company Details</h5>
 

@@ -1,5 +1,5 @@
 <div class="pagetitle">
-    <h1>All Expense</h1>
+    <h1>Expense</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item "><a href="{{route('expense')}}">All Expense</a></li>
@@ -20,15 +20,17 @@
 
 
 
-  <div class="card">
-
-    <div class="card-header">
+  <div class="card text-bg-light">
 
 
-        
-    </div>
 
     <div class="card-body">
+
+        <div class="pt-4 pb-2">
+            
+        </div>
+  
+        <a href="{{route('expense')}}" class="btn btn-primary mb-4">BACK</a>
 
         <form class="row g-3" onsubmit="confirmAndSubmit(this)" action="{{route('expense.update')}}" method="post">
 
@@ -48,7 +50,7 @@
             @endif
             @if (Request::is('expense_edit'))
                 <div class="col-md-12">
-                    <label for="description" class="form-label">description</label>
+                    <label for="description" class="form-label">description <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('description') is-invalid @enderror" value="{{ $expense->description }}" name="description" id="description">
                     @error('description')
                         <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -105,7 +107,7 @@
             @endif
             @if (Request::is('expense_edit'))
                 <div class="col-md-6">
-                    <label for="date" class="form-label">date expense</label>
+                    <label for="date" class="form-label">date expense <span class="text-danger">*</span></label>
                     <input type="date" class="form-control @error('date') is-invalid @enderror" value="{{ $expense->date }}" name="date" id="date">
                     @error('date')
                         <span class=" invalid-feedback mt-2">{{ $message }}</span>
@@ -126,7 +128,7 @@
             @endif
             @if (Request::is('expense_edit'))
                 <div class="col-md-6">
-                    <label for="amount" class="form-label">amount</label>
+                    <label for="amount" class="form-label">amount <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('amount') is-invalid @enderror" value="{{ $expense->amount }}" name="amount" id="amount">
                     @error('amount')
                         <span class=" invalid-feedback mt-2">{{ $message }}</span>

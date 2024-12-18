@@ -19,12 +19,11 @@
     <div class="row">
       <div class="col-lg-12">
 
-        <div class="card">
+        <div class="card text-bg-light">
           <div class="card-body">
             <h5 class="card-title">All Expense</h5>
-            <p>List all Expense.</p>
 
-            <a href="{{route('expense.create')}}" class="btn btn-primary rounded-pill waves-effect waves-light">Create</a>
+            <a href="{{route('expense.create')}}" class="btn btn-primary ">Create</a>
 
             <!-- Table with stripped rows -->
             <table class="table datatable table-hover">
@@ -48,17 +47,22 @@
                       <td>{{$exp->description}}</td>
                       <td>{{$exp->amount}}</td>
                       <td>
-                            <a href="{{route('expense.edit')}}?id={{$exp->id}}" class="btn btn-primary rounded-pill waves-effect waves-light">Edit Details</a>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                          <a href="{{route('expense.edit')}}?id={{$exp->id}}" class="btn btn-primary ">Edit Details</a>
+                          <a href="{{route('expense.view')}}?id={{$exp->id}}" class="btn btn-info ">view Details</a>
+                          <form onsubmit="confirmAndSubmit(this)"  action="{{route('expense.remove')}}" method="post">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$exp->id}}">
+                            <button type="submit" class="btn btn-danger ">Remove</button>
+                          </form>
+                        </div>
+                            
                       </td>
                       <td>
-                        <a href="{{route('expense.view')}}?id={{$exp->id}}" class="btn btn-info rounded-pill waves-effect waves-light">view Details</a>
+                        
                       </td>
                       <td>
-                        <form onsubmit="confirmAndSubmit(this)"  action="{{route('expense.remove')}}" method="post">
-                          @csrf
-                          <input type="hidden" name="id" value="{{$exp->id}}">
-                          <button type="submit" class="btn btn-danger rounded-pill waves-effect waves-light">Remove</button>
-                        </form>
+
                       </td>
                   </tr>
                 @endforeach

@@ -20,10 +20,10 @@
 
   @if (Request::is('invoice_void_view'))
       
-    <a href="{{route('receipt')}}" class="btn btn-danger mb-2">Close</a>
+    <a href="{{route('invoice_void')}}" class="btn btn-danger mb-2">Close</a>
     @endif
 
-  <div class="card mb-4">
+  <div class="card text-bg-light mb-4">
       <div class="card-header">
           <i class="fas fa-table me-1"></i>
           Receipt

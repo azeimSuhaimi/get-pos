@@ -19,10 +19,15 @@
     <div class="row">
       <div class="col-lg-12">
 
-        <div class="card">
+        <div class="card text-bg-light">
           <div class="card-body">
-            <h5 class="card-title">All Receipt Today</h5>
-            <p>List all Receipt.</p>
+
+            <div class="pt-4 pb-2">
+              <h5 class="card-title text-center pb-0 fs-4">All Receipt Today</h5>
+              
+          </div>
+    
+
 
             
 

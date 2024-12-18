@@ -17,12 +17,20 @@
     </nav>
   </div><!-- End Page Title -->
 
-<div class="card mb-4">
+<div class="card text-bg-light mb-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
         Online Method Manual
     </div>
     <div class="card-body">
+
+        <div class="pt-4 pb-2">
+            <h5 class="card-title text-center pb-0 fs-4">Online Method Manual</h5>
+            
+        </div>
+  
+        <a href="{{route('invoice.list_online_manual')}}" class="btn btn-primary mb-4">BACK</a>
+
         <div class="row d-flex justify-content-center align-items-center">
             <h6 class="card-title text-center text-uppercase font-weight-bold">amount </h6>
             <div class="col-md-5">

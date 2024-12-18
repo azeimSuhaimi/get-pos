@@ -21,7 +21,7 @@
     <div class="row">
       <div class="col-lg-12">
 
-        <div class="card">
+        <div class="card text-bg-light">
           <div class="card-body">
             <h5 class="card-title">Activity Log</h5>
             <p>Activity did you do in whole time.</p>
