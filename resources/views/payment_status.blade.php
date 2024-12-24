@@ -9,13 +9,13 @@
         <meta name="author" content="" />
         <title>Payment Status</title>
           <!-- Vendor CSS Files -->
-  <link href="{{asset('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
-  <link href="{{asset('assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
-  <link href="{{asset('assets/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
-  <link href="{{asset('assets/vendor/quill/quill.snow.css')}}" rel="stylesheet">
-  <link href="{{asset('assets/vendor/quill/quill.bubble.css')}}" rel="stylesheet">
-  <link href="{{asset('assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
-  <link href="{{asset('assets/vendor/simple-datatables/style.css')}}" rel="stylesheet">
+        <link href="{{asset('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+        <link href="{{asset('assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+        <link href="{{asset('assets/vendor/boxicons/css/boxicons.min.css')}}" rel="stylesheet">
+        <link href="{{asset('assets/vendor/quill/quill.snow.css')}}" rel="stylesheet">
+        <link href="{{asset('assets/vendor/quill/quill.bubble.css')}}" rel="stylesheet">
+        <link href="{{asset('assets/vendor/remixicon/remixicon.css')}}" rel="stylesheet">
+        <link href="{{asset('assets/vendor/simple-datatables/style.css')}}" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
@@ -28,27 +28,73 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-6">
                                 <div class="text-center ">
-                                    <h2 class="">Payment Status</h2>
-                                    <p>{{$obj[0]->billTo}}</p>
-                                    <p>{{$obj[0]->billEmail}}</p>
-                                    <p>{{$obj[0]->billPhone}}</p>
-                                    <p>{{$obj[0]->billpaymentChannel}}</p>
-                                    <p>{{$obj[0]->billpaymentAmount}}</p>
-                                    <p>{{$obj[0]->billPaymentDate}}</p>
-                                    <p>{{$obj[0]->billpaymentInvoiceNo}}</p>
+
                                     @if ($status_id == 1)
-                                        <p class="lead">Success Payment #{{$invoice_id}}</p>
-                                        <p>Your Payment Success.</p>
-                                        <p>Click And Take Screenshot this page for proof and record.</p>
+                                        
+                                        <i class="bi alarm-fille"></i>
+                                        <h2 class="card-title text-center">Your Payment Success.</h2>
+                                        <p class="text-center small">Congratulations! your purchase is now complate</p>
+                                        <p class="text-center small">Click And Take Screenshot this page for proof and record.</p>
+                                    
+                                        
+                                    @endif
+
+                                    @if ($status_id == 2)
+                                        <i class="bi alarm-fille"></i>
+                                        <h2 class="card-title text-center">Your Payment Fail.</h2>
+                                        <p class="text-center small">Click To Try Again Payment.</p>
                                         <a target="_blank" href="http://dev.toyyibpay.com/{{$billcode}}">click here for details</a>
+                                    @endif
+
+                                    @if ($status_id == 3)
+                                        <i class="bi alarm-fille"></i>
+                                        <h2 class="card-title text-center">Unknown Status Payment.</h2>
+                                        <p class="text-center small">Click To Try Again Payment</p>
+
+                                        <a target="_blank" href="http://dev.toyyibpay.com/{{$billcode}}">click here for details</a>
+                                    @endif
+
+<hr>
+
+                                    <p>Amount</p>
+                                    <h3 class="mt-0">RM {{$obj[0]->billpaymentAmount}}</h3>
+
+
+
+                                    <!-- -->
+                                    @if ($status_id == 1)
+                                        <div class="card text-bg-light">
+                                            <div class="card-body">
+                                        
+                                                <div class="row mb-3 mt-5">
+                                                    <label for="inputText" class="col-sm-2 col-form-label">Order number</label>
+                                                    <div class="col-sm-10">
+                                                        #{{$invoice_id}}
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <label for="inputText" class="col-sm-2 col-form-label">transaction ID</label>
+                                                    <div class="col-sm-10">
+                                                        #{{$obj[0]->billpaymentInvoiceNo}}
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <label for="inputText" class="col-sm-2 col-form-label">paid on</label>
+                                                    <div class="col-sm-10">
+                                                        {{$obj[0]->billPaymentDate}}
+                                                    </div>
+                                                </div>
+
+                                                <a target="_blank" href="http://dev.toyyibpay.com/{{$billcode}}">click here for details</a>
+
+                                            </div>
+                                        </div>
+                                        
                                     @endif
                                     
-                                    @if ($status_id == 2)
-                                        <p class="lead">Fail Payment</p>
-                                        <p>Your Payment Fail.</p>
-                                        <p>Click To Try Again Payment.</p>
-                                        <a target="_blank" href="http://dev.toyyibpay.com/{{$billcode}}">click here for details</a>
-                                    @endif
+
                                     
                                     @if ($status_id == 3)
                                         <p class="lead">Unknown Status Payment </p>

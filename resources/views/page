@@ -14,3 +14,11 @@
 activity_log::addActivity('Change Password',' change it password to new');
 
 //////////////////////////////////////////////////////////////
+
+                                    <p>{{$obj[0]->billTo}}</p>
+                                    <p>{{$obj[0]->billEmail}}</p>
+                                    <p>{{$obj[0]->billPhone}}</p>
+                                    <p>{{$obj[0]->billpaymentChannel}}</p>
+                                    <p></p>
+                                    <p></p>
+                                    <p></p>

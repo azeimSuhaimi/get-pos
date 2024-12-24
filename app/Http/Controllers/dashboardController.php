@@ -144,7 +144,9 @@ class dashboardController extends Controller
               $obj = json_decode($result);
               //echo $result;
 
-              $company = company::where('user_email',auth()->user()->email)->first();
+              $invoice = invoice::firstWhere('invoice_id', $validated['order_id']);
+
+              $company = company::where('user_email',$invoice->user_email)->first();
               $payment_type = payment_type::all();
               
         $datas = [
@@ -153,7 +155,7 @@ class dashboardController extends Controller
             'status_id' => $validated['status_id'],
             'billcode' => $validated['billcode'],
             'invoice_id' => $validated['order_id'],
-            'invoice' => invoice::firstWhere('invoice_id', $validated['order_id']),
+            'invoice' => $invoice,
             'invoice_detail' => invoice_detail::where('invoice_id', $validated['order_id'])->get(),
             'payment_method' => payment_method::where('invoice_id', $validated['order_id'])->get(),
             'obj' => $obj
