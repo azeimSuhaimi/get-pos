@@ -139,4 +139,41 @@ class invoice_voidController extends Controller
         return redirect(route('invoice_void'))->with('success', 'invoice id '.$id.' is void now!!!');;
     }//end method
 
+    public function list_void()
+    {
+        $invoice_void = invoice_void::where('user_email',auth()->user()->email)->orderBy('created_at','desc')->get();
+
+        return view('invoice_void.list_void',['invoice_void' => $invoice_void]);
+    }//end method
+
+    public function list_void_view(Request $request)
+    {
+        $validated = $request->validate([
+                
+            'invoice_id' => 'required',
+        ]);
+
+        if($request->has('invoice_id'))
+        {
+            $invoice = invoice_void::where('invoice_id',$validated['invoice_id'])->first();
+            $invoice_detail = invoice_detail_void::where('invoice_id',$validated['invoice_id'])->get();
+            $payment_method = payment_method_void::where('invoice_id',$validated['invoice_id'])->get();
+
+            
+            $data = [
+                'invoice' => $invoice,
+                'invoice_detail' => $invoice_detail,
+                'payment_method' => $payment_method,
+                'invoice_id'=>$validated['invoice_id'],
+                
+            ];
+            return view('invoice_void.list_void_view',$data);
+        }
+        else
+        {
+            return redirect()->back()->with('error', 'invoice id for  bill not exist!!!');
+        }
+        
+    }//end method
+
 }//end class

@@ -68,6 +68,8 @@ Route::controller(invoice_voidController::class)->group(function () {
     Route::get('/invoice_void','index')->name('invoice_void')->middleware(['auth']);
     Route::get('/invoice_void_view','view')->name('invoice_void.view')->middleware(['auth']);
     Route::post('/invoice_void_void','invoice_void')->name('invoice_void.void')->middleware(['auth']);
+    Route::get('/invoice_void_list','list_void')->name('invoice_void.list')->middleware(['auth']);
+    Route::get('/invoice_void_list_view','list_void_view')->name('invoice_void.list.view')->middleware(['auth']);
 
 });//end group
 

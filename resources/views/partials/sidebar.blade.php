@@ -29,7 +29,7 @@
     </li><!-- End item Nav -->
 
     <li class="nav-item">
-      <a class="nav-link {{ (Request::is('invoice_void') || Request::is('invoice_void_view')) || ((Request::is('invoice_void_view') || Request::is('invoice_void_view')) || Request::is('invoice_void_view'))  ? '':'collapsed' }}" href="{{route('invoice_void')}}">
+      <a class="nav-link {{ (Request::is('invoice_void') || Request::is('invoice_void_view')) || ((Request::is('invoice_void_list_view') || Request::is('invoice_void_list')) || Request::is('invoice_void_view'))  ? '':'collapsed' }}" href="{{route('invoice_void')}}">
         <i class="bi bi-grid"></i>
         <span>Void</span>
       </a>

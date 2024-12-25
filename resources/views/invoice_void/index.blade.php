@@ -15,6 +15,8 @@
     </nav>
   </div><!-- End Page Title -->
 
+  <a href="{{route('invoice_void.list')}}" class="btn btn-primary mb-2">view void</a>
+
   <div class="card text-bg-light">
     <div class="card-body">
       <h5 class="card-title">Daily Sale</h5>
