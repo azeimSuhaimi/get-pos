@@ -9,6 +9,9 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
   <!-- sweet alert 2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -41,7 +44,7 @@
   ======================================================== -->
 </head>
 
-<body>
+<body data-aos="fade-right">
 
 <main>
     <div class="container">
@@ -98,8 +101,14 @@
 
 </html>
 
+<script>
+    AOS.init();
+</script>
+
 
 <script>
+
+
 
 
     // https://sweetalert2.github.io/#download

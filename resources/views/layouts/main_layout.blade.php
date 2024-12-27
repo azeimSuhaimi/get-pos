@@ -9,6 +9,10 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+
     <!-- sweet alert 2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
@@ -41,7 +45,7 @@
   ======================================================== -->
 </head>
 
-<body>
+<body >
 
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
@@ -58,7 +62,7 @@
 
   </aside><!-- End Sidebar-->
 
-  <main id="main" class="main">
+  <main id="main" class="main" data-aos="fade-right">
 
     @yield('content')
 
@@ -99,6 +103,10 @@
 </body>
 
 </html>
+
+<script>
+  AOS.init();
+</script>
 
 
 <script>
