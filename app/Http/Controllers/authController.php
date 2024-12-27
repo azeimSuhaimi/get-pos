@@ -28,7 +28,6 @@ class authController extends Controller
 
     public function login(Request $request)
     {
-
         $remember = $request->input('remember_token ');
 
         $validated = $request->validate([
@@ -38,14 +37,7 @@ class authController extends Controller
         
         if (Auth::attempt($validated, $remember)) 
         {
-            // get date today for bill 
-            $now = Carbon::now();
-            $date = $now->format('d-m-Y');
-            $time = $now->format('H:i:s');
-
-            $user = user::where('email',$validated['email'])->first();
-            $user->last_login = $now;
-            $user->save();
+            user::update_last_login($validated['email']);
 
             $request->session()->regenerate();
             return redirect()->intended('dashboard');
@@ -73,27 +65,9 @@ class authController extends Controller
             
         ]);
 
-        $now = Carbon::now();// get date today
-        
-        //store data to database 
-        $user = new user;
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
-        $user->phone = $validated['phone'];
-        $user->ic = $validated['ic'];
-        $user->password = Hash::make($validated['ic']);
-        $user->date_register = $now;
-        $user->toyyip_key = Crypt::encryptString('');
-        $user->toyyip_category = Crypt::encryptString('');
-        $user->save();
+        $user = user::add_user($validated['name'],$validated['email'],$validated['phone'],$validated['ic']);
 
-        $company = new company;
-        $company->user_email = $validated['email'];
-        $company->save();
-
-
-
-
+        $company = company::add_company($validated['email']);
 
         // Manually fire the Registered event
         event(new Registered($user));

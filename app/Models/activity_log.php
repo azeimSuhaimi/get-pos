@@ -29,7 +29,9 @@ class activity_log extends Model
         $activity_log->unix_time = $unixTimestamp;
         $activity_log->user_email = auth()->user()->email;
         $activity_log->save();
-        
-    }
 
-}
+        return true;
+        
+    }//end method
+
+}//end class

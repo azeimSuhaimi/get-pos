@@ -12,4 +12,14 @@ class company extends Model
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $timestamps = true;
-}
+
+    public static function add_company($email)
+    {
+        $company = new company;
+        $company->user_email = $email;
+        $company->save();
+
+        return $company;
+    }//end method
+
+}//end class

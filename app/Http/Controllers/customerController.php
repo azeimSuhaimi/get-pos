@@ -15,7 +15,7 @@ class customerController extends Controller
     public function index()
     {
         //get all list custmer data
-        $customer = customer::where('user_email',auth()->user()->email)->orderBy('created_at','desc')->get();
+        $customer = customer::list_by_email(auth()->user()->email);
 
         return view('customer.index',['customer' => $customer]);
     }//end method
@@ -49,15 +49,7 @@ class customerController extends Controller
         ]);
 
         //store data to database 
-        $customer = new customer;
-        $customer->name = $validated['name'];
-        $customer->address = $validated['address'];
-        $customer->phone = $validated['phone'];
-        $customer->email = $validated['email'];
-        $customer->ic = $validated['ic'];
-        $customer->point = 0;
-        $customer->user_email = auth()->user()->email;
-        $customer->save();
+        $customer = customer::add_customer($validated['name'],$validated['address'],$validated['phone'],$validated['email'],$validated['ic']);
 
         activity_log::addActivity('Add New Customer ',' Registeer new member to '.$validated['name']);
 
@@ -105,15 +97,9 @@ class customerController extends Controller
             
             
         ]);
-        //dd($request->all());
+
         //store data update to database
-        $customer = customer::find($validated['id']);
-        $customer->name = $validated['name'];
-        $customer->email = $validated['email'];
-        $customer->phone = $validated['phone'];
-        $customer->ic = $validated['ic'];
-        $customer->address = $validated['address'];
-        $customer->save();
+        $customer = customer::update_customer($validated['id'],$validated['name'],$validated['email'],$validated['phone'],$validated['ic'],$validated['address']);
 
         activity_log::addActivity('update details customer ',' change it details customer '.$validated['name']);
 

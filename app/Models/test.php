@@ -4,15 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Support\Carbon;
 
-class customer_order extends Model
+class test extends Model
 {
     use HasFactory;
-    protected $table = 'customer_orders';
-    protected $primaryKey = 'id';
-    protected $keyType = 'string';
-    public $timestamps = true;
+
+    public static function ListByEmail($email)
+    {
+        $customer = customer::where('user_email',$email)->orderBy('created_at','desc')->get();
+
+        return $customer;
+    }//end method
 
     public static function customer_order_all_list($email)
     {
@@ -46,31 +50,42 @@ class customer_order extends Model
         return true;
     }//end method
 
-    public static function update_contact($id)
+    public static function delete_customer_order($id)
     {
         $customer_order = customer_order::find($id);
-    
-        $customer_order->contact = true;
-        $customer_order->save();
+        if(!$customer_order)
+        {
+            return response()->json(['messege' => 'data not found']);
+            return 'tiada data '.$id ;
+        }
 
+        if($customer_order->user_email != auth()->user()->email)
+        {
+            return response()->json(['messege' => 'you are not unauthorize']);
+        }
+        $customer_order->delete();
         return true;
     }//end method
 
     public static function update_pickup($id)
     {
         $customer_order = customer_order::find($id);
-    
+
+        if(!$customer_order)
+        {
+            return response()->json(['messege' => 'data not found']);
+            return 'tiada data '.$id ;
+        }
+
+        if($customer_order->user_email != auth()->user()->email)
+        {
+            return response()->json(['messege' => 'you are not unauthorize']);
+        }
+
         $customer_order->status = true;
         $customer_order->contact = true;
         $customer_order->save();
 
-        return true;
-    }//end method
-
-    public static function delete_customer_order($id)
-    {
-        $customer_order = customer_order::find($id);
-        $customer_order->delete();
         return true;
     }//end method
 
