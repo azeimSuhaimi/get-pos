@@ -57,7 +57,7 @@
 <hr>
 
                                     <p>Amount</p>
-                                    <h3 class="mt-0">RM {{$obj[0]->billpaymentAmount}}</h3>
+                                    <h3 class="mt-0">RM {{$obj->billpaymentAmount}}</h3>
 
 
 
@@ -67,23 +67,23 @@
                                             <div class="card-body">
                                         
                                                 <div class="row mb-3 mt-5">
-                                                    <label for="inputText" class="col-sm-2 col-form-label">Order number</label>
-                                                    <div class="col-sm-10">
+                                                    <label for="inputText" class="col-sm-3 col-form-label">Order number</label>
+                                                    <div class="col-sm-9">
                                                         #{{$invoice_id}}
                                                     </div>
                                                 </div>
 
                                                 <div class="row mb-3">
-                                                    <label for="inputText" class="col-sm-2 col-form-label">transaction ID</label>
-                                                    <div class="col-sm-10">
-                                                        #{{$obj[0]->billpaymentInvoiceNo}}
+                                                    <label for="inputText" class="col-sm-3 col-form-label">transaction ID</label>
+                                                    <div class="col-sm-9">
+                                                        #{{$obj->billpaymentInvoiceNo}}
                                                     </div>
                                                 </div>
 
                                                 <div class="row mb-3">
-                                                    <label for="inputText" class="col-sm-2 col-form-label">paid on</label>
-                                                    <div class="col-sm-10">
-                                                        {{$obj[0]->billPaymentDate}}
+                                                    <label for="inputText" class="col-sm-3 col-form-label">paid on</label>
+                                                    <div class="col-sm-9">
+                                                        {{$obj->billPaymentDate}}
                                                     </div>
                                                 </div>
 

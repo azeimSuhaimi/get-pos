@@ -43,6 +43,13 @@
     </li><!-- End  Nav -->
 
     <li class="nav-item">
+      <a class="nav-link {{ (Request::is('pointredeen_create') || Request::is('pointredeen')) || ((Request::is('expense_view') || Request::is('expense_edit')) || Request::is('expense_edit'))  ? '':'collapsed' }}" href="{{route('pointredeen')}}">
+        <i class="bi bi-grid"></i>
+        <span>Point Redeem</span>
+      </a>
+    </li><!-- End  Nav -->
+
+    <li class="nav-item">
       <a class="nav-link {{ (Request::is('customer_order') || Request::is('customer_order_create')) || ((Request::is('customer_order_view') || Request::is('customer_order_edit')) || Request::is('customer_order'))  ? '':'collapsed' }}" href="{{route('customer_order')}}">
         <i class="bi bi-grid"></i>
         <span>Customer Order</span>

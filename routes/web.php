@@ -17,6 +17,7 @@ use App\Http\Controllers\expenseController;
 use App\Http\Controllers\invoice_voidController;
 use App\Http\Controllers\salereportController;
 use App\Http\Controllers\customer_orderController;
+use App\Http\Controllers\pointRedeenController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -211,6 +212,19 @@ Route::controller(invoiceController::class)->group(function () {
     Route::post('/invoice_online_manual_process','invoice_online_manual_process')->name('invoice.invoice_online_manual_process')->middleware(['auth']);
 
 });//end group
+
+Route::controller(pointRedeenController::class)->group(function () {
+
+    Route::get('/pointredeen','index')->name('pointredeen')->middleware(['auth']);
+    Route::get('/pointredeen_create','create')->name('pointredeen.create')->middleware(['auth','verified']);
+    Route::post('/pointredeen_store','store')->name('pointredeen.store')->middleware(['auth']);
+    Route::get('/pointredeen_view','view')->name('pointredeen.view')->middleware(['auth']);
+    Route::get('/pointredeen_edit','edit')->name('pointredeen.edit')->middleware(['auth']);
+    Route::post('/pointredeen_update','update')->name('pointredeen.update')->middleware(['auth']);
+    Route::post('/pointredeen_status','status')->name('pointredeen.status')->middleware(['auth']);
+    Route::post('/pointredeen_delete','delete')->name('pointredeen.delete')->middleware(['auth']);
+    //::post('/reset_password_employee','reset_password_employee')->name('employee.reset.password')->middleware(['auth']);
+});
 
 
 
