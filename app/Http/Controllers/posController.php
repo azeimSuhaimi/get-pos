@@ -60,6 +60,21 @@ class posController extends Controller
         $item = item::where('user_email',auth()->user()->email)->get(); // get all items list
         return view('pos.searching',['items'=>$item]);
     }//end method
+    public function update_quantity_page(Request $request)
+    {
+        // check id input exist
+        $validated = $request->validate([
+    
+            'rowid' => 'required',  // Ensure rowid exists in the cart
+        ]);
+
+        $data = [
+            
+            'rowid' => cart::get($validated['rowid']),
+        ];
+
+        return view('pos.update_price_quantity',$data);
+    }//end method
 
     //update quantity items selected in cart
     public function update_quantity(Request $request)
@@ -76,7 +91,7 @@ class posController extends Controller
     
                     Cart::update($rowId, $quantity); // update the quantity items
     
-                    return redirect()->back();
+                    return redirect(route('pos'));
                 }
 
             }
@@ -85,6 +100,22 @@ class posController extends Controller
 
         return redirect()->back()->with('error', 'Item added have a problem.');
     }//emd method
+
+    public function update_price_page(Request $request)
+    {
+        // check id input exist
+        $validated = $request->validate([
+    
+            'rowid' => 'required',  // Ensure rowid exists in the cart
+        ]);
+
+        $data = [
+            
+            'rowid' => cart::get($validated['rowid']),
+        ];
+
+        return view('pos.update_price_quantity',$data);
+    }//end method
 
     //update price items selected in cart
     public function update_price(Request $request)
@@ -102,7 +133,7 @@ class posController extends Controller
                     Cart::update($rowId, ['price' => $price]); // update the quantity items
     
                     activity_log::addActivity('change price item ',' change it price item '.Cart::get($rowId)->name);
-                    return redirect()->back();
+                    return redirect(route('pos'));
                 }
 
 

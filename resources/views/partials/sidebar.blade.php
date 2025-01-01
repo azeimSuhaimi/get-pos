@@ -43,7 +43,7 @@
     </li><!-- End  Nav -->
 
     <li class="nav-item">
-      <a class="nav-link {{ (Request::is('pointredeen_create') || Request::is('pointredeen')) || ((Request::is('expense_view') || Request::is('expense_edit')) || Request::is('expense_edit'))  ? '':'collapsed' }}" href="{{route('pointredeen')}}">
+      <a class="nav-link {{ (Request::is('pointredeen_create') || Request::is('pointredeen')) || ((Request::is('pointredeen_edit') || Request::is('pointredeen_customer_redeem')) || Request::is('pointredeen_search_customer'))  ? '':'collapsed' }}" href="{{route('pointredeen')}}">
         <i class="bi bi-grid"></i>
         <span>Point Redeem</span>
       </a>

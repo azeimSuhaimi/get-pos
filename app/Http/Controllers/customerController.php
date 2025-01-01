@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use App\Models\customer;
 use App\Models\activity_log;
 use App\Models\purchase_detail;
+use App\Models\customeritemredeen;
 
 class customerController extends Controller
 {
@@ -117,9 +118,10 @@ class customerController extends Controller
 
             //get all list custmer data
             $purchase_detail = purchase_detail::where('id_cust',$validated['id_cust'])->get();
+            $customeritemredeen = customeritemredeen::where('id_customer',$validated['id_cust'])->get();
             $customer = customer::find($validated['id_cust']);
     
-            return view('customer.purchase_detail',['purchase_detail' => $purchase_detail,'customer' => $customer]);
+            return view('customer.purchase_detail',['purchase_detail' => $purchase_detail,'customer' => $customer,'customeritemredeen' => $customeritemredeen]);
         }//end method
 
 }//end class

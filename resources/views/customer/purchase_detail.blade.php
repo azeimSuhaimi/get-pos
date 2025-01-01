@@ -101,6 +101,7 @@
         </form>
 
 
+            <h3 class="text-center">List Purchase Details</h3>
             <!-- Table with stripped rows -->
             <table class="table datatable table-hover">
                 <thead>
@@ -127,8 +128,35 @@
                     </tr>
                   @endforeach
                 </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
+            </table>
+            <!-- End Table with stripped rows -->
+
+            <h3 class="text-center">List Items Redeem Details</h3>
+            <!-- Table with stripped rows -->
+            <table class="table datatable table-hover">
+                <thead>
+                  <tr>
+                      <th>No</th>
+                      <th>Item</th>
+                      <th>Description</th>
+                      <th>Point</th>
+                      <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach ($customeritemredeen as $row)
+                    
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$row->name_item}}</td>
+                        <td>{{$row->description_item}}</td>
+                        <td>{{$row->point}}</td>
+                        <td>{{$row->created_at}}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+            </table>
+            <!-- End Table with stripped rows -->
 
     </div>
 </div>

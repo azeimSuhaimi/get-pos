@@ -72,35 +72,35 @@ class customer_orderController extends Controller
         
     }//end method
 
-        public function update_contact(Request $request)
-        {
-            $validated = $request->validate([
-                'id' => 'required',
-            ]);
-    
-            customer_order::update_contact($validated['id']);
+    public function update_contact(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required',
+        ]);
+
+        customer_order::update_contact($validated['id']);
+        
+        activity_log::addActivity('update status contact',' update status contact ');
             
-            activity_log::addActivity('update status contact',' update status contact ');
-                
 
-    
-            return back()->with('success','update customer order contact ');
-        }//end method
 
-        public function update_status(Request $request)
-        {
-            $validated = $request->validate([
-                'id' => 'required',
-            ]);
-    
-            customer_order::update_pickup($validated['id']);
+        return back()->with('success','update customer order contact ');
+    }//end method
 
-            activity_log::addActivity('update status pick up',' update status pick up ');
-                
+    public function update_status(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required',
+        ]);
 
-    
-            return back()->with('success','update customer order status ');
-        }//end method
+        customer_order::update_pickup($validated['id']);
+
+        activity_log::addActivity('update status pick up',' update status pick up ');
+            
+
+
+        return back()->with('success','update customer order status ');
+    }//end method
 
 
         

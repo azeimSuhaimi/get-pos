@@ -25,13 +25,13 @@
         <div >
           <form id="search_page" class="text-start" autocomplete="off" action="{{route('pos.search.item')}}" method="get">
               @csrf
-              <button class="btn btn-success" type="submit">Search</button>
+              <button class="btn btn-success" type="submit"><i class="bi bi-search"></i></button>
           </form>
 
           <form class="text-end" autocomplete="off" action="{{route('pos.add.item')}}" method="post">
             @csrf
             <input class="@error('category') is-invalid @enderror" type="text" value="{{  old('shortcode') }}" name="shortcode" placeholder="enter shortcode">
-            <button class="btn btn-primary" type="submit">Add</button>
+            <button class="btn btn-primary" type="submit"><i class="bi bi-plus"></i></button>
           </form>
         </div>
     </div>
@@ -44,7 +44,6 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Quantity</th>
-                    <th>#</th>
                     <th>#</th>
                     <th>Subtotal Item</th>
                 </tr>
@@ -64,45 +63,46 @@
                             <td>{{$row->id}}</td>
                             <td>{{$row->name}}</td>
                             <td>
-                                <form onsubmit="confirmAndSubmit(this)" action="{{route('pos.update.price')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{$row->id}}">
-                                    <input type="hidden" name="rowid" value="{{$row->rowId}}">
-                                    <input type="number" style="width: 50px;" name="price" value="{{$row->price}}">
-                                    <button type="submit" class="btn btn-success">Edit</button>
-                                </form>
+                                {{$row->price}}
                             </td>
                             <td>
-                                <form action="{{route('pos.update.quantity')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{$row->id}}">
-                                    <input type="hidden" name="rowid" value="{{$row->rowId}}">
-                                    <input type="number" style="width: 50px;" name="qty" value="{{$row->qty}}">
-                                    <button type="submit" class="btn btn-success">Edit</button>
-                                </form>
+                                {{$row->qty}}
                             </td>
+
                             <td>
-                                <form onsubmit="confirmAndSubmit(this)" action="{{route('pos.remove.item')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="rowid"  value="{{$row->rowId}}">
-                                    <button type="submit" class="btn btn-danger">Remove</button>
-                                </form>
-                            </td>
-                            <td>
+                                <div class="btn-group m-0 p-0" role="group">
+                                    <form action="{{route('pos.update.price.page')}}" method="get">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{$row->id}}">
+                                        <input type="hidden" name="rowid" value="{{$row->rowId}}">
+                                        <button type="submit" class="btn btn-success"><i class="bi bi-coin"></i></button>
+                                    </form>
+                                    <form action="{{route('pos.update.quantity.page')}}" method="get">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{$row->id}}">
+                                        <input type="hidden" name="rowid" value="{{$row->rowId}}">
+                                        <button type="submit" class="btn btn-warning"><i class="bi bi-plus"></i></button>
+                                    </form>
+                                    <form onsubmit="confirmAndSubmit(this)" action="{{route('pos.add.remark')}}" method="get">
+                                        @csrf
+                                        <input type="hidden" name="rowid"  value="{{$row->rowId}}">
+                                        
+                                        <button type="submit" class="btn btn-info"><i class="bi bi-pencil"></i></button>
+                                    </form>
+                                    <form onsubmit="confirmAndSubmit(this)" action="{{route('pos.remove.item')}}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="rowid"  value="{{$row->rowId}}">
+                                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </div>
                                 
-                                <form onsubmit="confirmAndSubmit(this)" action="{{route('pos.add.remark')}}" method="get">
-                                    @csrf
-                                    <input type="hidden" name="rowid"  value="{{$row->rowId}}">
-                                    
-                                    <button type="submit" class="btn btn-info">Remark</button>
-                                </form>
                             </td>
                             <td rowspan="{{$loop->iteration}}">{{$row->subtotal()}}</td>
                         </tr>
 
                         @if ($row->options->remark !== '')
                             <tr>
-                                <td colspan="8">{{$row->options->remark}}</td>
+                                <td colspan="7">{{$row->options->remark}}</td>
                             </tr>
                         @endif
 
@@ -112,17 +112,17 @@
 
             <tfoot>
                 <tr >
-                    <th  colspan="6">&nbsp;</th>
+                    <th  colspan="5">&nbsp;</th>
                     <th>Subtotal</th>
                     <th><?php echo Cart::subtotal(); ?></td>
                 </tr>
                 <tr>
-                    <th colspan="6">&nbsp;</th>
+                    <th colspan="5">&nbsp;</th>
                     <th>Tax</th>
                     <th><?php echo round(Cart::tax() * 20) / 20; ?></td>
                 </tr>
                 <tr>
-                    <th colspan="6">&nbsp;</th>
+                    <th colspan="5">&nbsp;</th>
                     <th>Total</th>
                     <th><?php echo round(Cart::total() * 20) / 20; ?></td>
                 </tr>

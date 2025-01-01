@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Illuminate\Support\Carbon;
 
 class test extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     public static function ListByEmail($email)
     {
@@ -87,6 +88,40 @@ class test extends Model
         $customer_order->save();
 
         return true;
+    }//end method
+
+    public static function list_all_including_softdelete($id)
+    {
+        $items = item::withTrashed()->where('user_email',auth()->user()->email)->orderBy('created_at','desc')->get();
+        if(!$customer_order)
+        {
+            return response()->json(['messege' => 'data not found']);
+            return 'tiada data '.$id ;
+        }
+
+        if($customer_order->user_email != auth()->user()->email)
+        {
+            return response()->json(['messege' => 'you are not unauthorize']);
+        }
+        $customer_order->delete();
+        return $items;
+    }//end method
+
+    public static function list_softdelete_only($id)
+    {
+        $items = item::onlyTrashed()->where('user_email',auth()->user()->email)->orderBy('created_at','desc')->get();;
+        if(!$customer_order)
+        {
+            return response()->json(['messege' => 'data not found']);
+            return 'tiada data '.$id ;
+        }
+
+        if($customer_order->user_email != auth()->user()->email)
+        {
+            return response()->json(['messege' => 'you are not unauthorize']);
+        }
+        $customer_order;
+        return $items;
     }//end method
 
 }//end class

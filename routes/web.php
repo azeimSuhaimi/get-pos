@@ -180,6 +180,8 @@ Route::controller(posController::class)->group(function () {
     Route::get('/pos','index')->name('pos')->middleware(['auth','verified']);
     Route::post('/pos_add_item','add_item')->name('pos.add.item')->middleware(['auth']);
     Route::get('/pos_searching_item','search_item')->name('pos.search.item')->middleware(['auth','verified']);
+    Route::get('/pos_update_quantity_page','update_quantity_page')->name('pos.update.quantity.page')->middleware(['auth']);
+    Route::get('/pos_update_price_page','update_price_page')->name('pos.update.price.page')->middleware(['auth']);
     Route::post('/pos_update_quantity','update_quantity')->name('pos.update.quantity')->middleware(['auth']);
     Route::post('/pos_update_price','update_price')->name('pos.update.price')->middleware(['auth']);
     Route::post('/pos_remove_item','item_remove')->name('pos.remove.item')->middleware(['auth']);
@@ -223,6 +225,9 @@ Route::controller(pointRedeenController::class)->group(function () {
     Route::post('/pointredeen_update','update')->name('pointredeen.update')->middleware(['auth']);
     Route::post('/pointredeen_status','status')->name('pointredeen.status')->middleware(['auth']);
     Route::post('/pointredeen_delete','delete')->name('pointredeen.delete')->middleware(['auth']);
+    Route::get('/pointredeen_customer_redeem','customer_redeem')->name('pointredeen.customer_redeem')->middleware(['auth']);
+    Route::get('/pointredeen_search_customer','search_customer')->name('pointredeen.search_customer')->middleware(['auth']);
+    Route::post('/pointredeen_redeen','redeen')->name('pointredeen.redeen')->middleware(['auth']);
     //::post('/reset_password_employee','reset_password_employee')->name('employee.reset.password')->middleware(['auth']);
 });
 

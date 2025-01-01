@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('customeritemredeens', function (Blueprint $table) {
             $table->id();
+            $table->string('user_email');
+            $table->string('id_customer');
+            $table->string('name_item');
+            $table->text('description_item')->nullable();
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('ic')->nullable();
+            $table->string('point');
             $table->timestamps();
         });
     }

@@ -26,7 +26,7 @@
 
             <div class="btn-group" role="group" >
               <a href="{{route('pointredeen.create')}}" class="btn btn-primary mb-3">ADD ITEM </a>
-              <a href="" class="btn btn-info mb-3">Redeem Items</a>
+              
             </div>
 
 
@@ -54,6 +54,7 @@
                       <td>{{$row->status == true ? 'Active':'Deactive'}}</td>
                       <td>
                         <div class="btn-group" role="group" >
+                          <a href="{{route('pointredeen.customer_redeem')}}?id={{$row->id}}" class="btn btn-success">Redeem</a>
                           <a href="{{route('pointredeen.edit')}}?id={{$row->id}}" class="btn btn-primary ">Edit</a>
                           <a href="{{route('pointredeen.view')}}?id={{$row->id}}" class="btn btn-info">View</a>
                           

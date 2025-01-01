@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\activity_log;
 use App\Models\itemredeen;
+use App\Models\customer;
+use App\Models\customeritemredeen;
 use Illuminate\Validation\Rule;
 
 class pointRedeenController extends Controller
@@ -49,7 +51,7 @@ class pointRedeenController extends Controller
         $item->user_email = auth()->user()->email;
         $item->save();
 
-        activity_log::addActivity('Add New Redeem Item',' add new item Redeem '.$validated['name'].'into system');
+        activity_log::addActivity('Add New Redeem Item',' add new item Redeem '.$validated['name'].' into system');
 
         return redirect(route('pointredeen'))->with('success','add new item redeem, success make new items '.$validated['name']);
         
@@ -139,7 +141,77 @@ class pointRedeenController extends Controller
 
         $item->delete();
 
+        activity_log::addActivity('delete item redeem',' remove '.$item->name.' item redeem from list');
+
         return redirect(route('pointredeen'));
+    }//end method
+
+
+    public function customer_redeem(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required',
+        ]);
+
+        $customer = '';
+
+        $items = itemredeen::find($request->input('id'));
+
+        if($request->has('id_cust'))
+        {
+            $customer = customer::find($request->input('id'));
+        }
+
+        return view('pointredeen.customer_redeem',['request'=>$request,'items'=>$items, 'customer'=>$customer]);
+    }//end method
+
+    public function search_customer(Request $request)
+    {
+        //get all list custmer data
+        $customer = customer::list_by_email(auth()->user()->email);
+
+        return view('pointredeen.search_customer',['request'=>$request,'customer'=>$customer]);
+    }//end method
+
+    public function redeen(Request $request)
+    {
+        $validated = $request->validate([
+            'item_status' => 'accepted',
+            'id' => 'required',
+            'id_cust' => 'required',
+            'name_cust' => 'required',
+            'email_cust' => 'required',
+            'phone_cust' => 'required',
+            'point_customer' => 'required|gte:item_point',
+        ]);
+
+        $customer = customer::find($validated['id_cust']);
+        $items = itemredeen::find($validated['id']);
+
+        if($customer->point <= $items->point)
+        {
+            return redirect(route('pointredeen.customer_redeem').'?id='.$validated['id'])->with('error',$customer->name.' point is not enough to redeem');
+        }
+
+        $customeritemredeen = new customeritemredeen;
+        $customeritemredeen->name = $customer->name;
+        $customeritemredeen->email = $customer->email;
+        $customeritemredeen->phone = $customer->phone;
+        $customeritemredeen->ic = $customer->ic;
+        $customeritemredeen->name_item = $items->name;
+        $customeritemredeen->description_item = $items->description;
+        $customeritemredeen->point = $items->point;
+        $customeritemredeen->id_customer = $validated['id_cust'];
+        $customeritemredeen->user_email = auth()->user()->email;
+        $customeritemredeen->save();
+
+        $customer->point = $customer->point - $items->point;
+        $customer->save();
+
+        activity_log::addActivity('redeem item customer',' redeem item '.$items->name.' customer '.$customer->name.'');
+
+        return redirect(route('pointredeen.customer_redeem').'?id='.$validated['id'])->with('success',$customer->name.'  redeem pont items '.$items->name);
+
     }//end method
 
 }//end class
