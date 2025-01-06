@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('quickorder_details', function (Blueprint $table) {
             $table->id();
-            $table->string('bill_id');
+            $table->string('barcode');
             $table->string('shortcode');
             $table->string('name');
             $table->string('quantity');

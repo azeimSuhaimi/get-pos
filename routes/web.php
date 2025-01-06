@@ -237,9 +237,9 @@ Route::controller(quickorderController::class)->group(function () {
     Route::get('/quick/order','index')->name('quick')->middleware(['guest']);
     Route::get('/quick/order/list','list')->name('quick.list')->middleware(['guest']);
     Route::get('/quick/order/add/item','add_item')->name('quick.add.item')->middleware(['guest']);
-    Route::get('/pointredeen_view','view')->name('pointredeen.view')->middleware(['auth']);
-    Route::get('/pointredeen_edit','edit')->name('pointredeen.edit')->middleware(['auth']);
-    Route::post('/pointredeen_update','update')->name('pointredeen.update')->middleware(['auth']);
+    Route::get('/quick/order/view','view')->name('quick.view')->middleware(['guest']);
+    Route::get('/quick/order/cart','cart_view')->name('quick.cart.view')->middleware(['guest']);
+    Route::post('/quick/order/','cart_checkout')->name('quick.cart.checkout')->middleware(['guest']);
     Route::post('/pointredeen_status','status')->name('pointredeen.status')->middleware(['auth']);
     Route::post('/pointredeen_delete','delete')->name('pointredeen.delete')->middleware(['auth']);
     Route::get('/pointredeen_customer_redeem','customer_redeem')->name('pointredeen.customer_redeem')->middleware(['auth']);
