@@ -102,6 +102,16 @@
       </div>
 
       <div class="row mb-3">
+        <label for="shop_name" class="col-md-4 col-lg-3 col-form-label">Shop Name</label>
+        <div class="col-md-8 col-lg-9">
+          <input name="shop_name" type="text" class="form-control @error('shop_name') is-invalid @enderror" id="shop_name" value="{{ $company->shop_name }}">
+          @error('shop_name')
+              <span class=" invalid-feedback mt-2">{{ $message }}</span>
+          @enderror
+        </div>
+      </div>
+
+      <div class="row mb-3">
         <label for="company_id" class="col-md-4 col-lg-3 col-form-label">Company ID</label>
         <div class="col-md-8 col-lg-9">
           <input name="company_id" type="text" class="form-control @error('company_id') is-invalid @enderror" id="company_id" value="{{ $company->company_id }}">

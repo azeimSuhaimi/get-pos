@@ -18,6 +18,7 @@ use App\Http\Controllers\invoice_voidController;
 use App\Http\Controllers\salereportController;
 use App\Http\Controllers\customer_orderController;
 use App\Http\Controllers\pointRedeenController;
+use App\Http\Controllers\quickorderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -220,6 +221,22 @@ Route::controller(pointRedeenController::class)->group(function () {
     Route::get('/pointredeen','index')->name('pointredeen')->middleware(['auth']);
     Route::get('/pointredeen_create','create')->name('pointredeen.create')->middleware(['auth','verified']);
     Route::post('/pointredeen_store','store')->name('pointredeen.store')->middleware(['auth']);
+    Route::get('/pointredeen_view','view')->name('pointredeen.view')->middleware(['auth']);
+    Route::get('/pointredeen_edit','edit')->name('pointredeen.edit')->middleware(['auth']);
+    Route::post('/pointredeen_update','update')->name('pointredeen.update')->middleware(['auth']);
+    Route::post('/pointredeen_status','status')->name('pointredeen.status')->middleware(['auth']);
+    Route::post('/pointredeen_delete','delete')->name('pointredeen.delete')->middleware(['auth']);
+    Route::get('/pointredeen_customer_redeem','customer_redeem')->name('pointredeen.customer_redeem')->middleware(['auth']);
+    Route::get('/pointredeen_search_customer','search_customer')->name('pointredeen.search_customer')->middleware(['auth']);
+    Route::post('/pointredeen_redeen','redeen')->name('pointredeen.redeen')->middleware(['auth']);
+    //::post('/reset_password_employee','reset_password_employee')->name('employee.reset.password')->middleware(['auth']);
+});
+
+Route::controller(quickorderController::class)->group(function () {
+
+    Route::get('/quick/order','index')->name('quick')->middleware(['guest']);
+    Route::get('/quick/order/list','list')->name('quick.list')->middleware(['guest']);
+    Route::get('/quick/order/add/item','add_item')->name('quick.add.item')->middleware(['guest']);
     Route::get('/pointredeen_view','view')->name('pointredeen.view')->middleware(['auth']);
     Route::get('/pointredeen_edit','edit')->name('pointredeen.edit')->middleware(['auth']);
     Route::post('/pointredeen_update','update')->name('pointredeen.update')->middleware(['auth']);

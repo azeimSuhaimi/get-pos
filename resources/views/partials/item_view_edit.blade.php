@@ -227,6 +227,36 @@
                 @endif
 
 
+                @if (Request::is('item_view'))
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="quickorder" class="form-label">Quick Order</label>
+                        <p class="text-danger text-uppercase">{{ $items->quickorder_status }}</p>
+                    </div>
+                </div>
+            @endif
+            @if (Request::is('item_edit'))
+                <div class="col-md-6">
+                    <label for="quickorder" class="form-label">Quick Order <span class="text-danger">*</span></label>
+                    <div class="form-check">
+                        <input class="form-check-input @error('quickorder') is-invalid @enderror" type="radio" name="quickorder" id="quickordertrue" value="true"  {{$items->quickorder_status === 'true' ? 'checked' : ''}}>
+                        <label class="form-check-label" for="quickorder">
+                        Active
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input @error('quickorder') is-invalid @enderror" type="radio" name="quickorder" id="quickorderfalse" value="false" {{$items->quickorder_status === 'false' ? 'checked' : ''}}>
+                        <label class="form-check-label" for="quickorder">
+                            Deactive
+                        </label>
+                    </div>
+                    @error('quickorder')
+                        <span class=" invalid-feedback mt-2">{{ $message }}</span>
+                    @enderror
+                </div>
+            @endif
+
+
 
                                                 
                 @if (Request::is('item_view'))

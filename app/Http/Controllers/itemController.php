@@ -214,6 +214,7 @@ class itemController extends Controller
             'cost' => 'required|numeric',
             'price' => 'required|numeric',
             'descriptions' => 'required',
+            'quickorder' => 'required',
             'category' => 'required',
                         
         ]);
@@ -226,6 +227,7 @@ class itemController extends Controller
         $item->cost = $validated['cost'];
         $item->price = $validated['price'];
         $item->description = $validated['descriptions'];
+        $item->quickorder_status = $validated['quickorder'];
         $item->category = $validated['category'];
         $item->save();
 

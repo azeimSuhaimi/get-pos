@@ -289,6 +289,7 @@ class userController extends Controller
             $validated = $request->validate([
                 'id' => 'required',
                 'company_name' => 'required|string',
+                'shop_name' => 'required|string',
                 'company_id' => 'required|string',
                 'address' => 'required|string',
                 'poscode' => 'required|numeric',
@@ -306,6 +307,7 @@ class userController extends Controller
             //store data update to database
             $company = company::find($validated['id']);
             $company->company_name = $validated['company_name'];
+            $company->shop_name = $validated['shop_name'];
             $company->company_id = $validated['company_id'];
             $company->address = $validated['address'];
             $company->poscode = $validated['poscode'];

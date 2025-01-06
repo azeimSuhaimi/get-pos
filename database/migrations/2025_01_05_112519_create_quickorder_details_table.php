@@ -11,21 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items', function (Blueprint $table) {
+        Schema::create('quickorder_details', function (Blueprint $table) {
             $table->id();
+            $table->string('bill_id');
             $table->string('shortcode');
             $table->string('name');
-            $table->string('picture')->default('empty.png');
-            $table->text('description')->nullable();
-            $table->integer('quantity')->default(0);
-            $table->string('category');
-            $table->double('cost');
+            $table->string('quantity');
             $table->double('price');
-            $table->boolean('status')->default(true);
-            $table->string('quickorder_status')->default('false');
+            $table->double('cost');
+            $table->string('description')->nullable();
+            $table->string('category');
+            $table->text('remark')->nullable();
             $table->timestamps();
-            $table->string('user_email');
-
         });
     }
 
@@ -34,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('items');
+        Schema::dropIfExists('quickorder_details');
     }
 };
