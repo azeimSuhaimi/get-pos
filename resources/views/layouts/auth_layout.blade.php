@@ -9,6 +9,11 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
@@ -91,6 +96,7 @@
 
 <!-- Template Main JS File -->
 <script src="{{asset('assets/js/main.js')}}"></script>
+
 
 </body>
 

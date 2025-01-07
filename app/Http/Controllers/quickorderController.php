@@ -22,6 +22,16 @@ class quickorderController extends Controller
         return view('quickorder.index',['company'=>$company]);
     }//end method
 
+    public function list_company(Request $request)
+    {
+        
+        $company = company::where('shop_name','LIKE','%'.$request->input('query').'%')->get();// get all suspend list
+        return  $company;
+
+        //return response()->json(['result' => $company]);
+        //return view('quickorder.index',['company'=>$company]);
+    }//end method
+
     public function list(Request $request)
     {
         $validated = $request->validate([

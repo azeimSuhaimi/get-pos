@@ -235,6 +235,7 @@ Route::controller(pointRedeenController::class)->group(function () {
 Route::controller(quickorderController::class)->group(function () {
 
     Route::get('/quick/order','index')->name('quick')->middleware(['guest']);
+    Route::get('/quick/order/list/company','list_company')->name('quick.list.company')->middleware(['guest']);
     Route::get('/quick/order/list','list')->name('quick.list')->middleware(['guest']);
     Route::get('/quick/order/add/item','add_item')->name('quick.add.item')->middleware(['guest']);
     Route::get('/quick/order/view','view')->name('quick.view')->middleware(['guest']);
