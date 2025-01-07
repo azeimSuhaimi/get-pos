@@ -142,38 +142,178 @@ class quickorderController extends Controller
             $quickorder->save();
 
                     // store items list for bill
-        foreach(Cart::content() as $row)
-        {
+            foreach(Cart::content() as $row)
+            {
 
-            //store data to list item buy
-            $quickorder_detail = new quickorder_detail;
-            $quickorder_detail->barcode = $barcode;
-            $quickorder_detail->shortcode = $row->id;
-            $quickorder_detail->name = $row->name;
-            $quickorder_detail->quantity = $row->qty;
-            $quickorder_detail->price = $row->price;
-            $quickorder_detail->cost = $row->options->cost;
-            $quickorder_detail->description = $row->options->description;
-            $quickorder_detail->category = $row->options->category;
-            $quickorder_detail->remark = $row->options->remark;
+                //store data to list item buy
+                $quickorder_detail = new quickorder_detail;
+                $quickorder_detail->barcode = $barcode;
+                $quickorder_detail->shortcode = $row->id;
+                $quickorder_detail->name = $row->name;
+                $quickorder_detail->quantity = $row->qty;
+                $quickorder_detail->price = $row->price;
+                $quickorder_detail->cost = $row->options->cost;
+                $quickorder_detail->description = $row->options->description;
+                $quickorder_detail->category = $row->options->category;
+                $quickorder_detail->remark = $row->options->remark;
+                
+                $quickorder_detail->save();
+            }//end loop product details
+
+            Cart::destroy();// remove all items in cart 
+
+            $company = company::where('user_email',$validated['user_email'])->first();
             
-            $quickorder_detail->save();
-        }//end loop product details
+            $datas = [
+                
+                'company' => $company,
+                'quickorder' => quickorder::firstWhere('barcode', $barcode),
+                'quickorder_detail' => quickorder_detail::where('barcode', $barcode)->get(),
+            ];
 
-        Cart::destroy();// remove all items in cart 
-
-        $company = company::where('user_email',$validated['user_email'])->first();
-        
-        $datas = [
-            
-            'company' => $company,
-            'quickorder' => quickorder::firstWhere('barcode', $barcode),
-            'quickorder_detail' => quickorder_detail::where('barcode', $barcode)->get(),
-        ];
-
-        Mail::to($validated['email'])->send(new quickordermail( $datas));
-        return redirect(route('quick.list').'?user_email='.$validated['user_email'])->with('success','send quick order to to email '.$validated['email']);
+            Mail::to($validated['email'])->send(new quickordermail( $datas));
+            return redirect(route('quick.list').'?user_email='.$validated['user_email'])->with('success','send quick order to to email '.$validated['email']);
 
         }//end method
+
+            //remove item in cart
+    public function item_remove(Request $request)
+    {
+        $validated = $request->validate([
+    
+            
+            'user_email' => 'required|email',
+        ]);
+
+        if($request->has('rowid'))// check row id in cart
+        {
+            $rowId = $request->input('rowid'); // input row id in cart
+
+            Cart::remove($rowId); // remove items selected
+
+            return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('success', 'items removed from cart.');
+        }
+
+        return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('error', 'Item remove have a problem.');
+    }//end method
+
+    public function add_remark(Request $request)
+    {
+        // check id input exist
+        $validated = $request->validate([
+            'user_email' => 'required|email',
+            'rowid' => 'required'  
+        ]);
+
+        if(!company::where('user_email',$validated['user_email'])->first())
+        {
+            return redirect(route('quick'));
+        }
+
+        $data = [
+            'validated'=>$validated,
+            'rowid' => $validated['rowid'],
+            'remark' => cart::get($validated['rowid']),
+        ];
+
+        return view('quickorder.add_remark',$data);
+    }//end method
+
+    public function update_remark(Request $request)
+    {
+        $validated = $request->validate([
+            'user_email' => 'required|email',
+            'rowid' => 'required',  // Ensure rowid exists in the cart
+            'remark' => 'required',           // Validate remark
+            'cost' => 'required',                    // Validate cost
+            'description' => 'nullable',      // Validate description
+            'category' => 'required',        // Validate category
+        ]);
+
+        if(!company::where('user_email',$validated['user_email'])->first())
+        {
+            return redirect(route('quick'));
+        }
+
+        // Get the current cart item
+        $cartItem = Cart::get($validated['rowid']);
+        
+        if (!$cartItem) {
+            return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('error', 'Item not found in cart.');
+        }
+
+        // Merge the updated fields into the current options
+        $updatedOptions =  [
+            'remark' => $validated['remark'],
+            'cost' => $validated['cost'],
+            'description' => $validated['description'],
+            'category' => $validated['category'],
+        ];
+
+        //Cart::update($validated['rowid'], ['remark' => $validated['remark']]);
+
+        // Update the cart item with the merged options
+        Cart::update($validated['rowid'], [
+            'options' => $updatedOptions
+        ]);
+
+        return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('success', 'remark add to items');
+    }//end method
+
+    public function update_quantity_page(Request $request)
+    {
+        // check id input exist
+        $validated = $request->validate([
+            'user_email' => 'required|email',
+            'rowid' => 'required',  // Ensure rowid exists in the cart
+        ]);
+
+        if(!company::where('user_email',$validated['user_email'])->first())
+        {
+            return redirect(route('quick'));
+        }
+
+        $data = [
+            'validated'=>$validated,
+            'rowid' => cart::get($validated['rowid']),
+        ];
+
+        return view('quickorder.update_quantity',$data);
+    }//end method
+
+    //update quantity items selected in cart
+    public function update_quantity(Request $request)
+    {
+        $validated = $request->validate([
+            'user_email' => 'required|email',
+            'rowid' => 'required',  // Ensure rowid exists in the cart
+        ]);
+
+        if(!company::where('user_email',$validated['user_email'])->first())
+        {
+            return redirect(route('quick'));
+        }
+
+        if($request->has('id')) // check id required
+        {
+            if($request->input('qty') > 0)//enter not less zero
+            {
+                if($request->has('rowid'))
+                {
+                    $id = $request->input('id'); // items id select
+                    $quantity = $request->input('qty'); // quantity update 
+                    $rowId = $request->input('rowid');// id in row cart select
+    
+                    Cart::update($rowId, $quantity); // update the quantity items
+    
+                    return redirect(route('quick.cart.view').'?user_email='.$validated['user_email']);
+                }
+
+            }
+            return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('error', 'quantity cannot negetif added have a problem!!!');
+        }
+
+        return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('error', 'Item added have a problem.');
+    }//emd method
 
 }//end class

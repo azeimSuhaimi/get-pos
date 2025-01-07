@@ -50,19 +50,21 @@
                                         <td>
                                             <div class="btn-group m-0 p-0" role="group">
 
-                                                <form action="" method="get">
+                                                <form action="{{route('quick.update_quantity_page')}}" method="get">
                                                     @csrf
+                                                    <input type="hidden" name="user_email"  value="{{$validated['user_email']}}">
                                                     <input type="hidden" name="id" value="{{$row->id}}">
                                                     <input type="hidden" name="rowid" value="{{$row->rowId}}">
                                                     <button type="submit" class="btn btn-warning"><i class="bi bi-plus"></i></button>
                                                 </form>
-                                                <form action="" method="get">
+                                                <form action="{{route('quick.add_remark')}}" method="get">
                                                     @csrf
+                                                    <input type="hidden" name="user_email"  value="{{$validated['user_email']}}">
                                                     <input type="hidden" name="rowid"  value="{{$row->rowId}}">
                                                     
                                                     <button type="submit" class="btn btn-info"><i class="bi bi-pencil"></i></button>
                                                 </form>
-                                                <form  action="" method="post">
+                                                <form  action="{{route('quick.remove.item').'?user_email='.$validated['user_email']}}" method="post">
                                                     @csrf
                                                     <input type="hidden" name="rowid"  value="{{$row->rowId}}">
                                                     <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
@@ -71,6 +73,12 @@
                                             
                                         </td>
                                     </tr>
+
+                                    @if ($row->options->remark !== '')
+                                        <tr>
+                                            <td colspan="7">{{$row->options->remark}}</td>
+                                        </tr>
+                                    @endif
             
                                 @endforeach
                             @endif

@@ -240,11 +240,11 @@ Route::controller(quickorderController::class)->group(function () {
     Route::get('/quick/order/view','view')->name('quick.view')->middleware(['guest']);
     Route::get('/quick/order/cart','cart_view')->name('quick.cart.view')->middleware(['guest']);
     Route::post('/quick/order/','cart_checkout')->name('quick.cart.checkout')->middleware(['guest']);
-    Route::post('/pointredeen_status','status')->name('pointredeen.status')->middleware(['auth']);
-    Route::post('/pointredeen_delete','delete')->name('pointredeen.delete')->middleware(['auth']);
-    Route::get('/pointredeen_customer_redeem','customer_redeem')->name('pointredeen.customer_redeem')->middleware(['auth']);
-    Route::get('/pointredeen_search_customer','search_customer')->name('pointredeen.search_customer')->middleware(['auth']);
-    Route::post('/pointredeen_redeen','redeen')->name('pointredeen.redeen')->middleware(['auth']);
+    Route::post('/quick/order/remove/item','item_remove')->name('quick.remove.item')->middleware(['guest']);
+    Route::get('/quick/order/add/remark','add_remark')->name('quick.add_remark')->middleware(['guest']);
+    Route::post('/quick/order/update_remark','update_remark')->name('quick.update_remark')->middleware(['guest']);
+    Route::get('/quick/order/update_quantity_page','update_quantity_page')->name('quick.update_quantity_page')->middleware(['guest']);
+    Route::post('/quick/order/update_quantity','update_quantity')->name('quick.update_quantity')->middleware(['guest']);
     //::post('/reset_password_employee','reset_password_employee')->name('employee.reset.password')->middleware(['auth']);
 });
 
