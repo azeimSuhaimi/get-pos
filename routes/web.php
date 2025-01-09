@@ -194,6 +194,9 @@ Route::controller(posController::class)->group(function () {
     Route::get('/pos_add_remark','add_remark')->name('pos.add.remark')->middleware(['auth']);
     Route::post('/pos_update_remark','update_remark')->name('pos.update.remark')->middleware(['auth']);
 
+    Route::get('/pos/quick/order/page','quick_order_page')->name('pos.quick.order.page')->middleware(['auth','verified']);
+    Route::post('/pos/quick/order','quick_order')->name('pos.quick.order')->middleware(['auth','verified']);
+
 });//end group
 
 

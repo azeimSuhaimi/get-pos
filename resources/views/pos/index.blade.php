@@ -179,6 +179,14 @@
                     <button class="{{$u >= 1 ? '':'disabled'}} btn btn-primary " type="submit">Resume Suspend Bill</button>
                   </div>
                 </form>
+
+                <form  class="mt-2 p-2"  action="{{route('pos.quick.order.page')}}" method="get">
+                    @csrf
+                    
+                    <div class=" mt-2">
+                      <button class="{{$i < 1 ? '':'disabled'}} btn btn-primary " type="submit">Quick Order</button>
+                    </div>
+                  </form>
         </div>
         
 

@@ -11,6 +11,9 @@ use App\Models\suspend_details;
 use App\Models\activity_log;
 use Illuminate\Support\Carbon;
 
+use App\Models\quickorder;
+use App\Models\quickorder_detail;
+
 class posController extends Controller
 {
         
@@ -318,6 +321,47 @@ class posController extends Controller
         ]);
 
         return redirect(route('pos'))->with('success', 'remark add to items');
+    }//end method
+
+    public function quick_order_page(Request $request)
+    {
+
+
+        return view('pos.quick_order_page');
+    }//end method
+
+    public function quick_order(Request $request)
+    {
+        $validated = $request->validate([
+    
+            'barcode' => 'required',  // Ensure rowid exists in the cart
+        ]);
+
+        $quickorder = quickorder::where('barcode',$validated['barcode'])->first(); // find suspend bill based id 
+        if(!$quickorder)
+        {
+            return redirect()->back()->with('error', 'id given cannot be found!!!');
+        }
+        $quickorder_detail = quickorder_detail::where('barcode',$quickorder->barcode)->get();// get list items on suspend bill 
+
+
+        // remove first cart if have before restore suspend
+        Cart::destroy();
+
+        // retore back bill in unsuspend
+        foreach($quickorder_detail as $row)
+        {
+            //add to cart
+            Cart::add($row->shortcode, $row->name, $row->quantity, $row->price,['cost' => $row->cost,'description' => $row->description, 'category' => $row->category, 'remark' => $row->remark]);
+
+            $row->delete(); // delete item in suspend table
+        }
+
+        $quickorder->delete(); // deldete bill in suspend table
+        
+
+        return redirect(route('pos'));
+        
     }//end method
 
 }//end class
