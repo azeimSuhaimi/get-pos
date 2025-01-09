@@ -60,6 +60,19 @@
 
         <h3>Quick Order</h3>
 
+        <div style="text-align: center;margin: 0; justify-content: center">
+            <?php 
+            
+                // Make Barcode object of Code128 encoding.
+                $barcode = (new Picqer\Barcode\Types\TypeCode128())->getBarcode($quickorder->barcode);
+
+                // Output the barcode as HTML in the browser with a HTML Renderer
+                $renderer = new Picqer\Barcode\Renderers\HtmlRenderer();
+                echo $renderer->render($barcode, 450.20, 75);
+            ?>
+        </div>
+
+
         <h1>Receipt for Order #{{$quickorder->barcode}}</h1>
     </div>
     <div class="order-details">

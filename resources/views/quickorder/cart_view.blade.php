@@ -15,7 +15,7 @@
             <div class="card mb-4 mt-5">
                 <div class="card-header">
                     <i class="fas fa-table me-1"></i>
-                    Bill Payment Method
+                   cart view
                 </div>
                 <div class="card-body">
                     <table id="" class="table table-bordered table-hover text-center ">
@@ -117,7 +117,7 @@
             <div class="card text-bg-light mt-5">
                 <div class="card-header">
                     <i class="fas fa-table me-1"></i>
-                    Bill Payment Method
+                    send to your email
                 </div>
                 <div class="card-body">
                   <h5 class="card-title">   </h5>
