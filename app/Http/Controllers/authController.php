@@ -14,6 +14,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Crypt;
 
+
 use App\Models\user;
 use App\Models\company;
 

@@ -14,6 +14,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -85,6 +86,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $user->date_register = $now;
         $user->toyyip_key = Crypt::encryptString('');
         $user->toyyip_category = Crypt::encryptString('');
+        $user->key = Str::random(32);
         $user->save();
 
         return $user;

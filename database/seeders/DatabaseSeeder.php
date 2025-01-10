@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
             'toyyip_key' => Crypt::encryptString('da7oi8t1-1ifp-oa5q-crgp-kbfjwradgutt'),
             'toyyip_category' => Crypt::encryptString('ndp79143'),
             'email_verified_at' => '2024-10-20 00:10:50',
+            'key' => Str::random(32),
         ]);
 
         DB::table('companies')->insert([
@@ -52,6 +54,7 @@ class DatabaseSeeder extends Seeder
             'toyyip_key' => Crypt::encryptString(''),
             'toyyip_category' => Crypt::encryptString(''),
             'email_verified_at' => '2024-10-20 00:10:50',
+            'key' => Str::random(32),
         ]);
 
         DB::table('companies')->insert([
