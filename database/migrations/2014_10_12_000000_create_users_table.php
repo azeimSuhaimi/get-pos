@@ -30,6 +30,9 @@ return new class extends Migration
             $table->text('toyyip_key')->nullable();
             $table->text('toyyip_category')->nullable();
             $table->string('key')->nullable('');
+            $table->string('github_id')->nullable();
+            $table->string('github_token')->nullable();
+            $table->string('github_refresh_token')->nullable();
         });
     }
 

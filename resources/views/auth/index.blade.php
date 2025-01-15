@@ -67,7 +67,9 @@
                 <p class="small mb-0"> <a  href="{{route('auth.forgot_password')}}">Forgot Password?</a></p>
             </div>
         </form>
-
+        <div class="col-12">
+            <p class="small mb-0">login with github <a href="/auth/github/redirect">login</a></p>
+        </div>
     </div>
 </div>
 

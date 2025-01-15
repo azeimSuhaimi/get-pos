@@ -1,24 +1,27 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\posController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\authController;
-use App\Http\Controllers\dashboardController;
-use App\Http\Controllers\userController;
-use App\Http\Controllers\employeeController;
-use App\Http\Controllers\customerController;
 use App\Http\Controllers\itemController;
-use App\Http\Controllers\posController;
+use App\Http\Controllers\userController;
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\expenseController;
 use App\Http\Controllers\invoiceController;
 use App\Http\Controllers\receiptController;
-use App\Http\Controllers\expenseController;
-use App\Http\Controllers\invoice_voidController;
-use App\Http\Controllers\salereportController;
-use App\Http\Controllers\customer_orderController;
-use App\Http\Controllers\pointRedeenController;
+use App\Http\Controllers\customerController;
+use App\Http\Controllers\employeeController;
+use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\quickorderController;
+use App\Http\Controllers\salereportController;
+use App\Http\Controllers\pointRedeenController;
+use App\Http\Controllers\invoice_voidController;
+use App\Http\Controllers\customer_orderController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -275,3 +278,31 @@ Route::post('/email/verification-notification', function (Request $request) {
  
     return back()->with('success', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
+
+Route::get('/auth/github/redirect', function () {
+    return Socialite::driver('github')->redirect();
+})->name('github-varify');
+ 
+Route::get('/auth/github/callback', function () {
+    $githubUser = Socialite::driver('github')->user();
+ 
+    $existingUser = User::where('email', $githubUser->email)->first();
+     //dd($existingUser->email);
+
+    if ($existingUser) {
+
+        $existingUser->github_id = $githubUser->id;
+        $existingUser->github_token = $githubUser->token;
+        $existingUser->save();
+
+        // Log the user in if they already exist
+        Auth::login($existingUser);
+        
+            return redirect('/dashboard');
+    } else{
+        //return redirect(route('auth'));
+    }
+    return redirect(route('auth'))->with('error','accout or password is not exit');
+});
