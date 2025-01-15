@@ -1,0 +1,6 @@
+powercfg /energy
+
+powercfg /batteryreport
+
+chkdsk /r
+chkdsk /f

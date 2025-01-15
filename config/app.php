@@ -169,6 +169,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Gloudemans\Shoppingcart\ShoppingcartServiceProvider::class,
+        //Maatwebsite\Excel\ExcelServiceProvider::class,
     ])->toArray(),
 
     /*

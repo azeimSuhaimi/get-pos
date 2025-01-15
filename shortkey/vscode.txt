@@ -1,0 +1,19 @@
+alt + shift + a = commet html
+
+Shift+Alt + ↓ / ↑ = Copy line up/down
+
+alt + ↓ / ↑
+
+ctrl + space = suggestion
+
+
+auto rename tag
+codesnap
+CSS Snippets
+HTML CSS Support
+indent-rainbow
+IntelliSense for CSS class names in HTML
+JavaScript (ES6) code snippets
+Live Preview
+Live Server
+open in browser

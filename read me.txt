@@ -14,3 +14,9 @@ https://packagist.org/packages/hardevine/shoppingcart
 toyyibpay
 
 https://github.com/picqer/php-barcode-generator
+
+laravel excel
+https://docs.laravel-excel.com/3.1/getting-started/installation.html
+
+laravel smart ads 
+https://github.com/5balloons/laravel-smart-ads

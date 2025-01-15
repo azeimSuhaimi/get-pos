@@ -1,0 +1,15 @@
+
+
+php artisan route:list
+
+php artisan migrate
+php artisan migrate:fresh --seed
+
+php artisan make:controller menuController --resource
+
+php artisan make:controller menuController --resource --model=users
+
+php artisan make:controller [ControllerName] [--option]
+
+
+php artisan migrate --model=activity_log

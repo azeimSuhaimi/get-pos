@@ -41,7 +41,7 @@ Route::controller(salereportController::class)->group(function () {
 Route::controller(authController::class)->group(function () {
 
     Route::get('/','index')->name('auth')->middleware('guest');
-    Route::post('/auth','login')->name('auth.login')->middleware('guest');
+    Route::post('/auth','login')->name('auth.login')->middleware(['guest','throttle:login']);
 
     Route::get('/create_account','create_account')->name('auth.create_account')->middleware('guest');
     Route::post('/create_account','create_account_process')->name('auth.create_account.create')->middleware('guest');
