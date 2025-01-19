@@ -70,6 +70,9 @@
         <div class="col-12">
             <p class="small mb-0">login with github <a href="/auth/github/redirect">login</a></p>
         </div>
+        <div class="col-12">
+            <p class="small mb-0">login with GOOGLE <a href="/auth/google/redirect">login</a></p>
+        </div>
     </div>
 </div>
 

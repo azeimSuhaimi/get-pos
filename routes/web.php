@@ -306,3 +306,31 @@ Route::get('/auth/github/callback', function () {
     }
     return redirect(route('auth'))->with('error','accout or password is not exit');
 });
+
+
+
+Route::get('/auth/google/redirect', function () {
+    return Socialite::driver('google')->redirect();
+})->name('google-varify');
+ 
+Route::get('/auth/google/callback', function () {
+    $googleUser = Socialite::driver('google')->user();
+ 
+    $existingUser = User::where('email', $googleUser->email)->first();
+     //dd($googleUser);
+
+    if ($existingUser) {
+
+        $existingUser->google_id = $googleUser->id;
+        $existingUser->google_token = $googleUser->token;
+        $existingUser->save();
+
+        // Log the user in if they already exist
+        Auth::login($existingUser);
+        
+            return redirect('/dashboard');
+    } else{
+        //return redirect(route('auth'));
+    }
+    return redirect(route('auth'))->with('error','accout or password is not exit');
+});

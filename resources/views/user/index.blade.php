@@ -104,14 +104,14 @@
                   @csrf
                   <input type="hidden" name="id" value="{{auth()->user()->id}}">
 
-                <!-- Profile Edit Form -->
-                <div class="row mb-3">
-                  <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
-                  <div class="col-md-8 col-lg-9">
-                    <img src="/profile/{{auth()->user()->picture}} " alt="Profile">
-                    
+                  <!-- Profile Edit Form -->
+                  <div class="row mb-3">
+                    <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                    <div class="col-md-8 col-lg-9">
+                      <img src="/profile/{{auth()->user()->picture}} " id="image-preview" alt="Profile">
+                      
+                    </div>
                   </div>
-                </div>
 
                   <div class="row mb-3">
                       <label for="file-input" class="col-md-4 col-lg-3 col-form-label @error('file') is-invalid @enderror">Select Files Here</label>
@@ -126,8 +126,8 @@
                       @enderror
 
                       <div class="text-center">
-                          <button type="submit" class="btn btn-primary">Edit Image</button>
-                          <button form="remove_image" type="submit"  class="btn btn-danger">Remove Image</button>
+                          <button type="submit" class="btn btn-primary"><i class="bi bi-upload"></i></button>
+                          <button form="remove_image" type="submit"  class="btn btn-danger"><i class="bi bi-trash"></i></button>
                       </div>
 
                 </form>
@@ -208,11 +208,11 @@
                   </div>
 
                   <div class="col-6">
-                    <div class="form-check ">
-                        <input class="form-check-input" type="checkbox" id="show_password" onchange="showPassword()" />
-                        <label class="form-check-label" for="show_password">Show Password</label>
-                    </div>
-                </div>
+                      <div class="form-check ">
+                          <input class="form-check-input" type="checkbox" id="show_password" onchange="showPassword()" />
+                          <label class="form-check-label" for="show_password">Show Password</label>
+                      </div>
+                  </div>
 
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary">Change Password</button>
@@ -230,6 +230,27 @@
     </div>
   </section>
 
+  <script>
+    const fileInput = document.getElementById('file-input');
+    const imagePreview = document.getElementById('image-preview');
+    
+    fileInput.addEventListener('change', function () {
+      const file = fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          imagePreview.src = reader.result;
+          //imagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        //imagePreview.style.display = 'none';
+      }
+    });
+    
+    
+    
+</script>
 
 
   <script>
