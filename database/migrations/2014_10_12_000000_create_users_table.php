@@ -27,8 +27,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            $table->text('toyyip_key')->nullable();
-            $table->text('toyyip_category')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('key')->nullable('');
             $table->string('github_id')->nullable();
             $table->string('github_token')->nullable();

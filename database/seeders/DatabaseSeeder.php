@@ -31,8 +31,8 @@ class DatabaseSeeder extends Seeder
             'ic' => '962311115669',//
             'role' => 1,
             'date_register' => '2024-10-19 00:44:09',
-            'toyyip_key' => Crypt::encryptString('da7oi8t1-1ifp-oa5q-crgp-kbfjwradgutt'),
-            'toyyip_category' => Crypt::encryptString('ndp79143'),
+            //'toyyip_key' => Crypt::encryptString('da7oi8t1-1ifp-oa5q-crgp-kbfjwradgutt'),
+            //'toyyip_category' => Crypt::encryptString('ndp79143'),
             'email_verified_at' => '2024-10-20 00:10:50',
             'key' => Str::random(32),
         ]);
@@ -51,8 +51,8 @@ class DatabaseSeeder extends Seeder
             'ic' => '962311115670',//
             'role' => 2,
             'date_register' => '2024-10-19 00:44:09',
-            'toyyip_key' => Crypt::encryptString(''),
-            'toyyip_category' => Crypt::encryptString(''),
+            //'toyyip_key' => Crypt::encryptString(''),
+            //'toyyip_category' => Crypt::encryptString(''),
             'email_verified_at' => '2024-10-20 00:10:50',
             'key' => Str::random(32),
         ]);

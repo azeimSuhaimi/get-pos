@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Auth\Events\Registered;
 
 use App\Models\employee;
+use App\Models\user;
 use App\Models\activity_log;
 
 class employeeController extends Controller
