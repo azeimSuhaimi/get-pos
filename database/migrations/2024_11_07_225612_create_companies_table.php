@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->string('user_email');
+            
             $table->string('shop_name')->nullable();
             $table->string('company_name')->nullable();
             $table->string('company_id')->nullable();
@@ -25,6 +25,9 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('logo')->default('logo.jpg');
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

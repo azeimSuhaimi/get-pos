@@ -36,15 +36,15 @@ class quickorderController extends Controller
     {
         $validated = $request->validate([
             
-            'user_email' => 'required|email',
+            'user_id' => 'required',
         ]);
 
-        if(!company::where('user_email',$validated['user_email'])->first())
+        if(!company::where('user_id',$validated['user_id'])->first())
         {
             return redirect(route('quick'));
         }
 
-        $item = item::where('user_email',$validated['user_email'])->where('quickorder_status','true')->get();// get all suspend list
+        $item = item::where('user_id',$validated['user_id'])->where('quickorder_status','true')->get();// get all suspend list
         return view('quickorder.list',['item'=>$item,'validated'=>$validated]);
     }//end method
 
@@ -55,32 +55,32 @@ class quickorderController extends Controller
             $validated = $request->validate([
                 
                 'shortcode' => 'required',
-                'user_email' => 'required|email',
+                'user_id' => 'required',
             ]);
 
-            if(!company::where('user_email',$validated['user_email'])->first())
+            if(!company::where('user_id',$validated['user_id'])->first())
             {
                 return redirect(route('quick'));
             }
     
-            $item = item::where('shortcode',$validated['shortcode'])->where('user_email',$validated['user_email'])->first();
+            $item = item::where('shortcode',$validated['shortcode'])->where('user_id',$validated['user_id'])->first();
     
             if($item === null)
             {
                 
-                return redirect(route('quick.list').'?user_email='.$validated['user_email'])->with('error','item enter not exist in system');
+                return redirect(route('quick.list').'?user_id='.$validated['user_id'])->with('error','item enter not exist in system');
             }
             else
             {
                 if($item->quantity < 1)
                 {
-                    return redirect(route('quick.list').'?user_email='.$validated['user_email'])->with('error','item enter quantity is empty in system');
+                    return redirect(route('quick.list').'?user_id='.$validated['user_id'])->with('error','item enter quantity is empty in system');
                 }
                 else
                 {
                     //add to cart item select
                     Cart::add($item->shortcode,$item->name, 1, $item->price,['cost' => $item->cost,'description' => $item->description, 'category' => $item->category, 'remark' => '']);
-                    return redirect(route('quick.list').'?user_email='.$validated['user_email'])->with('success','item enter added');
+                    return redirect(route('quick.list').'?user_id='.$validated['user_id'])->with('success','item enter added');
                 }
     
             }
@@ -95,15 +95,15 @@ class quickorderController extends Controller
             $validated = $request->validate([
     
                 'shortcode' => 'required',
-                'user_email' => 'required|email',
+                'user_id' => 'required',
             ]);
 
-            if(!company::where('user_email',$validated['user_email'])->first())
+            if(!company::where('user_id',$validated['user_id'])->first())
             {
                 return redirect(route('quick'));
             }
 
-            $item = item::where('user_email',$validated['user_email'])->where('shortcode',$validated['shortcode'])->first();// get all suspend list
+            $item = item::where('user_id',$validated['user_id'])->where('shortcode',$validated['shortcode'])->first();// get all suspend list
             return view('quickorder.view',['item'=>$item,'validated'=>$validated]);
         }//end method
 
@@ -113,10 +113,10 @@ class quickorderController extends Controller
             $validated = $request->validate([
     
                 
-                'user_email' => 'required|email',
+                'user_id' => 'required',
             ]);
 
-            if(!company::where('user_email',$validated['user_email'])->first())
+            if(!company::where('user_id',$validated['user_id'])->first())
             {
                 return redirect(route('quick'));
             }
@@ -130,7 +130,7 @@ class quickorderController extends Controller
             $validated = $request->validate([
     
                 'email' => 'required|email',
-                'user_email' => 'required|email',
+                'user_id' => 'required',
             ]);
 
             if(Cart::total() <= 0)
@@ -143,7 +143,7 @@ class quickorderController extends Controller
             // store payment cash sales 
             $quickorder = new quickorder;
             $quickorder->barcode = $barcode;
-            $quickorder->user_email = $validated['user_email'];
+            $quickorder->user_id = $validated['user_id'];
             $quickorder->customer_email = $validated['email'];
             $quickorder->subtotal = Cart::subtotal();
             $quickorder->tax = round(Cart::tax() * 20)/ 20;
@@ -172,7 +172,7 @@ class quickorderController extends Controller
 
             Cart::destroy();// remove all items in cart 
 
-            $company = company::where('user_email',$validated['user_email'])->first();
+            $company = company::where('user_id',$validated['user_id'])->first();
             
             $datas = [
                 
@@ -182,7 +182,7 @@ class quickorderController extends Controller
             ];
 
             Mail::to($validated['email'])->send(new quickordermail( $datas));
-            return redirect(route('quick.list').'?user_email='.$validated['user_email'])->with('success','send quick order to to email '.$validated['email']);
+            return redirect(route('quick.list').'?user_id='.$validated['user_id'])->with('success','send quick order to to email '.$validated['email']);
 
         }//end method
 
@@ -192,7 +192,7 @@ class quickorderController extends Controller
         $validated = $request->validate([
     
             
-            'user_email' => 'required|email',
+            'user_id' => 'required',
         ]);
 
         if($request->has('rowid'))// check row id in cart
@@ -201,21 +201,21 @@ class quickorderController extends Controller
 
             Cart::remove($rowId); // remove items selected
 
-            return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('success', 'items removed from cart.');
+            return redirect(route('quick.cart.view').'?user_id='.$validated['user_id'])->with('success', 'items removed from cart.');
         }
 
-        return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('error', 'Item remove have a problem.');
+        return redirect(route('quick.cart.view').'?user_id='.$validated['user_id'])->with('error', 'Item remove have a problem.');
     }//end method
 
     public function add_remark(Request $request)
     {
         // check id input exist
         $validated = $request->validate([
-            'user_email' => 'required|email',
+            'user_id' => 'required',
             'rowid' => 'required'  
         ]);
 
-        if(!company::where('user_email',$validated['user_email'])->first())
+        if(!company::where('user_id',$validated['user_id'])->first())
         {
             return redirect(route('quick'));
         }
@@ -232,7 +232,7 @@ class quickorderController extends Controller
     public function update_remark(Request $request)
     {
         $validated = $request->validate([
-            'user_email' => 'required|email',
+            'user_id' => 'required',
             'rowid' => 'required',  // Ensure rowid exists in the cart
             'remark' => 'required',           // Validate remark
             'cost' => 'required',                    // Validate cost
@@ -240,7 +240,7 @@ class quickorderController extends Controller
             'category' => 'required',        // Validate category
         ]);
 
-        if(!company::where('user_email',$validated['user_email'])->first())
+        if(!company::where('user_id',$validated['user_id'])->first())
         {
             return redirect(route('quick'));
         }
@@ -249,7 +249,7 @@ class quickorderController extends Controller
         $cartItem = Cart::get($validated['rowid']);
         
         if (!$cartItem) {
-            return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('error', 'Item not found in cart.');
+            return redirect(route('quick.cart.view').'?user_id='.$validated['user_id'])->with('error', 'Item not found in cart.');
         }
 
         // Merge the updated fields into the current options
@@ -267,18 +267,18 @@ class quickorderController extends Controller
             'options' => $updatedOptions
         ]);
 
-        return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('success', 'remark add to items');
+        return redirect(route('quick.cart.view').'?user_id='.$validated['user_id'])->with('success', 'remark add to items');
     }//end method
 
     public function update_quantity_page(Request $request)
     {
         // check id input exist
         $validated = $request->validate([
-            'user_email' => 'required|email',
+            'user_id' => 'required',
             'rowid' => 'required',  // Ensure rowid exists in the cart
         ]);
 
-        if(!company::where('user_email',$validated['user_email'])->first())
+        if(!company::where('user_id',$validated['user_id'])->first())
         {
             return redirect(route('quick'));
         }
@@ -295,11 +295,11 @@ class quickorderController extends Controller
     public function update_quantity(Request $request)
     {
         $validated = $request->validate([
-            'user_email' => 'required|email',
+            'user_id' => 'required',
             'rowid' => 'required',  // Ensure rowid exists in the cart
         ]);
 
-        if(!company::where('user_email',$validated['user_email'])->first())
+        if(!company::where('user_id',$validated['user_id'])->first())
         {
             return redirect(route('quick'));
         }
@@ -316,14 +316,14 @@ class quickorderController extends Controller
     
                     Cart::update($rowId, $quantity); // update the quantity items
     
-                    return redirect(route('quick.cart.view').'?user_email='.$validated['user_email']);
+                    return redirect(route('quick.cart.view').'?user_id='.$validated['user_id']);
                 }
 
             }
-            return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('error', 'quantity cannot negetif added have a problem!!!');
+            return redirect(route('quick.cart.view').'?user_id='.$validated['user_id'])->with('error', 'quantity cannot negetif added have a problem!!!');
         }
 
-        return redirect(route('quick.cart.view').'?user_email='.$validated['user_email'])->with('error', 'Item added have a problem.');
+        return redirect(route('quick.cart.view').'?user_id='.$validated['user_id'])->with('error', 'Item added have a problem.');
     }//emd method
 
 }//end class

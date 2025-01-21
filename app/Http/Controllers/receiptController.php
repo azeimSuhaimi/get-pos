@@ -17,7 +17,7 @@ class receiptController extends Controller
 {
     public function index()
     {
-        $invoice = invoice::where('user_email',auth()->user()->email)->where('status',true)->whereDate('created_at', today())->orderBy('created_at','desc')->get();
+        $invoice = invoice::where('user_id',auth()->user()->id)->where('status',true)->whereDate('created_at', today())->orderBy('created_at','desc')->get();
 
         return view('receipt.index',['invoice' => $invoice]);
     }// end method

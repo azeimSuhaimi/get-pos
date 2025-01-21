@@ -18,7 +18,9 @@ return new class extends Migration
             $table->decimal('amount', 10, 2); // Amount of the expense
             $table->string('receipt')->nullable(); // Receipt file path
             $table->text('notes')->nullable(); // Additional notes
-            $table->string('user_email');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

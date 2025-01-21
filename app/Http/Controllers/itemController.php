@@ -16,7 +16,7 @@ class itemController extends Controller
     //get all list item product
     public function index()
     {
-        $items = item::where('user_email',auth()->user()->email)->orderBy('created_at','desc')->get();
+        $items = item::where('user_id',auth()->user()->id)->orderBy('created_at','desc')->get();
 
         return view('item.index',['items' => $items]);
     }//end method
@@ -30,18 +30,18 @@ class itemController extends Controller
     // store new Item data
     public function store(Request $request)
     {
-        $user_email =auth()->user()->email;
+        $user_id =auth()->user()->id;
 
         // validated new items data 
         $validated = $request->validate([
             
-            'name' => ['required','string',Rule::unique('items')->where(function($query) use ($user_email)
+            'name' => ['required','string',Rule::unique('items')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
-            'shortcode' => ['required','string',Rule::unique('items')->where(function($query) use ($user_email)
+            'shortcode' => ['required','string',Rule::unique('items')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
             'quantity' => 'required|integer',
             'cost' => 'required|numeric',
@@ -61,7 +61,7 @@ class itemController extends Controller
         $item->price = $validated['price'];
         $item->description = $validated['description'];
         $item->category = $validated['category'];
-        $item->user_email = auth()->user()->email;
+        $item->user_id = auth()->user()->id;
 
         $item->save();
 
@@ -197,18 +197,18 @@ class itemController extends Controller
             //update item data 
     public function update(Request $request)
     {
-        $user_email =auth()->user()->email;
+        $user_id =auth()->user()->id;
 
         // validate data item update base rule
         $validated = $request->validate([
             'id' => 'required',
-            'name' => ['required','string',Rule::unique('items')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+            'name' => ['required','string',Rule::unique('items')->ignore( $request->input('id'))->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
-            'shortcode' => ['required','string',Rule::unique('items')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+            'shortcode' => ['required','string',Rule::unique('items')->ignore( $request->input('id'))->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
             'quantity' => 'required|numeric',
             'cost' => 'required|numeric',

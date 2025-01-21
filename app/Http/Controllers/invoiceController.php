@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\Encryption\DecryptException;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Validation\Rule;
-
-use App\Mail\toyyibpay_link;
-use App\Models\company;
 use App\Models\item;
-use App\Models\suspend;
-use App\Models\suspend_details;
-use App\Models\payment_type;
+use App\Models\company;
 use App\Models\invoice;
+use App\Models\suspend;
+use App\Models\customer;
+use App\Models\toyyibpay;
+use App\Mail\toyyibpay_link;
+use App\Models\activity_log;
+
+use App\Models\payment_type;
+use Illuminate\Http\Request;
 use App\Models\invoice_detail;
 use App\Models\payment_method;
-use App\Models\customer;
+use Illuminate\Support\Carbon;
 use App\Models\purchase_detail;
+use App\Models\suspend_details;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Crypt;
 
-use App\Models\activity_log;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 
 class invoiceController extends Controller
@@ -44,7 +45,7 @@ class invoiceController extends Controller
     public function cash_method(Request $request)
     {
         //get all list custmer data
-        $customer = customer::where('user_email',auth()->user()->email)->get();
+        $customer = customer::where('user_id',auth()->user()->id)->get();
 
         // check total amount in cart exist or not
         if(Cart::total() <= 0)
@@ -57,7 +58,7 @@ class invoiceController extends Controller
     public function digital_method(Request $request)
     {
         //get all list custmer data
-        $customer = customer::where('user_email',auth()->user()->email)->get();
+        $customer = customer::where('user_id',auth()->user()->id)->get();
         $payment_type = payment_type::all();
 
         // check total amount in cart exist or not
@@ -71,7 +72,7 @@ class invoiceController extends Controller
     public function hybrid_method(Request $request)
     {
         //get all list custmer data
-        $customer = customer::where('user_email',auth()->user()->email)->get();
+        $customer = customer::where('user_id',auth()->user()->id)->get();
         $payment_type = payment_type::all();
         
         // check total amount in cart exist or not
@@ -85,7 +86,7 @@ class invoiceController extends Controller
     public function toyyibpay_method(Request $request)
     {
         //get all list custmer data
-        $customer = customer::where('user_email',auth()->user()->email)->get();
+        $customer = customer::where('user_id',auth()->user()->id)->get();
 
         // check total amount in cart exist or not
         if(Cart::total() <= 0)
@@ -98,7 +99,7 @@ class invoiceController extends Controller
     public function add_member_cash(Request $request)
     {
         //get all list custmer data
-        $customer = customer::where('user_email',auth()->user()->email)->get();
+        $customer = customer::where('user_id',auth()->user()->id)->get();
 
         // check total amount in cart exist or not
         if(Cart::total() <= 0)
@@ -111,7 +112,7 @@ class invoiceController extends Controller
     public function add_member_digital(Request $request)
     {
         //get all list custmer data
-        $customer = customer::where('user_email',auth()->user()->email)->get();
+        $customer = customer::where('user_id',auth()->user()->id)->get();
 
         // check total amount in cart exist or not
         if(Cart::total() <= 0)
@@ -124,7 +125,7 @@ class invoiceController extends Controller
     public function add_member_hybrid(Request $request)
     {
         //get all list custmer data
-        $customer = customer::where('user_email',auth()->user()->email)->get();
+        $customer = customer::where('user_id',auth()->user()->id)->get();
 
         // check total amount in cart exist or not
         if(Cart::total() <= 0)
@@ -137,7 +138,7 @@ class invoiceController extends Controller
     public function add_member_toyyibpay(Request $request)
     {
         //get all list custmer data
-        $customer = customer::where('user_email',auth()->user()->email)->get();
+        $customer = customer::where('user_id',auth()->user()->id)->get();
 
         // check total amount in cart exist or not
         if(Cart::total() <= 0)
@@ -204,7 +205,7 @@ class invoiceController extends Controller
         // store payment cash sales 
         $invoice = new invoice;
         $invoice->invoice_id = $bill_id;
-        $invoice->user_email = auth()->user()->email;
+        $invoice->user_id = auth()->user()->id;
         
         $invoice->subtotal = Cart::subtotal();
         $invoice->tax = round(Cart::tax() * 20)/ 20;
@@ -240,7 +241,7 @@ class invoiceController extends Controller
             $payment_method->payment_type = 'CASH';
             $payment_method->tender = $validated['amount'];
             $payment_method->status = true;
-            $payment_method->user_email = auth()->user()->email;
+            $payment_method->user_id = auth()->user()->id;
             $payment_method->save();
         }
 
@@ -253,7 +254,7 @@ class invoiceController extends Controller
             $payment_method->tender = round(Cart::total() * 20)/ 20;
             $payment_method->reference_no = $validated['reference_no'];
             $payment_method->status = true;
-            $payment_method->user_email = auth()->user()->email;
+            $payment_method->user_id = auth()->user()->id;
             $payment_method->save();
         }
 
@@ -265,7 +266,7 @@ class invoiceController extends Controller
             $payment_method->payment_type = 'CASH';
             $payment_method->tender = $validated['amount'];
             $payment_method->status = true;
-            $payment_method->user_email = auth()->user()->email;
+            $payment_method->user_id = auth()->user()->id;
             $payment_method->save();
 
             
@@ -275,7 +276,7 @@ class invoiceController extends Controller
             $payment_method->tender = round(Cart::total() * 20)/ 20 - $validated['amount'];
             $payment_method->reference_no = $validated['reference_no'];
             $payment_method->status = true;
-            $payment_method->user_email = auth()->user()->email;
+            $payment_method->user_id = auth()->user()->id;
             $payment_method->save();
 
         }
@@ -283,11 +284,13 @@ class invoiceController extends Controller
         if($request->input('TOYYIBPAY') == 'TOYYIBPAY')
         {
 
+            $toyyibpay = toyyibpay::where('user_id',auth()->user()->id)->first();
+
             $some_data = array(
-                'userSecretKey'=> Crypt::decryptString(auth()->user()->toyyip_key), // your secret key here in accout
+                'userSecretKey'=> Crypt::decryptString($toyyibpay->toyyip_key), // your secret key here in accout
                 'catname' => 'point of sale ',
                 'catdescription' => 'payment online ',
-                'categoryCode'=> Crypt::decryptString(auth()->user()->toyyip_category),
+                'categoryCode'=> Crypt::decryptString($toyyibpay->toyyip_category),
                 'billName'=>'product on the list',
                 'billDescription'=>'Online Payment Method System P.O.S',
                 'billPriceSetting'=>0,
@@ -322,7 +325,7 @@ class invoiceController extends Controller
 
 
 
-            $company = company::where('user_email',auth()->user()->email)->first();
+            $company = company::where('user_id',auth()->user()->id)->first();
 
             $datas = [
                 'company' => $company,
@@ -351,7 +354,7 @@ class invoiceController extends Controller
                 $purchase_detail->price = $row->price;
                 $purchase_detail->cost = $row->options->cost;
                 $purchase_detail->description = $row->options->description;
-                $purchase_detail->user_email = auth()->user()->email;
+                $purchase_detail->user_id = auth()->user()->id;
                 $purchase_detail->save();
 
             }
@@ -367,7 +370,7 @@ class invoiceController extends Controller
             $invoice_detail->description = $row->options->description;
             $invoice_detail->category = $row->options->category;
             $invoice_detail->remark = $row->options->remark;
-            $invoice_detail->user_email = auth()->user()->email;
+            $invoice_detail->user_id = auth()->user()->id;
             $invoice_detail->save();
 
             if($row->options->category== 'retail')
@@ -427,7 +430,7 @@ class invoiceController extends Controller
 
     public function list_online_manual(Request $request)
     {
-        $invoice = invoice::where('user_email',auth()->user()->email)->where('status',false)->orderBy('created_at','desc')->get();
+        $invoice = invoice::where('user_id',auth()->user()->id)->where('status',false)->orderBy('created_at','desc')->get();
 
         return view('invoice.list_online_manual',['invoice' => $invoice]);
     }//end method
@@ -448,13 +451,13 @@ class invoiceController extends Controller
 
     public function invoice_online_manual_process(Request $request)
     {
-            $user_email =auth()->user()->email;
+            $user_id =auth()->user()->id;
 
             // validation for amount page
             $validated = $request->validate([
-                'reference_no' =>  ['required',Rule::unique('payment_methods')->where(function($query) use ($user_email)
+                'reference_no' =>  ['required',Rule::unique('payment_methods')->where(function($query) use ($user_id)
                 {
-                    return $query->where('user_email', $user_email); // Adjust as necessary
+                    return $query->where('user_id', $user_id); // Adjust as necessary
                 })],
                 'invoice_id' => 'required',
             ]);
@@ -466,7 +469,7 @@ class invoiceController extends Controller
             $payment_method->tender = invoice::where('invoice_id', $validated['invoice_id'])->first()->total;
             $payment_method->reference_no = $validated['reference_no'];
             $payment_method->status = true;
-            $payment_method->user_email = auth()->user()->email;
+            $payment_method->user_id = auth()->user()->id;
             $payment_method->save();
 
             invoice::where('invoice_id', $validated['invoice_id'])->update(['status' => true]);

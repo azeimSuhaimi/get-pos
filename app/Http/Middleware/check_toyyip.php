@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Crypt;
+use App\Models\toyyibpay;
 
 class check_toyyip
 {
@@ -16,7 +17,9 @@ class check_toyyip
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Crypt::decryptString(auth()->user()->toyyip_key) == null && Crypt::decryptString(auth()->user()->toyyip_category) == null)
+        $toyyibpay = toyyibpay::where('user_id',auth()->user()->id)->first();
+
+        if(Crypt::decryptString($toyyibpay->toyyip_key) == null && Crypt::decryptString($toyyibpay->toyyip_category) == null)
         {
             abort(403,'Unauthorized You must setting Toyyip pay key and category.');
         }

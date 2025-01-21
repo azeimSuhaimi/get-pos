@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('ic')->nullable();
             $table->string('address')->nullable();
             $table->integer('point')->default(0);
-            $table->string('user_email');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

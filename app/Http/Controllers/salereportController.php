@@ -35,16 +35,16 @@ class salereportController extends Controller
             $Start = Carbon::createFromFormat('Y-m-d', $validated['date'])->startOfDay();  // First moment of the day (00:00:00)
             $End = Carbon::createFromFormat('Y-m-d', $validated['date'])->endOfDay();
 
-            $countexpense = expense::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->count('amount');
-            $totalexpense = expense::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->sum('amount');
+            $countexpense = expense::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->count('amount');
+            $totalexpense = expense::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->sum('amount');
 
-            $totalsale = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('subtotal');
-            $totaltransaction = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->count('invoice_id');
-            $totalgrosssale = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('total');
-            $totaltax = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('tax');
+            $totalsale = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('subtotal');
+            $totaltransaction = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->count('invoice_id');
+            $totalgrosssale = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('total');
+            $totaltax = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('tax');
 
-            $totalpaymenttypecash = payment_method::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->where('payment_type', 'CASH')->get();
-            $payment_method = payment_method::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->select('payment_type',
+            $totalpaymenttypecash = payment_method::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->where('payment_type', 'CASH')->get();
+            $payment_method = payment_method::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->select('payment_type',
             \DB::raw('sum(tender) as total'),
             \DB::raw('MAX(invoice_id) as invoice'),) 
             ->groupBy('payment_type') 
@@ -78,7 +78,7 @@ class salereportController extends Controller
                 'date' => 'required|date',
             ]);
 
-            $company = company::where('user_email',auth()->user()->email)->first();
+            $company = company::where('user_id',auth()->user()->id)->first();
 
            
 
@@ -86,16 +86,16 @@ class salereportController extends Controller
             $Start = Carbon::createFromFormat('Y-m-d', $validated['date'])->startOfDay();  // First moment of the day (00:00:00)
             $End = Carbon::createFromFormat('Y-m-d', $validated['date'])->endOfDay();
 
-            $countexpense = expense::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->count('amount');
-            $totalexpense = expense::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->sum('amount');
+            $countexpense = expense::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->count('amount');
+            $totalexpense = expense::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->sum('amount');
 
-            $totalsale = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('subtotal');
-            $totaltransaction = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->count('invoice_id');
-            $totalgrosssale = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('total');
-            $totaltax = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('tax');
+            $totalsale = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('subtotal');
+            $totaltransaction = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->count('invoice_id');
+            $totalgrosssale = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('total');
+            $totaltax = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->sum('tax');
 
-            $totalpaymenttypecash = payment_method::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->where('payment_type', 'CASH')->get();
-            $payment_method = payment_method::where('user_email',auth()->user()->email)->whereBetween('created_at', [$Start,$End])->where('status', true)->select('payment_type',
+            $totalpaymenttypecash = payment_method::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->where('payment_type', 'CASH')->get();
+            $payment_method = payment_method::where('user_id',auth()->user()->id)->whereBetween('created_at', [$Start,$End])->where('status', true)->select('payment_type',
             \DB::raw('sum(tender) as total'),
             \DB::raw('MAX(invoice_id) as invoice'),) 
             ->groupBy('payment_type') 

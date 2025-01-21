@@ -43,4 +43,10 @@ return [
         'redirect' => env('GOOGLE_REDIRECT'),
     ],
 
+    'linkedin' => [   
+        'client_id' => env('LINKEDIN_CLIENT_ID'),
+        'client_secret' => env('LINKEDIN_CLIENT_SECRET'),
+        'redirect' => env('LINKEDIN_REDIRECT'),
+    ],
+
 ];

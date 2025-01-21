@@ -22,7 +22,7 @@ class employeeController extends Controller
     // list all employee 
     public function index()
     {
-        $employee = employee::where('user_email',auth()->user()->email)->orderBy('created_at','desc')->get(); // get all employee 
+        $employee = employee::where('user_id',auth()->user()->id)->orderBy('created_at','desc')->get(); // get all employee 
 
         return view('employee.index',['employee' => $employee]);
     }//end method
@@ -36,29 +36,29 @@ class employeeController extends Controller
     // store new employee data
     public function store(Request $request)
     {
-        $user_email =auth()->user()->email;
+        $user_id =auth()->user()->id;
 
         // validated new employee data 
         $validated = $request->validate([
             
             'name' => 'required|string',
-            'email' => ['required','email',Rule::unique('employees')->where(function($query) use ($user_email)
+            'email' => ['required','email',Rule::unique('employees')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
-            'phone' => ['required','numeric',Rule::unique('employees')->where(function($query) use ($user_email)
+            'phone' => ['required','numeric',Rule::unique('employees')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
-            'work_id' => ['required','string',Rule::unique('employees')->where(function($query) use ($user_email)
+            'work_id' => ['required','string',Rule::unique('employees')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
             'birthday' => 'required',
             'gender' => 'required|string',
-            'ic' => ['required','numeric',Rule::unique('employees')->where(function($query) use ($user_email)
+            'ic' => ['required','numeric',Rule::unique('employees')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
             'address' => 'required',
             'address2' => 'required',
@@ -78,9 +78,10 @@ class employeeController extends Controller
         $employee->ic = $validated['ic'];
         $employee->work_id = $validated['work_id'];
         $employee->address = $validated['address'];
+        $employee->address2 = $validated['address2'];
         $employee->position = $validated['position'];
         $employee->date_register = $now;
-        $employee->user_email = auth()->user()->email;
+        $employee->user_id = auth()->user()->id;
         $employee->save();
 
         // Manually fire the Registered event
@@ -190,29 +191,29 @@ class employeeController extends Controller
     //update employee data 
     public function update(Request $request)
     {
-        $user_email =auth()->user()->email;
+        $user_id =auth()->user()->id;
 
         // validate data employee update base rule
         $validated = $request->validate([
             'id' => 'required',
             'name' => 'required|string',
-            'email' =>['required','email',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+            'email' =>['required','email',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })] ,
-            'phone' => ['required','numeric',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+            'phone' => ['required','numeric',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
-            'work_id' =>['required','string',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+            'work_id' =>['required','string',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
             'birthday' => 'required',
             'gender' => 'required|string',
-            'ic' =>['required','numeric',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+            'ic' =>['required','numeric',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })] ,
             'address' => 'required',
             'address2' => 'required',

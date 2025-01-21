@@ -20,6 +20,7 @@ use Illuminate\Auth\Events\Registered;
 use App\Models\user;
 use App\Models\activity_log;
 use App\Models\company;
+use App\Models\toyyibpay;
 
 class userController extends Controller
 {
@@ -168,16 +169,18 @@ class userController extends Controller
 
     public function activity_log()
     {
-        $activity_log = activity_log::where('user_email',auth()->user()->email)->orderBy('created_at','desc')->get();
+        $activity_log = activity_log::where('user_id',auth()->user()->id)->orderBy('created_at','desc')->get();
         return view('user.activity_log',['activity_log' => $activity_log]);
     }//end method
 
     public function account_setting()
     {
-        $company = company::where('user_email',auth()->user()->email)->first();
+        $company = company::where('user_id',auth()->user()->id)->first();
+        $toyyibpay = toyyibpay::where('user_id',auth()->user()->id)->first();
 
         $data = [
-            'company' => $company
+            'company' => $company,
+            'toyyibpay' => $toyyibpay
         ];
         return view('user.account_setting',$data);
     }// end method
@@ -192,10 +195,24 @@ class userController extends Controller
         ]);
 
         //store data update to database
-        $user = user::find(auth()->user()->id);
-        $user->toyyip_key = Crypt::encryptString($validated['toyyip_key']) ;
-        $user->toyyip_category = Crypt::encryptString($validated['toyyip_category']);
-        $user->save();
+        $user = toyyibpay::where('user_id',auth()->user()->id)->first();
+        if($user)
+        {
+            $user->toyyip_key = Crypt::encryptString($validated['toyyip_key']) ;
+            $user->toyyip_category = Crypt::encryptString($validated['toyyip_category']);
+            $user->save();
+        }
+        else
+        {
+            $user = new toyyibpay;
+            $user->toyyip_key = Crypt::encryptString($validated['toyyip_key']) ;
+            $user->toyyip_category = Crypt::encryptString($validated['toyyip_category']);
+            $user->user_id = auth()->user()->id;
+            $user->save();
+        }
+
+
+
 
         activity_log::addActivity('update toyyip pay ',' change it toyyip pay key and category ');
 

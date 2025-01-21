@@ -41,13 +41,13 @@
                     </h3>
 
                     <div class=" mb-3">
-                        <label for="file-input" class="form-label @error('file') is-invalid @enderror">Select Files Here</label>
-                        <input  class="form-control" name="file" id="file-input" type="file" placeholder="" />
-                        
-                    </div>
+                        <label for="file-input" class="form-label ">Select Files Here</label>
+                        <input  class="form-control @error('file') is-invalid @enderror" name="file" id="file-input" type="file" placeholder="" />
                         @error('file')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
                         @enderror
+                    </div>
+
 
                         <div class="text-center">
                             <button type="submit" class="btn btn-primary">Edit Image</button>

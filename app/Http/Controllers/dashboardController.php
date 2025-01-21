@@ -48,29 +48,29 @@ class dashboardController extends Controller
         $thisYearEnd = Carbon::now()->endOfYear(); // Last day of this year at 23:59:59
 
        
-        $totalsaleToday = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$todayStart,$todayEnd])->where('status', true)->sum('subtotal');
-        $totalsaleYesterday = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at',[$yesterdayStart,$yesterdayEnd])->where('status', true)->sum('subtotal');
-        $totalsaleMonth = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at',[$thisMonthStart,$thisMonthEnd])->where('status', true)->sum('subtotal');
-        $totalsaleYear = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at',[$thisYearStart,$thisYearEnd])->where('status', true)->sum('subtotal');
+        $totalsaleToday = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at', [$todayStart,$todayEnd])->where('status', true)->sum('subtotal');
+        $totalsaleYesterday = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at',[$yesterdayStart,$yesterdayEnd])->where('status', true)->sum('subtotal');
+        $totalsaleMonth = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at',[$thisMonthStart,$thisMonthEnd])->where('status', true)->sum('subtotal');
+        $totalsaleYear = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at',[$thisYearStart,$thisYearEnd])->where('status', true)->sum('subtotal');
 
-        $customerCountToday = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at', [$todayStart,$todayEnd])->where('status', true)->count('invoice_id');
-        $customerCountYesterday = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at',[$yesterdayStart,$yesterdayEnd])->where('status', true)->count('invoice_id');
-        $customerCountMonth = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at',[$thisMonthStart,$thisMonthEnd])->where('status', true)->count('invoice_id');
-        $customerCountYear = invoice::where('user_email',auth()->user()->email)->whereBetween('created_at',[$thisYearStart,$thisYearEnd])->where('status', true)->count('invoice_id');
+        $customerCountToday = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at', [$todayStart,$todayEnd])->where('status', true)->count('invoice_id');
+        $customerCountYesterday = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at',[$yesterdayStart,$yesterdayEnd])->where('status', true)->count('invoice_id');
+        $customerCountMonth = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at',[$thisMonthStart,$thisMonthEnd])->where('status', true)->count('invoice_id');
+        $customerCountYear = invoice::where('user_id',auth()->user()->id)->whereBetween('created_at',[$thisYearStart,$thisYearEnd])->where('status', true)->count('invoice_id');
 
         // Fetch activities sorted by most recent
-        $activities = activity_log::where('user_email',auth()->user()->email)->orderBy('created_at', 'desc')->limit(6)->get();
+        $activities = activity_log::where('user_id',auth()->user()->id)->orderBy('created_at', 'desc')->limit(6)->get();
 
-        $itemsWithTotalQuantityToday = invoice_detail::whereBetween('created_at', [$todayStart,$todayEnd])->where('user_email', auth()->user()->email)->select('shortcode',
+        $itemsWithTotalQuantityToday = invoice_detail::whereBetween('created_at', [$todayStart,$todayEnd])->where('user_id', auth()->user()->id)->select('shortcode',
         \DB::raw('COUNT(quantity) as total_quantity'), 
         \DB::raw('MAX(name) as name'), // Pick the first 'name' (or MAX, MIN, etc.)
         \DB::raw('MAX(price) as price')) 
         ->groupBy('shortcode') 
         ->get();
 
-        $invoice = invoice::whereBetween('created_at', [$todayStart,$todayEnd])->where('user_email',auth()->user()->email)->orderBy('created_at', 'desc')->get();
+        $invoice = invoice::whereBetween('created_at', [$todayStart,$todayEnd])->where('user_id',auth()->user()->id)->orderBy('created_at', 'desc')->get();
 
-        $items_low_stock = item::where('user_email',auth()->user()->email)->where('quantity','<',10)->where('category','retail')->orderBy('quantity','desc')->get();
+        $items_low_stock = item::where('user_id',auth()->user()->id)->where('quantity','<',10)->where('category','retail')->orderBy('quantity','desc')->get();
 
         //echo $totalsaleToday;
         $data = [
@@ -100,7 +100,7 @@ class dashboardController extends Controller
             'email' => 'required|email',
         ]);
 
-        $company = company::where('user_email',auth()->user()->email)->first();
+        $company = company::where('user_id',auth()->user()->id)->first();
         $payment_type = payment_type::all();
 
         $datas = [
@@ -147,7 +147,7 @@ class dashboardController extends Controller
               //dd($obj);
               $invoice = invoice::firstWhere('invoice_id', $validated['order_id']);
 
-              $company = company::where('user_email',$invoice->user_email)->first();
+              $company = company::where('user_id',$invoice->user_id)->first();
               $payment_type = payment_type::all();
               
         $datas = [
@@ -173,7 +173,7 @@ class dashboardController extends Controller
                 $payment_method->tender = invoice::where('invoice_id', $validated['order_id'])->first()->total;
                 $payment_method->reference_no = $validated['transaction_id'];
                 $payment_method->status = true;
-                $payment_method->user_email = auth()->user()->email;
+                $payment_method->user_id = auth()->user()->id;
                 $payment_method->save();
 
                 invoice::where('invoice_id', $validated['order_id'])->update(['status' => true]);

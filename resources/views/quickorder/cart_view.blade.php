@@ -52,19 +52,19 @@
 
                                                 <form action="{{route('quick.update_quantity_page')}}" method="get">
                                                     @csrf
-                                                    <input type="hidden" name="user_email"  value="{{$validated['user_email']}}">
+                                                    <input type="hidden" name="user_id"  value="{{$validated['user_id']}}">
                                                     <input type="hidden" name="id" value="{{$row->id}}">
                                                     <input type="hidden" name="rowid" value="{{$row->rowId}}">
                                                     <button type="submit" class="btn btn-warning"><i class="bi bi-plus"></i></button>
                                                 </form>
                                                 <form action="{{route('quick.add_remark')}}" method="get">
                                                     @csrf
-                                                    <input type="hidden" name="user_email"  value="{{$validated['user_email']}}">
+                                                    <input type="hidden" name="user_id"  value="{{$validated['user_id']}}">
                                                     <input type="hidden" name="rowid"  value="{{$row->rowId}}">
                                                     
                                                     <button type="submit" class="btn btn-info"><i class="bi bi-pencil"></i></button>
                                                 </form>
-                                                <form  action="{{route('quick.remove.item').'?user_email='.$validated['user_email']}}" method="post">
+                                                <form  action="{{route('quick.remove.item').'?user_id='.$validated['user_id']}}" method="post">
                                                     @csrf
                                                     <input type="hidden" name="rowid"  value="{{$row->rowId}}">
                                                     <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
@@ -123,7 +123,7 @@
                   <h5 class="card-title">   </h5>
             
                   <!-- Multi Columns Form -->
-                  <form class="" method="post" onsubmit="confirmAndSubmit(this)" action="{{route('quick.cart.checkout').'?user_email='.$validated['user_email']}}">
+                  <form class="" method="post" onsubmit="confirmAndSubmit(this)" action="{{route('quick.cart.checkout').'?user_id='.$validated['user_id']}}">
             
                     @csrf
                     <div class="row mb-3">

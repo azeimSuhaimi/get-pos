@@ -11,7 +11,7 @@
     <div class="text-end mt-5">
         <form autocomplete="off" action="{{route('quick.cart.view')}}" method="get">
             @csrf
-            <input type="hidden" name="user_email"  value="{{$validated['user_email']}}">
+            <input type="hidden" name="user_id"  value="{{$validated['user_id']}}">
             <button class="btn btn-danger" type="submit">Close</button>
         </form>
     </div>   
@@ -22,7 +22,7 @@
             Update Quantity On Item
         </div>
         <div class="card-body">
-            <form onsubmit="confirmAndSubmit(this)" action="{{route('quick.update_quantity').'?user_email='.$validated['user_email']}}" method="post">
+            <form onsubmit="confirmAndSubmit(this)" action="{{route('quick.update_quantity').'?user_id='.$validated['user_id']}}" method="post">
                 @csrf
                 <input type="hidden" name="id" value="{{$rowid->id}}">
                 <input type="hidden" name="rowid" value="{{$rowid->rowId}}">

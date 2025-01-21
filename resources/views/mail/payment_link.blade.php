@@ -64,7 +64,7 @@
     <p>Thank you for your prompt attention to this matter.</p>
         
     <?php 
-        $company = DB::table('companies')->where('user_email', auth()->user()->email)->first();
+        $company = DB::table('companies')->where('user_id', auth()->user()->id)->first();
     
     ?>
     <div class="">

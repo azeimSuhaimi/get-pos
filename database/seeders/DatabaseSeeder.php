@@ -31,15 +31,21 @@ class DatabaseSeeder extends Seeder
             'ic' => '962311115669',//
             'role' => 1,
             'date_register' => '2024-10-19 00:44:09',
-            //'toyyip_key' => Crypt::encryptString('da7oi8t1-1ifp-oa5q-crgp-kbfjwradgutt'),
-            //'toyyip_category' => Crypt::encryptString('ndp79143'),
+            
             'email_verified_at' => '2024-10-20 00:10:50',
             'key' => Str::random(32),
         ]);
 
         DB::table('companies')->insert([
-            'user_email' => 'abu22'.'@gmail.com',//
-            'logo' => 'logo.jpg',//
+            'user_id' => 1,//
+            'logo' => '42862.jpg',//
+
+        ]);
+
+        DB::table('toyyibpays')->insert([
+            'toyyip_key' => Crypt::encryptString('da7oi8t1-1ifp-oa5q-crgp-kbfjwradgutt'),
+            'toyyip_category' => Crypt::encryptString('ndp79143'),
+            'user_id' => 1,
 
         ]);
 
@@ -58,8 +64,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('companies')->insert([
-            'user_email' => 'ali22'.'@gmail.com',//
-            'logo' => 'logo.jpg',//
+            'user_id' => 2,//
+            'logo' => '42862.jpg',//
 
         ]);
 
@@ -74,7 +80,7 @@ class DatabaseSeeder extends Seeder
             'ic' => '962311115670',//
             'birthday' => '2023-10-10',//
             'position' => 'staff',//
-            'user_email' => 'abu22'.'@gmail.com',//
+            'user_id' => 1,//
             'date_register' => '2024-10-19 00:44:09',
         ]);
 
@@ -89,7 +95,7 @@ class DatabaseSeeder extends Seeder
             'ic' => '962311115668',//
             'birthday' => '2023-10-10',//
             'position' => 'staff',//
-            'user_email' => 'abu22'.'@gmail.com',//
+            'user_id' => 1,//
             'date_register' => '2024-10-19 00:44:09',
     
         ]);
@@ -101,7 +107,7 @@ class DatabaseSeeder extends Seeder
             'address' => '358 kg losong panglima perang, 21000, kuala terengganu, terengganu.',//
             'ic' => '962311115668',//
             'point' => 0,//
-            'user_email' => 'abu22'.'@gmail.com',//
+            'user_id' => 1,//
         ]);
 
         DB::table('items')->insert([
@@ -113,7 +119,7 @@ class DatabaseSeeder extends Seeder
             'cost' => 5,//
             'price' => 6,//
             'quantity' => 50,//
-            'user_email' => 'abu22'.'@gmail.com',//
+            'user_id' => 1,//
         ]);
 
         DB::table('payment_types')->insert([
@@ -165,7 +171,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('customer_orders')->insert([
-            'user_email' => 'abu22'.'@gmail.com',//
+            'user_id' => 1,//
             'name'=>'ddddd',
             'phone'=>'014',
             'item'=>'dsds',

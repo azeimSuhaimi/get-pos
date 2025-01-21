@@ -18,7 +18,9 @@ return new class extends Migration
             $table->double('tender')->nullable();
             $table->string('reference_no')->nullable();
             $table->boolean('status');
-            $table->string('user_email');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

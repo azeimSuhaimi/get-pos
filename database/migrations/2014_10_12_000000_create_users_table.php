@@ -27,7 +27,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->softDeletes();
             $table->string('key')->nullable('');
             $table->string('github_id')->nullable();
             $table->string('github_token')->nullable();
@@ -36,6 +36,10 @@ return new class extends Migration
             $table->string('google_id')->nullable();
             $table->string('google_token')->nullable();
             $table->string('google_refresh_token')->nullable();
+
+            $table->string('linkedin_id')->nullable();
+            $table->string('linkedin_token')->nullable();
+            $table->string('linkedin_refresh_token')->nullable();
         });
     }
 

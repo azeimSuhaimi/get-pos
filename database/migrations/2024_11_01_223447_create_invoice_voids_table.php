@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('invoice_voids', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_id');
-            $table->string('user_email');
             $table->double('subtotal');
             $table->double('tax');
             $table->double('total');
             $table->string('name_cust')->nullable();
             $table->string('phone_cust')->nullable();
             $table->string('email_cust')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

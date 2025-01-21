@@ -2,20 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class customer extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table = 'customers';
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $timestamps = true;
 
-    public static function list_by_email($email)
+    public static function list_by_id($id)
     {
-        $customer = customer::where('user_email',$email)->orderBy('created_at','desc')->get();
+        $customer = customer::where('user_id',$id)->orderBy('created_at','desc')->get();
 
         return $customer;
     }//end method
@@ -30,7 +31,7 @@ class customer extends Model
         $customer->email = $email;
         $customer->ic = $ic;
         $customer->point = 0;
-        $customer->user_email = auth()->user()->email;
+        $customer->user_id = auth()->user()->id;
         $customer->save();
 
         return true;

@@ -14,7 +14,7 @@
             Add Remark On Item
         </div>
         <div class="card-body">
-            <form onsubmit="confirmAndSubmit(this)" action="{{route('quick.update_remark').'?user_email='.$validated['user_email']}}" method="post">
+            <form onsubmit="confirmAndSubmit(this)" action="{{route('quick.update_remark').'?user_id='.$validated['user_id']}}" method="post">
                 @csrf
                 <input type="hidden" name="rowid"  value="{{$rowid}}">
                 <input type="hidden" name="description"  value="{{$remark->options->description}}">

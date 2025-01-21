@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('customer_orders', function (Blueprint $table) {
             $table->id();
-            $table->string('user_email');
             $table->string('name');
             $table->string('phone');
             $table->string('email')->nullable();
@@ -22,6 +21,9 @@ return new class extends Migration
             $table->string('date_month')->nullable();
             $table->boolean('contact')->default(false);
             $table->boolean('status')->default(false);
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

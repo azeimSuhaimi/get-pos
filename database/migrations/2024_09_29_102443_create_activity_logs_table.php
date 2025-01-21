@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('date');
             $table->string('time');
             $table->integer('unix_time');
-            $table->text('user_email');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

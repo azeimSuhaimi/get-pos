@@ -21,7 +21,7 @@ class employeeApiController extends Controller
                 
             ]);
 
-            $employee = employee::where('user_email',$email)->orderBy('created_at','desc')->get(); // get all employee 
+            $employee = employee::where('user_id',$email)->orderBy('created_at','desc')->get(); // get all employee 
     
             return response()->json(['data' =>$employee]);
         }//end method
@@ -41,7 +41,7 @@ class employeeApiController extends Controller
             {
                 return response()->json('sorry key given is not correct');
             }
-            $employee = employee::where('user_email',$user->email)->where('id',$validated['id'])->first();
+            $employee = employee::where('user_id',$user->id)->where('id',$validated['id'])->first();
             
             if(!$employee)
             {
@@ -74,29 +74,29 @@ class employeeApiController extends Controller
             return response()->json('sorry key given is not correct');
         }
 
-        $user_email = $user->email;
+        $user_id = $user->id;
 
         // validated new employee data 
         $validated = $request->validate([
             
             'name' => 'required|string',
-            'email' => ['required','email',Rule::unique('employees')->where(function($query) use ($user_email)
+            'email' => ['required','email',Rule::unique('employees')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
-            'phone' => ['required','numeric',Rule::unique('employees')->where(function($query) use ($user_email)
+            'phone' => ['required','numeric',Rule::unique('employees')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
-            'work_id' => ['required','string',Rule::unique('employees')->where(function($query) use ($user_email)
+            'work_id' => ['required','string',Rule::unique('employees')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
             'birthday' => 'required',
             'gender' => 'required|string',
-            'ic' => ['required','numeric',Rule::unique('employees')->where(function($query) use ($user_email)
+            'ic' => ['required','numeric',Rule::unique('employees')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
             'address' => 'required',
             'address2' => 'required',
@@ -133,7 +133,7 @@ class employeeApiController extends Controller
                     $employee->position = $validated['position'];
                     $employee->date_register = $now;
                     $employee->picture = $fileName;
-                    $employee->user_email = $user_email;
+                    $employee->user_id = $user_id;
                     
                     // store image name to database
                     $employee->picture = $fileName;
@@ -163,7 +163,7 @@ class employeeApiController extends Controller
         {
             return response()->json('sorry key given is not correct');
         }
-        $employee = employee::where('user_email',$user->email)->where('id',$validated['id'])->first();
+        $employee = employee::where('user_id',$user->id)->where('id',$validated['id'])->first();
         
         if(!$employee)
         {
@@ -190,36 +190,36 @@ class employeeApiController extends Controller
         {
             return response()->json('sorry key given is not correct');
         }
-        $employee = employee::where('user_email',$user->email)->where('id',$validated['id'])->first();
+        $employee = employee::where('user_id',$user->id)->where('id',$validated['id'])->first();
         
         if(!$employee)
         {
             return response()->json('sorry id employee given is not correct');
         }
 
-        $user_email = $user->email;
+        $user_id = $user->id;
 
         
             $validated = $request->validate([
                 'name' => 'required|string',
                 'id' => 'required',
-                'email' =>['required','email',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+                'email' =>['required','email',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_id)
                 {
-                    return $query->where('user_email', $user_email); // Adjust as necessary
+                    return $query->where('user_id', $user_id); // Adjust as necessary
                 })] ,
-                'phone' => ['required','numeric',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+                'phone' => ['required','numeric',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_id)
                 {
-                    return $query->where('user_email', $user_email); // Adjust as necessary
+                    return $query->where('user_id', $user_id); // Adjust as necessary
                 })],
-                'work_id' =>['required','string',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+                'work_id' =>['required','string',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_id)
                 {
-                    return $query->where('user_email', $user_email); // Adjust as necessary
+                    return $query->where('user_id', $user_id); // Adjust as necessary
                 })],
                 'birthday' => 'required',
                 'gender' => 'required|string',
-                'ic' =>['required','numeric',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+                'ic' =>['required','numeric',Rule::unique('employees')->ignore( $request->input('id'))->where(function($query) use ($user_id)
                 {
-                    return $query->where('user_email', $user_email); // Adjust as necessary
+                    return $query->where('user_id', $user_id); // Adjust as necessary
                 })] ,
                 'address' => 'required',
                 'address2' => 'required',
@@ -262,7 +262,7 @@ class employeeApiController extends Controller
             {
                 return response()->json('sorry key given is not correct');
             }
-            $employee = employee::where('user_email',$user->email)->where('id',$validated['id'])->first();
+            $employee = employee::where('user_id',$user->id)->where('id',$validated['id'])->first();
             
             if(!$employee)
             {
@@ -329,7 +329,7 @@ class employeeApiController extends Controller
         {
             return response()->json('sorry key given is not correct');
         }
-        $employee = employee::where('user_email',$user->email)->where('id',$validated['id'])->first();
+        $employee = employee::where('user_id',$user->id)->where('id',$validated['id'])->first();
         
         if(!$employee)
         {

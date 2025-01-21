@@ -21,7 +21,9 @@ return new class extends Migration
             $table->integer('quantity');
             $table->double('cost');
             $table->double('price');
-            $table->string('user_email');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
 
         });

@@ -2,28 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class customer_order extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table = 'customer_orders';
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $timestamps = true;
 
-    public static function customer_order_all_list($email)
+    public static function customer_order_all_list($id)
     {
-        $customer_order = customer_order::where('user_email',$email)->orderBy('created_at', 'desc')->get();
+        $customer_order = customer_order::where('user_id',$id)->orderBy('created_at', 'desc')->get();
 
         return $customer_order;
     }//end method
 
-    public static function customer_order_list_by_date($email,$date)
+    public static function customer_order_list_by_date($id,$date)
     {
-        $customer_order = customer_order::where('user_email',$email)->where('date_month', $date)->orderBy('created_at', 'desc')->get();
+        $customer_order = customer_order::where('user_id',$id)->where('date_month', $date)->orderBy('created_at', 'desc')->get();
 
         return $customer_order;
     }//end method
@@ -40,7 +41,7 @@ class customer_order extends Model
         $customer_order->item = $item;
         $customer_order->remark = $remark;
         $customer_order->date_month =  $date_month;
-        $customer_order->user_email = auth()->user()->email;
+        $customer_order->user_id = auth()->user()->id;
         $customer_order->save();
 
         return true;

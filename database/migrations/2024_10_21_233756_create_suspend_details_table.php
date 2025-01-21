@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('category');
             $table->text('remark')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

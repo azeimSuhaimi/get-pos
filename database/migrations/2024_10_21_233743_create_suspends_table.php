@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('suspends', function (Blueprint $table) {
             $table->id();
             $table->string('bill_id');
-            $table->string('user_email');
             $table->double('total');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

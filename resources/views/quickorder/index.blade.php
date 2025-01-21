@@ -38,7 +38,7 @@
             <label for="user_email" class="col-md-4 col-lg-3 col-form-label"> Search Shop Name <span class="text-danger">*</span></label>
             <div class="col-md-8 col-lg-9">
 
-              <input type="hidden" name="user_email" id="email">
+              <input type="hidden" name="user_id" id="email">
              
                 <input type="text" id="search-input" name="search" class="form-control" autocomplete="off">
                 <div id="autocomplete-suggestions" class="autocomplete-suggestions" style="display: none;"></div>
@@ -52,7 +52,7 @@
                     @endforeach
                 </select>
               -->
-              @error('user_email')
+              @error('user_id')
                   <span class=" invalid-feedback mt-2">{{ $message }}</span>
               @enderror
             </div>
@@ -84,7 +84,7 @@
                         if (data.length > 0) {
                             data.forEach(function(item) {
                                 $('#autocomplete-suggestions').append(
-                                    `<div class="autocomplete-suggestion" data-id="${item.user_email}" data-email="${item.user_email}">${item.shop_name}</div>`
+                                    `<div class="autocomplete-suggestion" data-id="${item.user_id}" data-email="${item.user_id}">${item.shop_name}</div>`
                                 );
                             });
                         } else {

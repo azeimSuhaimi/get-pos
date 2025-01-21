@@ -17,7 +17,7 @@
         @csrf
         <div class="col-md-12">
           <label for="toyyip_key" class="form-label">toyyip key</label>
-          <input type="text" class="form-control @error('toyyip_key') is-invalid @enderror" value="{{  Crypt::decryptString(auth()->user()->toyyip_key) }}" name="toyyip_key" id="toyyip_key">
+          <input type="text" class="form-control @error('toyyip_key') is-invalid @enderror" value="{{  ($toyyibpay ? Crypt::decryptString($toyyibpay->toyyip_key) : '')  }}" name="toyyip_key" id="toyyip_key">
           @error('toyyip_key')
               <span class=" invalid-feedback mt-2">{{ $message }}</span>
           @enderror
@@ -25,7 +25,7 @@
 
         <div class="col-md-12">
             <label for="toyyip_category" class="form-label">toyyip category</label>
-            <input type="text" class="form-control @error('toyyip_category') is-invalid @enderror" value="{{ Crypt::decryptString(auth()->user()->toyyip_category) }}" name="toyyip_category" id="toyyip_category">
+            <input type="text" class="form-control @error('toyyip_category') is-invalid @enderror" value="{{ ($toyyibpay ? Crypt::decryptString($toyyibpay->toyyip_category) : '') }}" name="toyyip_category" id="toyyip_category">
             @error('toyyip_category')
                 <span class=" invalid-feedback mt-2">{{ $message }}</span>
             @enderror
@@ -56,22 +56,23 @@
       <div class="row mb-3">
         <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Company Logo</label>
         <div class="col-md-8 col-lg-9">
-          <img style="width:200px; height: 160px;" id="image-preview" src="/logo/{{$company->logo}} " alt="Profile">
+          <img style="width:200px; height: 160px;" id="image-preview" src="{{asset('/logo/'.$company->logo)}} " alt="Profile">
           
         </div>
       </div>
   
       <div class="row mb-3">
-          <label for="file-input" class="col-md-4 col-lg-3 col-form-label @error('file') is-invalid @enderror">Select Files Here</label>
+          <label for="file-input" class="col-md-4 col-lg-3 col-form-label ">Select Files Here</label>
           <div class="col-md-8 col-lg-9">
   
-            <input  class="form-control" name="file" id="file-input" type="file" placeholder="" />
+            <input  class="form-control @error('file') is-invalid @enderror" name="file" id="file-input" type="file" placeholder="" />
+            @error('file')
+                <span class=" invalid-feedback mt-2">{{ $message }}</span>
+            @enderror
           </div>
           
       </div>
-          @error('file')
-              <span class=" invalid-feedback mt-2">{{ $message }}</span>
-          @enderror
+
   
           <div class="text-center">
               <button type="submit" class="btn btn-primary">Edit Image</button>

@@ -18,7 +18,7 @@ class customer_orderController extends Controller
                 'date' => 'required|date_format:Y-m', // Ensure the format is 'YYYY-MM'
             ]);
 
-            $customer_order = customer_order::customer_order_list_by_date(auth()->user()->email, $validated['date']);
+            $customer_order = customer_order::customer_order_list_by_date(auth()->user()->id, $validated['date']);
             
             $data = [
                 'request' => $request,
@@ -28,7 +28,7 @@ class customer_orderController extends Controller
         }
         else
         {
-            $customer_order = customer_order::customer_order_all_list(auth()->user()->email);
+            $customer_order = customer_order::customer_order_all_list(auth()->user()->id);
             
             $data = [
                 'request' => $request,
@@ -50,7 +50,7 @@ class customer_orderController extends Controller
     // store new  data
     public function store(Request $request)
     {
-        $user_email =auth()->user()->email;
+        
 
         // validated new  data 
         $validated = $request->validate([

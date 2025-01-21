@@ -32,11 +32,11 @@ class invoice_voidController extends Controller
             // Create Carbon instances for the start and end of the day
             $Start = Carbon::createFromFormat('Y-m-d', $validated['date'])->startOfDay();  // First moment of the day (00:00:00)
             $End = Carbon::createFromFormat('Y-m-d', $validated['date'])->endOfDay();
-            $invoice = invoice::where('user_email',auth()->user()->email)->where('status',true)->whereBetween('created_at', [$Start,$End])->orderBy('created_at','desc')->get();
+            $invoice = invoice::where('user_id',auth()->user()->id)->where('status',true)->whereBetween('created_at', [$Start,$End])->orderBy('created_at','desc')->get();
         }
         else{
 
-            $invoice = invoice::where('user_email',auth()->user()->email)->where('status',true)->whereDate('created_at', today())->orderBy('created_at','desc')->get();
+            $invoice = invoice::where('user_id',auth()->user()->id)->where('status',true)->whereDate('created_at', today())->orderBy('created_at','desc')->get();
         }
 
 
@@ -89,7 +89,7 @@ class invoice_voidController extends Controller
         // store payment cash sales 
         $invoice_void = new invoice_void;
         $invoice_void->invoice_id = $invoice->invoice_id;
-        $invoice_void->user_email = $invoice->user_email;
+        $invoice_void->user_id = $invoice->user_id;
         $invoice_void->subtotal = $invoice->subtotal;
         $invoice_void->tax = $invoice->tax;
         $invoice_void->total = $invoice->total;
@@ -104,7 +104,7 @@ class invoice_voidController extends Controller
             $payment_method_void->invoice_id = $pm->invoice_id;
             $payment_method_void->payment_type = $pm->payment_type;
             $payment_method_void->tender = $pm->tender;
-            $payment_method_void->user_email = $pm->user_email;
+            $payment_method_void->user_id = $pm->user_id;
             $payment_method_void->save();
         }
 
@@ -123,7 +123,7 @@ class invoice_voidController extends Controller
             $invoice_detail_void->description = $row->description;
             $invoice_detail_void->category = $row->category;
             $invoice_detail_void->remark = $row->remark;
-            $invoice_detail_void->user_email = $row->user_email;
+            $invoice_detail_void->user_id = $row->user_id;
             $invoice_detail_void->save();
 
 
@@ -141,7 +141,7 @@ class invoice_voidController extends Controller
 
     public function list_void()
     {
-        $invoice_void = invoice_void::where('user_email',auth()->user()->email)->orderBy('created_at','desc')->get();
+        $invoice_void = invoice_void::where('user_id',auth()->user()->id)->orderBy('created_at','desc')->get();
 
         return view('invoice_void.list_void',['invoice_void' => $invoice_void]);
     }//end method

@@ -31,11 +31,11 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link " aria-current="page" href="{{route('quick')}}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{route('quick.list').'?user_email='.$validated['user_email']}}">Shops</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{route('quick.list').'?user_id='.$validated['user_id']}}">Shops</a></li>
 
                     </ul>
                     <div class="d-flex">
-                        <a class="btn btn-outline-dark" href="{{route('quick.cart.view').'?user_email='.$validated['user_email']}}">
+                        <a class="btn btn-outline-dark" href="{{route('quick.cart.view').'?user_id='.$validated['user_id']}}">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
                             <span class="badge bg-dark text-white ms-1 rounded-pill">{{Cart::total()}}</span>

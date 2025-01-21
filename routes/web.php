@@ -334,3 +334,32 @@ Route::get('/auth/google/callback', function () {
     }
     return redirect(route('auth'))->with('error','accout or password is not exit');
 });
+
+
+
+
+Route::get('/auth/linkedin/redirect', function () {
+    return Socialite::driver('linkedin')->redirect();
+});
+ 
+Route::get('/auth/linkedin/callback', function () {
+    $linkedinUser = Socialite::driver('linkedin')->user();
+ 
+    $existingUser = User::where('email', $linkedinUser->email)->first();
+     //dd($googleUser);
+
+    if ($existingUser) {
+
+        $existingUser->linkedin_id = $linkedinUser->id;
+        $existingUser->linkedin_token = $linkedinUser->token;
+        $existingUser->save();
+
+        // Log the user in if they already exist
+        Auth::login($existingUser);
+        
+            return redirect('/dashboard');
+    } else{
+        //return redirect(route('auth'));
+    }
+    return redirect(route('auth'))->with('error','accout or password is not exit');
+});

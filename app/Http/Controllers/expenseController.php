@@ -13,7 +13,7 @@ class expenseController extends Controller
         public function index()
         {
             //get all list custmer data
-            $expense = expense::where('user_email',auth()->user()->email)->orderBy('created_at','desc')->get();
+            $expense = expense::where('user_id',auth()->user()->id)->orderBy('created_at','desc')->get();
     
             return view('expense.index',['expense' => $expense]);
         }//end method
@@ -26,7 +26,7 @@ class expenseController extends Controller
 
         public function store(Request $request)
         {
-            $user_email =auth()->user()->email;
+            $user_id =auth()->user()->id;
 
             // validation all input expense add
             $validated = $request->validate([
@@ -45,7 +45,7 @@ class expenseController extends Controller
             $expense->amount = $validated['amount'];
             $expense->receipt = $validated['receipt'];
             $expense->notes = $validated['notes'];
-            $expense->user_email = auth()->user()->email;
+            $expense->user_id = auth()->user()->id;
             $expense->save();
 
             activity_log::addActivity('add new details expense ',' add new expense '.$validated['description']);
@@ -72,7 +72,7 @@ class expenseController extends Controller
                             //update employee data 
     public function update(Request $request)
     {
-        $user_email =auth()->user()->email;
+        $user_id =auth()->user()->id;
 
             // validation all input expense 
             $validated = $request->validate([
@@ -100,7 +100,7 @@ class expenseController extends Controller
 
     public function remove (Request $request)
     {
-        $user_email =auth()->user()->email;
+        $user_id =auth()->user()->id;
 
             // validation all input expense 
             $validated = $request->validate([

@@ -189,7 +189,7 @@
                     @foreach ($itemsWithTotalQuantityToday as $row)
                       <?php 
                         $item = DB::table('items')
-                        ->where('user_email',auth()->user()->email)
+                        ->where('user_id',auth()->user()->id)
                         ->where('shortcode', $row->shortcode)
                         ->first();
                       

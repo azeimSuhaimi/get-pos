@@ -114,16 +114,17 @@
                   </div>
 
                   <div class="row mb-3">
-                      <label for="file-input" class="col-md-4 col-lg-3 col-form-label @error('file') is-invalid @enderror">Select Files Here</label>
+                      <label for="file-input" class="col-md-4 col-lg-3 col-form-label ">Select Files Here</label>
                       <div class="col-md-8 col-lg-9">
 
-                        <input  class="form-control" name="file" id="file-input" type="file" placeholder="" />
+                        <input  class="form-control @error('file') is-invalid @enderror" name="file" id="file-input" type="file" placeholder="" />
+                        @error('file')
+                            <span class=" invalid-feedback mt-2">{{ $message }}</span>
+                        @enderror
                       </div>
                       
                   </div>
-                      @error('file')
-                          <span class=" invalid-feedback mt-2">{{ $message }}</span>
-                      @enderror
+
 
                       <div class="text-center">
                           <button type="submit" class="btn btn-primary"><i class="bi bi-upload"></i></button>

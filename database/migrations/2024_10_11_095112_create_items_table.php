@@ -24,7 +24,9 @@ return new class extends Migration
             $table->boolean('status')->default(true);
             $table->string('quickorder_status')->default('false');
             $table->timestamps();
-            $table->string('user_email');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
 
         });
     }

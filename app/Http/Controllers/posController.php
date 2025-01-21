@@ -32,7 +32,7 @@ class posController extends Controller
             'shortcode' => 'required',
         ]);
 
-        $item = item::where('shortcode',$validated['shortcode'])->where('user_email',auth()->user()->email)->first();
+        $item = item::where('shortcode',$validated['shortcode'])->where('user_id',auth()->user()->id)->first();
 
         if($item === null)
         {
@@ -60,7 +60,7 @@ class posController extends Controller
 
     public function search_item()
     {
-        $item = item::where('user_email',auth()->user()->email)->get(); // get all items list
+        $item = item::where('user_id',auth()->user()->id)->get(); // get all items list
         return view('pos.searching',['items'=>$item]);
     }//end method
     public function update_quantity_page(Request $request)
@@ -181,7 +181,7 @@ class posController extends Controller
             // store data in suspend bill
             $suspend = new suspend;
             $suspend->bill_id = $bill_id;
-            $suspend->user_email = auth()->user()->email;
+            $suspend->user_id = auth()->user()->id;
             $suspend->total = Cart::total();
             $suspend->save();
 
@@ -211,7 +211,7 @@ class posController extends Controller
     // view list suspend bill 
     public function suspend_view(Request $request)
     {
-        $suspend = suspend::where('user_email',auth()->user()->email)->orderBy('created_at','desc')->get(); // get all list suspend bill
+        $suspend = suspend::where('user_id',auth()->user()->id)->orderBy('created_at','desc')->get(); // get all list suspend bill
         $u = 0;
         foreach($suspend as $row)
         {

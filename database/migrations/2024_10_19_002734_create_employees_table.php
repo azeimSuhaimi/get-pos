@@ -26,7 +26,9 @@ return new class extends Migration
             $table->string('position');
             $table->boolean('status')->default(true);
             $table->string('date_register')->nullable();
-            $table->string('user_email');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

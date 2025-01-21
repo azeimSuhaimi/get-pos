@@ -24,7 +24,7 @@
                             <!-- 
                             <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
                             -->
-                            <a class="btn btn-outline-dark flex-shrink-0" href="{{route('quick.add.item').'?user_email='.$validated['user_email'].'&shortcode='.$item->shortcode}}">
+                            <a class="btn btn-outline-dark flex-shrink-0" href="{{route('quick.add.item').'?user_id='.$validated['user_id'].'&shortcode='.$item->shortcode}}">
                                 <i class="bi-cart-fill me-1"></i>
                                 Add to cart
                             </a>

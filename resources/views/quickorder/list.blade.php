@@ -29,8 +29,8 @@
                                 </div>
                                 <!-- Product actions-->
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto mb-2" href="{{route('quick.view').'?user_email='.$validated['user_email'].'&shortcode='.$row->shortcode}}">View Item</a></div>
-                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{route('quick.add.item').'?user_email='.$validated['user_email'].'&shortcode='.$row->shortcode}}">Add to cart</a></div>
+                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto mb-2" href="{{route('quick.view').'?user_id='.$validated['user_id'].'&shortcode='.$row->shortcode}}">View Item</a></div>
+                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{route('quick.add.item').'?user_id='.$validated['user_id'].'&shortcode='.$row->shortcode}}">Add to cart</a></div>
                                 </div>
                             </div>
                         </div>

@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('itemredeens', function (Blueprint $table) {
             $table->id();
-            $table->string('user_email');
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('point');
             $table->boolean('status')->default(true);
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

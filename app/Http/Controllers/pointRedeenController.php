@@ -14,7 +14,7 @@ class pointRedeenController extends Controller
         //get all list item product
         public function index()
         {
-            $itemredeen = itemredeen::where('user_email',auth()->user()->email)->orderBy('created_at','desc')->get();
+            $itemredeen = itemredeen::where('user_id',auth()->user()->id)->orderBy('created_at','desc')->get();
     
             return view('pointredeen.index',['itemredeen' => $itemredeen]);
         }//end method
@@ -28,14 +28,14 @@ class pointRedeenController extends Controller
     // store new Item data
     public function store(Request $request)
     {
-        $user_email =auth()->user()->email;
+        $user_id =auth()->user()->id;
 
         // validated new items data 
         $validated = $request->validate([
             
-            'name' => ['required','string',Rule::unique('itemredeens')->where(function($query) use ($user_email)
+            'name' => ['required','string',Rule::unique('itemredeens')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
             'point' => 'required|integer',
             'description' => 'required|string',
@@ -48,7 +48,7 @@ class pointRedeenController extends Controller
         $item->name = $validated['name'];
         $item->point = $validated['point'];
         $item->description = $validated['description'];
-        $item->user_email = auth()->user()->email;
+        $item->user_id = auth()->user()->id;
         $item->save();
 
         activity_log::addActivity('Add New Redeem Item',' add new item Redeem '.$validated['name'].' into system');
@@ -104,14 +104,14 @@ class pointRedeenController extends Controller
                     //update item data 
     public function update(Request $request)
     {
-        $user_email =auth()->user()->email;
+        $user_id =auth()->user()->id;
 
         // validate data item update base rule
         $validated = $request->validate([
             'id' => 'required',
-            'name' => ['required','string',Rule::unique('itemredeens')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+            'name' => ['required','string',Rule::unique('itemredeens')->ignore( $request->input('id'))->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
             'point' => 'required|integer',
             'descriptions' => 'required',
@@ -168,7 +168,7 @@ class pointRedeenController extends Controller
     public function search_customer(Request $request)
     {
         //get all list custmer data
-        $customer = customer::list_by_email(auth()->user()->email);
+        $customer = customer::list_by_id(auth()->user()->id);
 
         return view('pointredeen.search_customer',['request'=>$request,'customer'=>$customer]);
     }//end method
@@ -202,7 +202,7 @@ class pointRedeenController extends Controller
         $customeritemredeen->description_item = $items->description;
         $customeritemredeen->point = $items->point;
         $customeritemredeen->id_customer = $validated['id_cust'];
-        $customeritemredeen->user_email = auth()->user()->email;
+        $customeritemredeen->user_id = auth()->user()->id;
         $customeritemredeen->save();
 
         $customer->point = $customer->point - $items->point;

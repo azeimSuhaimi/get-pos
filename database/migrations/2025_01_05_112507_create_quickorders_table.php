@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('quickorders', function (Blueprint $table) {
             $table->id();
             $table->string('barcode');
-            $table->string('user_email');
             $table->string('customer_email');
             $table->double('subtotal');
             $table->double('tax');
             $table->double('total');
             $table->boolean('status');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class activity_log extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $table = 'activity_logs';
     protected $primaryKey = 'id';
     protected $keyType = 'string';
@@ -27,7 +28,7 @@ class activity_log extends Model
         $activity_log->date = $date;
         $activity_log->time = $time;
         $activity_log->unix_time = $unixTimestamp;
-        $activity_log->user_email = auth()->user()->email;
+        $activity_log->user_id = auth()->user()->id;
         $activity_log->save();
 
         return true;

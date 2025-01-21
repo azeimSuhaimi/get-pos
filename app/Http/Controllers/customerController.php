@@ -16,7 +16,7 @@ class customerController extends Controller
     public function index()
     {
         //get all list custmer data
-        $customer = customer::list_by_email(auth()->user()->email);
+        $customer = customer::list_by_id(auth()->user()->id);
 
         return view('customer.index',['customer' => $customer]);
     }//end method
@@ -29,23 +29,23 @@ class customerController extends Controller
 
     public function store(Request $request)
     {
-        $user_email =auth()->user()->email;
+        $user_id =auth()->user()->id;
         //validation data input
         $validated = $request->validate([
             
             'name' => 'required|string',
             'address' => 'nullable|string',
-            'phone' => ['required','numeric',Rule::unique('customers')->where(function($query) use ($user_email)
+            'phone' => ['required','numeric',Rule::unique('customers')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
-            'email' => ['required','email',Rule::unique('customers')->where(function($query) use ($user_email)
+            'email' => ['required','email',Rule::unique('customers')->where(function($query) use ($user_id)
         {
-            return $query->where('user_email', $user_email); // Adjust as necessary
+            return $query->where('user_id', $user_id); // Adjust as necessary
         })],
-            'ic' => ['required','numeric',Rule::unique('customers')->where(function($query) use ($user_email)
+            'ic' => ['required','numeric',Rule::unique('customers')->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
         ]);
 
@@ -76,23 +76,23 @@ class customerController extends Controller
             //update employee data 
     public function update(Request $request)
     {
-        $user_email =auth()->user()->email;
+        $user_id =auth()->user()->id;
 
         // validate data employee update base rule
         $validated = $request->validate([
             'id' => 'required',
             'name' => 'required|string',
-            'email' =>['required','email',Rule::unique('customers')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+            'email' =>['required','email',Rule::unique('customers')->ignore( $request->input('id'))->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
-            'phone' => ['required','numeric',Rule::unique('customers')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+            'phone' => ['required','numeric',Rule::unique('customers')->ignore( $request->input('id'))->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })],
-            'ic' =>['required','numeric',Rule::unique('customers')->ignore( $request->input('id'))->where(function($query) use ($user_email)
+            'ic' =>['required','numeric',Rule::unique('customers')->ignore( $request->input('id'))->where(function($query) use ($user_id)
             {
-                return $query->where('user_email', $user_email); // Adjust as necessary
+                return $query->where('user_id', $user_id); // Adjust as necessary
             })] ,
             'address' => 'required',
             

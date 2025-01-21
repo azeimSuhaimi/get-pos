@@ -67,11 +67,20 @@
                 <p class="small mb-0"> <a  href="{{route('auth.forgot_password')}}">Forgot Password?</a></p>
             </div>
         </form>
-        <div class="col-12">
-            <p class="small mb-0">login with github <a href="/auth/github/redirect">login</a></p>
+        <hr>
+        <div class="col-12 mt-3">
+            <p class="small mb-0"> <a class="btn btn-primary w-100" href="/auth/github/redirect">login with GITHUB</a></p>
         </div>
+        <div class="col-12 mt-3">
+            <p class="small mb-0"> <a class="btn btn-primary w-100" href="/auth/google/redirect">login with GOOGLE</a></p>
+        </div>
+        <div class="col-12 mt-3">
+            <p class="small mb-0"> <a class="btn btn-primary w-100" href="/auth/linkedin/redirect">login with LINKEDIN</a></p>
+        </div>
+
+        <hr>
         <div class="col-12">
-            <p class="small mb-0">login with GOOGLE <a href="/auth/google/redirect">login</a></p>
+            <p class="small mb-0">quick order <a href="{{route('quick')}}">quick order list</a></p>
         </div>
     </div>
 </div>
