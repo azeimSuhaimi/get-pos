@@ -85,8 +85,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $user->ic = $ic;
         $user->password = Hash::make($ic);
         $user->date_register = $now;
-        $user->toyyip_key = Crypt::encryptString('');
-        $user->toyyip_category = Crypt::encryptString('');
+
         $user->key = Str::random(32);
         $user->save();
 

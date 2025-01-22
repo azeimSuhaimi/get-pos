@@ -68,7 +68,7 @@ class authController extends Controller
 
         $user = user::add_user($validated['name'],$validated['email'],$validated['phone'],$validated['ic']);
 
-        $company = company::add_company($validated['email']);
+        $company = company::add_company($user->id);
 
         // Manually fire the Registered event
         event(new Registered($user));

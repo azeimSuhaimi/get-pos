@@ -19,7 +19,11 @@ class check_toyyip
     {
         $toyyibpay = toyyibpay::where('user_id',auth()->user()->id)->first();
 
-        if(Crypt::decryptString($toyyibpay->toyyip_key) == null && Crypt::decryptString($toyyibpay->toyyip_category) == null)
+        if (!$toyyibpay) {
+            abort(404, 'ToyyibPay record not found for this user.');
+        }
+
+        if(Crypt::decryptString($toyyibpay->toyyip_key) == null || Crypt::decryptString($toyyibpay->toyyip_category) == null)
         {
             abort(403,'Unauthorized You must setting Toyyip pay key and category.');
         }

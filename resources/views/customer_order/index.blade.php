@@ -77,11 +77,11 @@
             <table class="table datatable table-hover">
               <thead>
                 <tr>
-                    <th>No</th>
+                    
                     <th>Date</th>
                     <th>Name.</th>
                     <th>Phone</th>
-                    <th>Email</th>
+                    
                     <th>Item</th>
                     <th>Remark</th>
                     <th>#</th>
@@ -92,11 +92,11 @@
                 @foreach ($customer_order as $row)
                   
                   <tr>
-                      <td>{{$loop->iteration}}</td>
+                      
                       <td>{{\Carbon\Carbon::parse($row->created_at)->format('d-m-y')}}</td>
                       <td>{{$row->name}}</td>
                       <td>{{$row->phone}}</td>
-                      <td>{{$row->email}}</td>
+                      
                       <td>{{$row->item}}</td>
                       <td>{{$row->remark}}</td>
                       <td>

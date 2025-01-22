@@ -76,7 +76,7 @@
         @foreach ($totalpaymenttypecash as $row)
         <?php 
           $item = DB::table('invoices')
-          ->where('user_email',auth()->user()->email)
+          ->where('user_id',auth()->user()->id)
           ->where('invoice_id', $row->invoice_id)
           ->first();
           $totalcash += $item->total

@@ -14,10 +14,10 @@ class company extends Model
     protected $keyType = 'string';
     public $timestamps = true;
 
-    public static function add_company($email)
+    public static function add_company($id)
     {
         $company = new company;
-        $company->user_email = $email;
+        $company->user_id = $id;
         $company->save();
 
         return $company;
