@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\item;
+use App\Models\company;
+use App\Models\purchase_detail;
+use App\Models\invoice;
+use App\Models\customer;
+use App\Models\invoice_detail;
+use App\Models\toyyibpay;
+use App\Models\quickorder;
+use App\Mail\quickordermail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Support\Facades\Mail;
-
-use App\Models\quickorder;
 use App\Models\quickorder_detail;
-use App\Models\company;
-use App\Models\item;
-use App\Mail\quickordermail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Crypt;
+use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Mail\toyyibpay_link;
 
 class quickorderController extends Controller
 {
@@ -129,6 +135,7 @@ class quickorderController extends Controller
         {
             $validated = $request->validate([
     
+                
                 'email' => 'required|email',
                 'user_id' => 'required',
             ]);
@@ -325,5 +332,169 @@ class quickorderController extends Controller
 
         return redirect(route('quick.cart.view').'?user_id='.$validated['user_id'])->with('error', 'Item added have a problem.');
     }//emd method
+
+    public function cart_checkout_pay_online(Request $request)
+    {
+        $validated = $request->validate([
+    
+            'name' => 'required',
+            'email' => 'required|email',
+            'user_id' => 'required',
+        ]);
+
+                // Get today's date in 'Y-m-d' format
+                $today = Carbon::today()->toDateString();
+
+                // Find the highest number for today's date, default to 0 if no records
+                $lastInvoice = Invoice::whereDate('created_at', $today)
+                                        ->orderByDesc('daily_unique_number')
+                                        ->first();
+        
+                // If no record exists today, start from 1, otherwise increment the last number
+                $newNumber = $lastInvoice ? $lastInvoice->daily_unique_number + 1 : 1;
+
+
+                // get date today for bill 
+                $now = Carbon::now();
+                $date = $now->format('d-m-Y');
+                $time = $now->format('H:i:s');
+                
+                $bill_id = Carbon::now()->timestamp; // get timestamp for bill id
+        
+                // store payment cash sales 
+                $invoice = new invoice;
+                $invoice->invoice_id = $bill_id;
+                $invoice->user_id = $validated['user_id'];
+                
+                $invoice->subtotal = Cart::subtotal();
+                $invoice->tax = round(Cart::tax() * 20)/ 20;
+                $invoice->total = round(Cart::total() * 20)/ 20;
+                $invoice->status = false;
+                $invoice->name = $validated['name'];
+                $invoice->daily_unique_number = $newNumber;
+
+                $customer = customer::where('email',$validated['email'])->where('user_id',$validated['user_id'])->first();
+                if($customer)
+                {
+                    $customer->point += Cart::subtotal();
+                    $customer->save();
+        
+                    $invoice->phone_cust = $customer->phone;
+                    $invoice->email_cust = $customer->email;
+                    $invoice->name_cust = $customer->name;
+                }
+                $invoice->save();
+
+
+                $toyyibpay = toyyibpay::where('user_id',$validated['user_id'])->first();
+
+                $some_data = array(
+                    'userSecretKey'=> Crypt::decryptString($toyyibpay->toyyip_key), // your secret key here in accout
+                    'catname' => 'point of sale ',
+                    'catdescription' => 'payment online ',
+                    'categoryCode'=> Crypt::decryptString($toyyibpay->toyyip_category),
+                    'billName'=>'product on the list',
+                    'billDescription'=>'Online Payment Method System P.O.S',
+                    'billPriceSetting'=>0,
+                    'billPayorInfo'=>0,
+                    'billAmount'=>round(Cart::total() * 20)/ 20 * 100,
+                    'billReturnUrl'=>route('invoice.payment.status'), //tukar link disini
+                    'billCallbackUrl'=>route('invoice'),
+                    'billExternalReferenceNo' => $bill_id , // reference number sendiri bukan toyyyipay punya macam number resit
+                    'billTo'=>''.$validated['name'],
+                    'billEmail'=>''.$validated['email'],
+                    //'billPhone'=>''.$validated['phone_cust'],
+                    'billSplitPayment'=>0,
+                    'billSplitPaymentArgs'=>'',
+                    'billPaymentChannel'=>'0',
+                    'billContentEmail'=>'Thank you for purchasing our product!',
+                    //'billExpiryDate'=>'17-12-2020 17:00:00',
+                    'billChargeToCustomer'=>'',
+                    'billExpiryDays'=>1
+                ); 
+    
+                $curl = curl_init();
+    
+                curl_setopt($curl, CURLOPT_POST, 1);
+                curl_setopt($curl, CURLOPT_URL, 'https://dev.toyyibpay.com/index.php/api/createBill');  //PROVIDE API LINK HERE
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $some_data);
+    
+                $result = curl_exec($curl);
+                $info = curl_getinfo($curl);  
+                curl_close($curl);
+                $obj = json_decode($result);
+    
+    
+    
+                $company = company::where('user_id',$validated['user_id'])->first();
+    
+                $datas = [
+                    'company' => $company,
+                    'billcode'=> $obj[0]->BillCode,
+                    'invoice' => invoice::firstWhere('invoice_id', $bill_id),
+                    'invoice_detail' => invoice_detail::where('invoice_id', $bill_id)->get(),
+                    
+                ];
+        
+                Mail::to($validated['email'])->send(new toyyibpay_link( $datas));
+
+                        // store items list for bill
+        foreach(Cart::content() as $row)
+        {
+            if($customer )
+            {
+                $purchase_detail = new purchase_detail;
+                $purchase_detail->id_cust = $customer->id;
+                $purchase_detail->invoice_id = $bill_id;
+                
+                $purchase_detail->shortcode = $row->id;
+                $purchase_detail->name = $row->name;
+                $purchase_detail->quantity = $row->qty;
+                $purchase_detail->price = $row->price;
+                $purchase_detail->cost = $row->options->cost;
+                $purchase_detail->description = $row->options->description;
+                $purchase_detail->user_id = $validated['user_id'];
+                $purchase_detail->save();
+
+            }
+
+            //store data to list item buy
+            $invoice_detail = new invoice_detail;
+            $invoice_detail->invoice_id = $bill_id;
+            $invoice_detail->shortcode = $row->id;
+            $invoice_detail->name = $row->name;
+            $invoice_detail->quantity = $row->qty;
+            $invoice_detail->price = $row->price;
+            $invoice_detail->cost = $row->options->cost;
+            $invoice_detail->description = $row->options->description;
+            $invoice_detail->category = $row->options->category;
+            $invoice_detail->remark = $row->options->remark;
+            $invoice_detail->user_id = $validated['user_id'];
+            $invoice_detail->save();
+
+            if($row->options->category== 'retail')
+            {
+
+                    //store data update to database
+                    $item = item::where('shortcode',$row->id)->first();
+                    $item->quantity = $item->quantity - $row->qty;
+                    $item->save();
+                
+
+            }
+
+        }//end loop product details
+        
+
+        Cart::destroy();// remove all items in cart 
+
+
+            return redirect(route('quick.list').'?user_id='.$validated['user_id'])->with('success', 'link send to customer!!!');
+
+        
+
+
+    }//end method
 
 }//end class

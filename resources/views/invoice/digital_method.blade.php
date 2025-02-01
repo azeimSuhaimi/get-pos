@@ -76,6 +76,15 @@
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
                         @enderror
                     </div>
+
+                    
+                    <div class=" mb-3">
+                        <input type="text" name="name" class="form-control @error('name') is-invalid @enderror " id="name" value="{{ old('name') }}" placeholder="name">
+                        
+                        @error('name')
+                            <span class=" invalid-feedback mt-2">{{ $message }}</span>
+                        @enderror
+                    </div>
             
                     <div class="mb-3">
                         <input type="text" class="form-control @error('reference_no') is-invalid @enderror" name="reference_no" id="reference_no" value="{{ old('reference_no') }}" placeholder="reference no">

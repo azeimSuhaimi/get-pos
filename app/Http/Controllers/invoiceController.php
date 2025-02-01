@@ -158,6 +158,7 @@ class invoiceController extends Controller
             $validated = $request->validate([
                 'amount' => 'required|numeric|gte:'.round(Cart::total() * 20)/ 20,
                 'payment_type' => 'required',
+                'name' => 'nullable',
             ]);
         }
 
@@ -168,6 +169,7 @@ class invoiceController extends Controller
                 'reference_no' => 'required|string',
                 'payment_type' => 'required',
                 'DIGITAL_PAY' => 'required',
+                'name' => 'nullable',
             ]);
         }
 
@@ -179,6 +181,7 @@ class invoiceController extends Controller
                 'reference_no' => 'required|string',
                 'payment_type' => 'required',
                 'HYBRID' => 'required',
+                'name' => 'nullable',
             ]);
         }
 
@@ -191,8 +194,21 @@ class invoiceController extends Controller
                 'phone_cust' => 'required',
                 'payment_type' => 'required',
                 'TOYYIBPAY' => 'required',
+                'name' => 'nullable',
             ]);
         }
+
+        // Get today's date in 'Y-m-d' format
+        $today = Carbon::today()->toDateString();
+
+        // Find the highest number for today's date, default to 0 if no records
+        $lastInvoice = Invoice::whereDate('created_at', $today)
+                                ->orderByDesc('daily_unique_number')
+                                ->first();
+
+        // If no record exists today, start from 1, otherwise increment the last number
+        $newNumber = $lastInvoice ? $lastInvoice->daily_unique_number + 1 : 1;
+
 
 
         // get date today for bill 
@@ -210,6 +226,8 @@ class invoiceController extends Controller
         $invoice->subtotal = Cart::subtotal();
         $invoice->tax = round(Cart::tax() * 20)/ 20;
         $invoice->total = round(Cart::total() * 20)/ 20;
+        $invoice->name = $validated['name'];
+        $invoice->daily_unique_number = $newNumber;
 
         if($request->input('TOYYIBPAY') == 'TOYYIBPAY')
         {

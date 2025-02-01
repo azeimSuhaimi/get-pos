@@ -63,14 +63,17 @@
     <p>Should you have any questions or need further clarification regarding the payment, please don't hesitate to contact us.</p>
     <p>Thank you for your prompt attention to this matter.</p>
         
-    <?php 
-        $company = DB::table('companies')->where('user_id', auth()->user()->id)->first();
-    
-    ?>
-    <div class="">
-        <p>Best regards,<br>{{$company->company_name}} {{$company->company_id}}</p>
-        <p>Contact Information: {{$company->phone}}</p>
-    </div>
+    @if (auth()->user() != null)
+        <?php 
+            $company = DB::table('companies')->where('user_id', auth()->user()->id)->first();
+
+        ?>
+        <div class="">
+            <p>Best regards,<br>{{$company->company_name}} {{$company->company_id}}</p>
+            <p>Contact Information: {{$company->phone}}</p>
+        </div>
+    @endif
+
 
 </div>
 

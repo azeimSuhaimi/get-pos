@@ -63,6 +63,11 @@
     <div class="order-details">
         
         <p><strong>Date:</strong> #{{$invoice->created_at}}</p>
+        
+        @if ($invoice->name)
+            <p><strong>Date:</strong> name customer {{$invoice->name}}</p>
+        @endif
+
         @if ($invoice->email_cust !== null)
             <p><strong>Name:</strong> #{{$invoice->name_cust}}</p>
             <p><strong>Email:</strong> #{{$invoice->email_cust}}</p>
@@ -127,7 +132,7 @@
         
     </div>
     <?php 
-        $company = DB::table('companies')->where('user_id', auth()->user()->id)->first();
+        $company = DB::table('companies')->where('user_id', $company->user_id)->first();
     
     ?>
     <div class="">

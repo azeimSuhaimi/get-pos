@@ -1,10 +1,10 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\posController;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\authController;
 use App\Http\Controllers\itemController;
@@ -20,6 +20,7 @@ use App\Http\Controllers\quickorderController;
 use App\Http\Controllers\salereportController;
 use App\Http\Controllers\pointRedeenController;
 use App\Http\Controllers\invoice_voidController;
+use App\Http\Controllers\notificationController;
 use App\Http\Controllers\customer_orderController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 /*
@@ -246,7 +247,8 @@ Route::controller(quickorderController::class)->group(function () {
     Route::get('/quick/order/add/item','add_item')->name('quick.add.item')->middleware(['guest']);
     Route::get('/quick/order/view','view')->name('quick.view')->middleware(['guest']);
     Route::get('/quick/order/cart','cart_view')->name('quick.cart.view')->middleware(['guest']);
-    Route::post('/quick/order/','cart_checkout')->name('quick.cart.checkout')->middleware(['guest']);
+    Route::post('/quick/order/','cart_checkout')->name('quick.cart.checkout.quick_order')->middleware(['guest']);
+    Route::post('/quick/order/pay_online','cart_checkout_pay_online')->name('quick.cart.checkout.pay_online')->middleware(['guest']);
     Route::post('/quick/order/remove/item','item_remove')->name('quick.remove.item')->middleware(['guest']);
     Route::get('/quick/order/add/remark','add_remark')->name('quick.add_remark')->middleware(['guest']);
     Route::post('/quick/order/update_remark','update_remark')->name('quick.update_remark')->middleware(['guest']);
@@ -363,3 +365,12 @@ Route::get('/auth/linkedin/callback', function () {
     }
     return redirect(route('auth'))->with('error','accout or password is not exit');
 });
+
+
+Route::controller(notificationController::class)->group(function () {
+
+    Route::get('/list/notification','index')->name('notification')->middleware(['auth']);
+    Route::get('/view/notification','show')->name('notification.view')->middleware(['auth']);
+    Route::get('/edit/notification','edit')->name('notification.edit')->middleware(['auth']);
+    
+});//end group

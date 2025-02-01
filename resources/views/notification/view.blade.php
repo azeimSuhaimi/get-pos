@@ -1,30 +1,19 @@
 @extends('layouts.main_layout')
  
-@section('title', 'Receipt page')
+@section('title', 'view page')
  
 @section('content')
 
 @include('partials.popup')
 
-<div class="pagetitle">
-    <h1>POINT OF SALE</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item "><a href="{{route('dashboard')}}">Dashboard</a></li>
-        <li class="breadcrumb-item active"><a href="{{route('invoice.receipt').'?invoice_id='.$invoice_id}}">RECEIPT</a></li>
-      </ol>
-    </nav>
-  </div><!-- End Page Title -->
 
-  @if (Request::is('invoice_receipt'))
-      
-    <a href="{{route('pos')}}" class="btn btn-primary mb-2">New Sale</a>
-  @endif
 
-    @if (Request::is('receipt_view'))
+
+
+
     
-        <a href="{{route('receipt')}}" class="btn btn-danger mb-2">Close</a>
-    @endif
+    <a href="{{route('notification')}}" class="btn btn-danger mb-2">Close</a>
+    <a class="btn btn-primary mb-2" onclick="confirmAndRedirect(this)" href="{{route('notification.edit').'?id='.$invoice->id}}">finish</a>
 
   <div class="card text-bg-light mb-4">
 
@@ -34,7 +23,7 @@
             
         </div>
 
-          <h1 class="card-title text-uppercase text-center font-weight-bold"> {{$invoice->daily_unique_number}}</h1>
+          <h1 class="card-title text-uppercase text-center font-weight-bold"> {{$invoice->daily_unique_number}} </h1>
           <h5 class=" text-uppercase text-end font-weight-bold">bill id : {{$invoice->invoice_id}}</h5>
           <h5 class=" text-uppercase text-end font-weight-bold">date : {{$invoice->created_at}}</h5>
           @if ($invoice->name)
@@ -136,54 +125,6 @@
 
       </div>
   </div>
-
-  @if ($invoice->email_cust)
-
-  <div class="card mb-4">
-    <div class="card-body">
-        <h4 class="card-title text-uppercase text-center font-weight-bold">Send To Customer</h4>
-        <form onsubmit="confirmAndSubmit(this)" action="{{route('dashboard.send_receipt')}}" method="post">
-            @csrf
-
-                <input type="hidden" name="invoice_id" value="{{$invoice->invoice_id}}">
-                <input type="hidden" name="email" value="{{$invoice->email_cust}}">
-
-
-            <!---->
-            <div class="mt-4 mb-0">
-                <div class="d-grid mt-2"><button type="submit" class="btn btn-primary btn-block" >Send</button></div>
-            </div>
-            
-        </form>
-    </div>
-</div>
-
-  @else
-    <div class="card mb-4">
-        <div class="card-body">
-            <h4 class="card-title text-uppercase text-center font-weight-bold">Send To Customer</h4>
-            <form onsubmit="confirmAndSubmit(this)" action="{{route('dashboard.send_receipt')}}" method="post">
-                @csrf
-
-                    <input type="hidden" name="invoice_id" value="{{$invoice->invoice_id}}">
-
-                <div class="form-floating mb-3">
-                    <input class="form-control @error('email') is-invalid @enderror" name="email" id="email" type="text" value="{{  old('email') }}" />
-                    <label for="email">Email <span class="text-danger">*</span> : </label>
-                    @error('email')
-                        <span class=" invalid-feedback mt-2">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <!---->
-                <div class="mt-4 mb-0">
-                    <div class="d-grid mt-2"><button type="submit" class="btn btn-primary btn-block" >Send</button></div>
-                </div>
-                
-            </form>
-        </div>
-    </div>
-  @endif
 
 
 

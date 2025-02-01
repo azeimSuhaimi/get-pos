@@ -9,9 +9,9 @@ use App\Models\suspend;
 use App\Models\suspend_details;
 use App\Models\invoice_detail;
 use App\Models\payment_method;
+use App\Models\payment_type;
 use App\Models\customer;
 use App\Models\purchase_detail;
-use App\Models\payment_type;
 
 class receiptController extends Controller
 {

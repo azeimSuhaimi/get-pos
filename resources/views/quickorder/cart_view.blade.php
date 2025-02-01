@@ -123,9 +123,21 @@
                   <h5 class="card-title">   </h5>
             
                   <!-- Multi Columns Form -->
-                  <form class="" method="post" onsubmit="confirmAndSubmit(this)" action="{{route('quick.cart.checkout').'?user_id='.$validated['user_id']}}">
+                  <form id="checkoutForm" method="post" onsubmit="confirmAndSubmit(this)" action="{{route('quick.cart.checkout.quick_order').'?user_id='.$validated['user_id']}}">
             
                     @csrf
+                    <div class="row mb-3">
+                        <label for="user_email" class="col-md-4 col-lg-3 col-form-label">your Name <span class="text-danger">*</span></label>
+                        <div class="col-md-8 col-lg-9">
+    
+                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror " id="name" value="{{ old('name') }}" >
+                            
+                            @error('name')
+                                <span class=" invalid-feedback mt-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="row mb-3">
                         <label for="user_email" class="col-md-4 col-lg-3 col-form-label">your Email <span class="text-danger">*</span></label>
                         <div class="col-md-8 col-lg-9">
@@ -136,13 +148,34 @@
                                 <span class=" invalid-feedback mt-2">{{ $message }}</span>
                             @enderror
                         </div>
-                      </div>
+                    </div>
             
                     <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Submit</button>
+                      <button type="button" id="quickOrderButton" class="btn btn-primary">quick order</button>
+                      <button type="button" id="payOnlineButton" class="btn btn-primary">pay online</button>
                       <button type="reset" class="btn btn-secondary">Reset</button>
                     </div>
                   </form><!-- End Multi Columns Form -->
+
+                  <script>
+                    // Handle button clicks to differentiate actions
+                    document.getElementById('quickOrderButton').addEventListener('click', function() {
+                        // Optionally add any additional logic here, like setting a hidden input to specify the action type.
+                        document.getElementById('checkoutForm').action = '{{ route('quick.cart.checkout.quick_order').'?user_id='.$validated['user_id'] }}'; // Update the action URL for quick order
+                        document.getElementById('checkoutForm').submit(); // Submit the form
+                    });
+                
+                    document.getElementById('payOnlineButton').addEventListener('click', function() {
+                        // Optionally add any additional logic here for the pay online process.
+                        document.getElementById('checkoutForm').action = '{{ route('quick.cart.checkout.pay_online').'?user_id='.$validated['user_id'] }}'; // Update the action URL for online payment
+                        document.getElementById('checkoutForm').submit(); // Submit the form
+                    });
+                
+                    function confirmAndSubmit(form) {
+                        // You can put any confirmation or validation logic here before the form is submitted
+                        return true;  // Ensure form is submitted
+                    }
+                </script>
             
                 </div>
             </div>

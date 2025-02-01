@@ -11,22 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invoices', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('invoice_id');
-            $table->double('subtotal');
-            $table->double('tax');
-            $table->double('total');
-            $table->boolean('status');
-            $table->string('name')->nullable();
-            $table->integer('daily_unique_number')->default(0);
-            $table->string('name_cust')->nullable();
-            $table->string('phone_cust')->nullable();
-            $table->string('email_cust')->nullable();
+            $table->boolean('status_read')->default(false);
+            $table->boolean('status')->default(false);
+            $table->unsignedBigInteger('invoice_id');
+            $table->foreign('invoice_id')->references('id')->on('invoices');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->softDeletes();
             $table->timestamps();
+
         });
     }
 
@@ -35,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('notifications');
     }
 };

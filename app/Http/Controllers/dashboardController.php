@@ -1,22 +1,23 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Mail;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
-
-use App\Models\invoice;
-use App\Models\invoice_detail;
-use App\Models\payment_method;
-use App\Models\customer;
-use App\Models\purchase_detail;
-use App\Models\activity_log;
-use App\Models\company;
-use App\Models\payment_type;
 use App\Models\item;
 
+use App\Models\company;
+use App\Models\invoice;
+
+use App\Models\customer;
 use App\Mail\send_receipt;
+use App\Models\activity_log;
+use App\Models\notification;
+use App\Models\payment_type;
+use Illuminate\Http\Request;
+use App\Models\invoice_detail;
+use App\Models\payment_method;
+use Illuminate\Support\Carbon;
+
+use App\Models\purchase_detail;
+use Illuminate\Support\Facades\Mail;
 
 class dashboardController extends Controller
 {
@@ -166,14 +167,18 @@ class dashboardController extends Controller
 
             if($invoice->status == false && $validated['status_id'] == 1)
             {
-                
+                $notification = new notification;
+                $notification->user_id = $invoice->user_id ;
+                $notification->invoice_id = $invoice->id ;
+                $notification->save();
+
                 $payment_method = new payment_method;
                 $payment_method->invoice_id = $validated['order_id'];
                 $payment_method->payment_type = 'TOYYIBPAY';
                 $payment_method->tender = invoice::where('invoice_id', $validated['order_id'])->first()->total;
                 $payment_method->reference_no = $validated['transaction_id'];
                 $payment_method->status = true;
-                $payment_method->user_id = auth()->user()->id;
+                $payment_method->user_id = $invoice->user_id;//auth()->user()->id;
                 $payment_method->save();
 
                 invoice::where('invoice_id', $validated['order_id'])->update(['status' => true]);

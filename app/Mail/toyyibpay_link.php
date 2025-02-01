@@ -2,6 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\user;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -30,8 +32,10 @@ class toyyibpay_link extends Mailable
      */
     public function envelope(): Envelope
     {
+        $user = user::find($this->datas['company']['user_id']);
+
         return new Envelope(
-            from: new Address(auth()->user()->email, auth()->user()->name),
+            from: new Address($user->email, $user->name),
             subject: 'Delivery Toyyibpay Link',
         );
     }
