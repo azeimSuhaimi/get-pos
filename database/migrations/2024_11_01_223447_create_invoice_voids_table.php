@@ -17,6 +17,8 @@ return new class extends Migration
             $table->double('subtotal');
             $table->double('tax');
             $table->double('total');
+            $table->string('name')->nullable();
+            $table->integer('daily_unique_number')->default(0);
             $table->string('name_cust')->nullable();
             $table->string('phone_cust')->nullable();
             $table->string('email_cust')->nullable();

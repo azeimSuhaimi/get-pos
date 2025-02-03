@@ -241,9 +241,13 @@ class invoiceController extends Controller
         
         if($request->input('id_cust') !== null)
         {
-            $customer = customer::find($request->input('id_cust'));
-            $customer->point += Cart::subtotal();
-            $customer->save();
+            if($request->input('TOYYIBPAY') !== 'TOYYIBPAY')
+            {
+                $customer = customer::find($request->input('id_cust'));
+                $customer->point += Cart::subtotal();
+                $customer->save();
+            }
+
 
             $invoice->phone_cust = $request->input('phone_cust');
             $invoice->email_cust = $request->input('email_cust');
@@ -341,7 +345,11 @@ class invoiceController extends Controller
             curl_close($curl);
             $obj = json_decode($result);
 
-
+            
+            if(!$obj)
+            {
+                return redirect()->back()->with('error', 'sorry toyyibpay key or category account is error');
+            }
 
             $company = company::where('user_id',auth()->user()->id)->first();
 
@@ -360,7 +368,7 @@ class invoiceController extends Controller
         // store items list for bill
         foreach(Cart::content() as $row)
         {
-            if($request->input('id_cust') !== null)
+            if($request->input('id_cust') !== null && $request->input('TOYYIBPAY') !== 'TOYYIBPAY')
             {
                 $purchase_detail = new purchase_detail;
                 $purchase_detail->id_cust = $request->input('id_cust');
@@ -479,6 +487,32 @@ class invoiceController extends Controller
                 })],
                 'invoice_id' => 'required',
             ]);
+
+            $invoice = invoice::where('invoice_id', $validated['invoice_id'])->first();
+
+            if($invoice->email_cust)
+            {
+                $customer = customer::where('email',$invoice->email_cust)->where('user_id',$user_id)->first();
+                $customer->point += $invoice->subtotal;
+                $customer->save();
+                foreach(invoice_detail::where('invoice_id', $validated['invoice_id'])->get() as $row)
+                {
+                    $purchase_detail = new purchase_detail;
+                    $purchase_detail->id_cust = $customer->id;
+                    $purchase_detail->invoice_id = $invoice->invoice_id;
+                    
+                    $purchase_detail->shortcode = $row->shortcode;
+                    $purchase_detail->name = $row->name;
+                    $purchase_detail->quantity = $row->quantity;
+                    $purchase_detail->price = $row->price;
+                    $purchase_detail->cost = $row->cost;
+                    $purchase_detail->description = $row->description;
+                    $purchase_detail->user_id = $invoice->user_id;
+                    $purchase_detail->save();
+                }
+                
+            }
+            
 
             // store payment cash type 
             $payment_method = new payment_method;

@@ -32,17 +32,17 @@ class send_receipt extends Mailable
      */
     public function envelope(): Envelope
     {
-        if(auth()->user() == null)
+        if(auth()->check())
         {
             return new Envelope(
-                from: new Address('noreply@gmail.com', 'noreply'),
+                from: new Address(auth()->user()->email, auth()->user()->name),
                 subject: 'Delivery Receipt',
             );
         }
         else
         {
             return new Envelope(
-                from: new Address(auth()->user()->email, auth()->user()->name),
+                from: new Address('noreply@gmail.com', 'noreply'),
                 subject: 'Delivery Receipt',
             );
         }

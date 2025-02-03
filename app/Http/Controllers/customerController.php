@@ -117,8 +117,8 @@ class customerController extends Controller
         ]);
 
             //get all list custmer data
-            $purchase_detail = purchase_detail::where('id_cust',$validated['id_cust'])->get();
-            $customeritemredeen = customeritemredeen::where('id_customer',$validated['id_cust'])->get();
+            $purchase_detail = purchase_detail::where('id_cust',$validated['id_cust'])->orderBy('created_at', 'desc')->get();
+            $customeritemredeen = customeritemredeen::where('id_customer',$validated['id_cust'])->orderBy('created_at', 'desc')->get();
             $customer = customer::find($validated['id_cust']);
     
             return view('customer.purchase_detail',['purchase_detail' => $purchase_detail,'customer' => $customer,'customeritemredeen' => $customeritemredeen]);

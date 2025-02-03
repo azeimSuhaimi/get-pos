@@ -167,6 +167,29 @@ class dashboardController extends Controller
 
             if($invoice->status == false && $validated['status_id'] == 1)
             {
+                $customer = customer::where('email',$invoice->email_cust)->where('user_id',$invoice->user_id)->first();
+                if($customer )
+                {
+                    $customer->point += $invoice->subtotal;
+                    $customer->save();
+                    foreach(invoice_detail::where('invoice_id', $validated['order_id'])->get() as $row)
+                    {
+                        $purchase_detail = new purchase_detail;
+                        $purchase_detail->id_cust = $customer->id;
+                        $purchase_detail->invoice_id = $invoice->invoice_id;
+                        
+                        $purchase_detail->shortcode = $row->shortcode;
+                        $purchase_detail->name = $row->name;
+                        $purchase_detail->quantity = $row->quantity;
+                        $purchase_detail->price = $row->price;
+                        $purchase_detail->cost = $row->cost;
+                        $purchase_detail->description = $row->description;
+                        $purchase_detail->user_id = $invoice->user_id;
+                        $purchase_detail->save();
+                    }
+    
+                }
+
                 $notification = new notification;
                 $notification->user_id = $invoice->user_id ;
                 $notification->invoice_id = $invoice->id ;
@@ -184,7 +207,7 @@ class dashboardController extends Controller
                 invoice::where('invoice_id', $validated['order_id'])->update(['status' => true]);
                 //payment_method::where('invoice_id', $validated['order_id'])->update(['status' => true]);
 
-                Mail::to($invoice->email_cust)->send(new send_receipt( $datas));
+                Mail::to($obj[0]->billEmail)->send(new send_receipt( $datas));
             }
 
         return view('payment_status',$datas);

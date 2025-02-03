@@ -194,6 +194,12 @@ class userController extends Controller
             'toyyip_category' => 'required',
         ]);
 
+
+        
+
+
+
+
         //store data update to database
         $user = toyyibpay::where('user_id',auth()->user()->id)->first();
         if($user)

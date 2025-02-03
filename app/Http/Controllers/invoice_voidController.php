@@ -12,7 +12,7 @@ use App\Models\payment_method;
 use App\Models\invoice_void;
 use App\Models\invoice_detail_void;
 use App\Models\payment_method_void;
-
+use App\Models\customer;
 use App\Models\activity_log;
 
 class invoice_voidController extends Controller
@@ -96,7 +96,17 @@ class invoice_voidController extends Controller
         $invoice_void->phone_cust = $invoice->phone_cust;
         $invoice_void->email_cust = $invoice->email_cust;
         $invoice_void->name_cust = $invoice->name_cust;
+        $invoice_void->name = $invoice->name;
+        $invoice_void->daily_unique_number = $invoice->daily_unique_number;
         $invoice_void->save();
+
+        if($invoice->email_cust !== null)
+        {
+            $customer = customer::where('email',$invoice->email_cust)->where('user_id',auth()->user()->id)->first();
+            $customer->point -= $invoice->subtotal;
+            $customer->save();
+
+        }
 
         foreach($payment_method as $pm)
         {
