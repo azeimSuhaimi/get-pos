@@ -385,7 +385,7 @@ class quickorderController extends Controller
         $curl = curl_init();
 
         curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_URL, 'https://dev.toyyibpay.com/index.php/api/createBill');  //PROVIDE API LINK HERE
+        curl_setopt($curl, CURLOPT_URL, env('TOYYIB_PAY_URL','https://toyyibpay.com/index.php/api/createBill'));  //PROVIDE API LINK HERE
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $some_data);
 
