@@ -14,6 +14,7 @@ use App\Models\invoice_detail_void;
 use App\Models\payment_method_void;
 use App\Models\customer;
 use App\Models\activity_log;
+use App\Models\payment_type;
 
 class invoice_voidController extends Controller
 {
@@ -55,6 +56,7 @@ class invoice_voidController extends Controller
             $invoice = invoice::where('invoice_id',$validated['invoice_id'])->first();
             $invoice_detail = invoice_detail::where('invoice_id',$validated['invoice_id'])->get();
             $payment_method = payment_method::where('invoice_id',$validated['invoice_id'])->get();
+            $payment_type = payment_type::all();
 
             
             $data = [
@@ -62,6 +64,7 @@ class invoice_voidController extends Controller
                 'invoice_detail' => $invoice_detail,
                 'payment_method' => $payment_method,
                 'invoice_id'=>$validated['invoice_id'],
+                'payment_type' => $payment_type,
                 
             ];
             return view('invoice_void.view',$data);
@@ -130,6 +133,7 @@ class invoice_voidController extends Controller
             $invoice_detail_void->quantity = $row->quantity;
             $invoice_detail_void->price = $row->price;
             $invoice_detail_void->cost = $row->cost;
+            $invoice_detail_void->discount = $row->discount;
             $invoice_detail_void->description = $row->description;
             $invoice_detail_void->category = $row->category;
             $invoice_detail_void->remark = $row->remark;

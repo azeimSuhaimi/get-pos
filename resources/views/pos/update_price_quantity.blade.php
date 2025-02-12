@@ -41,6 +41,7 @@
                     @csrf
                     <input type="hidden" name="id" value="{{$rowid->id}}">
                     <input type="hidden" name="rowid" value="{{$rowid->rowId}}">
+                    
                     <input type="number" style="width: 30%;" name="qty" value="{{$rowid->qty}}">
                     <button type="submit" class="btn btn-success">Edit</button>
                 </form>
@@ -60,6 +61,7 @@
                     @csrf
                     <input type="hidden" name="id" value="{{$rowid->id}}">
                     <input type="hidden" name="rowid" value="{{$rowid->rowId}}">
+                    <input type="hidden" name="discount" value="{{$rowid->options->discount}}">
                     <input type="number" style="width: 30%;" name="price" value="{{$rowid->price}}">
                     <button type="submit" class="btn btn-success">Edit</button>
                 </form>

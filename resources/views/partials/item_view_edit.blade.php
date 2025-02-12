@@ -177,6 +177,26 @@
                     </div>
                 @endif
 
+
+
+                @if (Request::is('item_view'))
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="discount" class="form-label">items discount</label>
+                        <p class="text-danger text-uppercase">{{ $items->discount }}</p>
+                    </div>
+                </div>
+            @endif
+            @if (Request::is('item_edit'))
+                <div class="col-md-6">
+                    <label for="discount" class="form-label">items discount <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('discount') is-invalid @enderror" value="{{ $items->discount }}" name="discount" id="discount">
+                    @error('discount')
+                        <span class=" invalid-feedback mt-2">{{ $message }}</span>
+                    @enderror
+                </div>
+            @endif
+
                                 
                 @if (Request::is('item_view'))
                     <div class="col-md-12">

@@ -48,7 +48,8 @@ class posController extends Controller
             else
             {
                 //add to cart item select
-                Cart::add($item->shortcode,$item->name, 1, $item->price,['cost' => $item->cost,'description' => $item->description, 'category' => $item->category, 'remark' => '']);
+                $price = $item->price - ($item->price * $item->discount / 100);
+                Cart::add($item->shortcode,$item->name, 1, $price,['cost' => $item->cost,'description' => $item->description, 'category' => $item->category, 'remark' => '','discount' => $item->discount]);
                 return redirect(route('pos'));
             }
 
@@ -129,14 +130,18 @@ class posController extends Controller
             {
                 if($request->has('rowid'))
                 {
-                    $id = $request->input('id'); // items id select
-                    $price = $request->input('price'); // quantity update 
-                    $rowId = $request->input('rowid');// id in row cart select
-    
-                    Cart::update($rowId, ['price' => $price]); // update the quantity items
-    
-                    activity_log::addActivity('change price item ',' change it price item '.Cart::get($rowId)->name);
-                    return redirect(route('pos'));
+                    if($request->input('discount') <= 0)
+                    {
+                        $id = $request->input('id'); // items id select
+                        $price = $request->input('price'); // quantity update 
+                        $rowId = $request->input('rowid');// id in row cart select
+        
+                        Cart::update($rowId, ['price' => $price]); // update the quantity items
+        
+                        activity_log::addActivity('change price item ',' change it price item '.Cart::get($rowId)->name);
+                        return redirect(route('pos'));
+                    }
+                    return redirect()->back()->with('error', 'price item already have discount');
                 }
 
 
@@ -195,6 +200,7 @@ class posController extends Controller
                 $suspend->quantity = $row->qty;
                 $suspend->price = $row->price;
                 $suspend->cost = $row->options->cost;
+                $suspend->discount = $row->options->discount;
                 $suspend->description = $row->options->description;
                 $suspend->category = $row->options->category;
                 $suspend->remark = $row->options->remark;
@@ -259,7 +265,7 @@ class posController extends Controller
         foreach($suspend_details as $row)
         {
             //add to cart
-            Cart::add($row->shortcode, $row->name, $row->quantity, $row->price,['cost' => $row->cost,'description' => $row->description, 'category' => $row->category, 'remark' => $row->remark]);
+            Cart::add($row->shortcode, $row->name, $row->quantity, $row->price,['cost' => $row->cost,'description' => $row->description, 'category' => $row->category, 'remark' => $row->remark,'discount' => $row->discount]);
 
             $row->delete(); // delete item in suspend table
         }
@@ -296,6 +302,7 @@ class posController extends Controller
             'cost' => 'required',                    // Validate cost
             'description' => 'nullable',      // Validate description
             'category' => 'required',        // Validate category
+            'discount' => 'required',
         ]);
 
         // Get the current cart item
@@ -311,6 +318,7 @@ class posController extends Controller
             'cost' => $validated['cost'],
             'description' => $validated['description'],
             'category' => $validated['category'],
+            'discount' => $validated['discount'],
         ];
 
         //Cart::update($validated['rowid'], ['remark' => $validated['remark']]);
@@ -352,7 +360,7 @@ class posController extends Controller
         foreach($quickorder_detail as $row)
         {
             //add to cart
-            Cart::add($row->shortcode, $row->name, $row->quantity, $row->price,['cost' => $row->cost,'description' => $row->description, 'category' => $row->category, 'remark' => $row->remark]);
+            Cart::add($row->shortcode, $row->name, $row->quantity, $row->price,['cost' => $row->cost,'description' => $row->description, 'category' => $row->category, 'remark' => $row->remark,'discount' => $row->discount]);
 
             $row->delete(); // delete item in suspend table
         }

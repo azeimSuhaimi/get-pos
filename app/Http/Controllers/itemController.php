@@ -216,6 +216,7 @@ class itemController extends Controller
             'descriptions' => 'required',
             'quickorder' => 'required',
             'category' => 'required',
+            'discount' => 'required|integer|lt:100',
                         
         ]);
 
@@ -229,6 +230,7 @@ class itemController extends Controller
         $item->description = $validated['descriptions'];
         $item->quickorder_status = $validated['quickorder'];
         $item->category = $validated['category'];
+        $item->discount = $validated['discount'];
         $item->save();
 
         activity_log::addActivity('update details item ',' change it details item '.$validated['name']);

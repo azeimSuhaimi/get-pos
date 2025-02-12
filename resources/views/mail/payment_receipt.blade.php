@@ -83,6 +83,7 @@
                     <th>Item</th>
                     <th>Name</th>
                     <th>Price</th>
+                    <th>Discount</th>
                     <th>Quantity</th>
                     <th>Subtotal</th>
                 </tr>
@@ -94,6 +95,7 @@
                         <td>{{$row->shortcode}}</td>
                         <td>{{$row->name}}</td>
                         <td>{{$row->price}}</td>
+                        <td>{{$row->discount}}%</td>
                         <td>{{$row->quantity}}</td>
                         <td>{{$row->quantity * $row->price}}</td>
                     </tr>

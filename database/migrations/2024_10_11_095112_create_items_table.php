@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('category');
             $table->double('cost');
             $table->double('price');
+            $table->integer('discount')->default(0);
             $table->boolean('status')->default(true);
             $table->string('quickorder_status')->default('false');
             $table->timestamps();

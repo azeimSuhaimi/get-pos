@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->double('cost');
             $table->double('price');
+            $table->integer('discount')->default(0);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->softDeletes();

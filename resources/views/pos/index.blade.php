@@ -44,6 +44,7 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Quantity</th>
+                    <th>Discount</th>
                     <th>#</th>
                     <th>Subtotal Item</th>
                 </tr>
@@ -67,6 +68,9 @@
                             </td>
                             <td>
                                 {{$row->qty}}
+                            </td>
+                            <td>
+                                {{$row->options->discount}}%
                             </td>
 
                             <td>
@@ -112,17 +116,17 @@
 
             <tfoot>
                 <tr >
-                    <th  colspan="5">&nbsp;</th>
+                    <th  colspan="6">&nbsp;</th>
                     <th>Subtotal</th>
                     <th><?php echo Cart::subtotal(); ?></td>
                 </tr>
                 <tr>
-                    <th colspan="5">&nbsp;</th>
+                    <th colspan="6">&nbsp;</th>
                     <th>Tax</th>
                     <th><?php echo round(Cart::tax() * 20) / 20; ?></td>
                 </tr>
                 <tr>
-                    <th colspan="5">&nbsp;</th>
+                    <th colspan="6">&nbsp;</th>
                     <th>Total</th>
                     <th><?php echo round(Cart::total() * 20) / 20; ?></td>
                 </tr>

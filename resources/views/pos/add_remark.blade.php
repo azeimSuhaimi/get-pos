@@ -29,6 +29,7 @@
             <input type="hidden" name="description"  value="{{$remark->options->description}}">
             <input type="hidden" name="cost"  value="{{$remark->options->cost}}">
             <input type="hidden" name="category"  value="{{$remark->options->category}}">
+            <input type="hidden" name="discount"  value="{{$remark->options->discount}}">
             <div class="row mb-3">
                 <label for="remark" class="col-sm-2 col-form-label">Remark</label>
                 <div class="col-sm-10">

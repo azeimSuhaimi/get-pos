@@ -16,8 +16,14 @@
                         <div class="small mb-1 text-uppercase">SKU: {{$item->shortcode}}</div>
                         <h1 class="display-5 fw-bolder text-capitalize">{{$item->name}}</h1>
                         <div class="fs-5 mb-5">
-                            <span class="text-decoration-line-through"></span>
-                            <span>RM {{$item->price}}</span>
+                            @if ($item->discount > 0)
+                                <span class="text-decoration-line-through">RM {{$item->price}}</span>
+                                <span>RM {{$item->price - ($item->price * $item->discount / 100)}}</span>
+                            @else
+                                <span class="text-decoration-line-through"></span>
+                                <span>RM {{$item->price}}</span>
+                            @endif
+
                         </div>
                         <p class="lead text-uppercase">{{$item->description}}</p>
                         <div class="d-flex">

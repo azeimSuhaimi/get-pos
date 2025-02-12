@@ -15,6 +15,7 @@
     </nav>
 </div><!-- End Page Title -->
 
+
   <section class="section dashboard">
     <div class="row">
 
@@ -22,8 +23,10 @@
       <div class="col-lg-8">
         <div class="row">
 
+          
+
           <!-- Sales Card -->
-          <div class="col-xxl-4 col-md-12">
+          <div class="sale col-xxl-4 col-md-12">
             <div class="card text-bg-light  info-card sales-card">
 
               <div class="filter">
@@ -59,6 +62,9 @@
             </div>
           </div><!-- End Sales Card -->
 
+          <x-smart-ad-component slug="dashboard"/>
+
+          <x-smart-ad-component slug="dashboard_without-_image"/>
 
           <!-- Customers Card -->
           <div class="col-xxl-4 col-xl-12">
@@ -217,6 +223,8 @@
       <!-- Right side columns -->
       <div class="col-lg-4">
 
+        
+
         <!-- Recent Activity -->
         <div class="card text-bg-light">
           <div class="card-body">
@@ -260,6 +268,10 @@
 
           </div>
         </div><!-- End stock low -->
+
+        <x-smart-ad-component slug="dashboard_sidebar"/>
+
+        <x-smart-ad-component slug="dashboard_sidebar_without_image"/>
 
         <!-- Budget Report -->
         <!--<div class="card">
@@ -469,6 +481,7 @@
 
       </div><!-- End Right side columns -->
 
+      
     </div>
   </section>
 

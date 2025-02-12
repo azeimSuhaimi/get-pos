@@ -54,6 +54,7 @@
                       <th>item</th>
                       <th>name</th>
                       <th>price</th>
+                      <th>discount</th>
                       <th>quantity</th>
                       <th>subtotal</th>
                   </tr>
@@ -66,6 +67,7 @@
                         <td>{{$row->shortcode}}</td>
                         <td>{{$row->name}}</td>
                         <td>{{$row->price}}</td>
+                        <td>{{$row->discount}}%</td>
                         <td>{{$row->quantity}}</td>
                         <td>{{$row->quantity * $row->price}}</td>
                     </tr>
@@ -77,17 +79,17 @@
                   @endforeach
 
                   <tr>
-                    <td colspan="4">&nbsp;</td>
+                    <td colspan="5">&nbsp;</td>
                     <td>Subtotal</td>
                     <td>{{$invoice->subtotal}}</td>
                 </tr>
                 <tr>
-                    <td colspan="4">&nbsp;</td>
+                    <td colspan="5">&nbsp;</td>
                     <td>Tax</td>
                     <td>{{$invoice->tax}}</td>
                 </tr>
                 <tr>
-                    <td colspan="4">&nbsp;</td>
+                    <td colspan="5">&nbsp;</td>
                     <td>Total</td>
                     <td>{{$invoice->total}}</td>
                 </tr>
@@ -95,7 +97,7 @@
 
                     @if ($pay->payment_type == 'CASH')
                         <tr>
-                            <td colspan="4">&nbsp;</td>
+                            <td colspan="5">&nbsp;</td>
                             <td>{{$pay->payment_type}}</td>
                             <td>{{$pay->tender}}</td>
                         </tr>
@@ -103,7 +105,7 @@
 
                         @if ($pay->tender >= $invoice->total)
                             <tr>
-                                <td colspan="4">&nbsp;</td>
+                                <td colspan="5">&nbsp;</td>
                                 <td>Balance</td>
                                 <td>{{$pay->tender - $invoice->total}}</td>
                             </tr>
@@ -114,13 +116,13 @@
                     @foreach ($payment_type as $row )
                         @if ($pay->payment_type == $row->payment_name)
                             <tr>
-                                <td colspan="4">&nbsp;</td>
+                                <td colspan="5">&nbsp;</td>
                                 <td>{{$pay->payment_type}}</td>
                                 <td>{{$pay->tender}}</td>
                             </tr>
 
                             <tr>
-                                <td colspan="4">&nbsp;</td>
+                                <td colspan="5">&nbsp;</td>
                                 <td>Reference No</td>
                                 <td>{{$pay->reference_no}}</td>
                             </tr>

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('quantity');
             $table->double('price');
             $table->double('cost');
+            $table->integer('discount')->default(0);
             $table->string('description')->nullable();
             $table->string('category');
             $table->text('remark')->nullable();

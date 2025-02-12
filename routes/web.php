@@ -319,7 +319,7 @@ Route::get('/auth/google/callback', function () {
     $googleUser = Socialite::driver('google')->user();
  
     $existingUser = User::where('email', $googleUser->email)->first();
-     //dd($googleUser);
+    //dd($googleUser);
 
     if ($existingUser) {
 

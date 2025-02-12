@@ -379,6 +379,7 @@ class invoiceController extends Controller
                 $purchase_detail->quantity = $row->qty;
                 $purchase_detail->price = $row->price;
                 $purchase_detail->cost = $row->options->cost;
+                $purchase_detail->discount = $row->options->discount;
                 $purchase_detail->description = $row->options->description;
                 $purchase_detail->user_id = auth()->user()->id;
                 $purchase_detail->save();
@@ -393,6 +394,7 @@ class invoiceController extends Controller
             $invoice_detail->quantity = $row->qty;
             $invoice_detail->price = $row->price;
             $invoice_detail->cost = $row->options->cost;
+            $invoice_detail->discount = $row->options->discount;
             $invoice_detail->description = $row->options->description;
             $invoice_detail->category = $row->options->category;
             $invoice_detail->remark = $row->options->remark;
@@ -506,6 +508,7 @@ class invoiceController extends Controller
                     $purchase_detail->quantity = $row->quantity;
                     $purchase_detail->price = $row->price;
                     $purchase_detail->cost = $row->cost;
+                    $purchase_detail->discount = $row->discount;
                     $purchase_detail->description = $row->description;
                     $purchase_detail->user_id = $invoice->user_id;
                     $purchase_detail->save();

@@ -85,7 +85,8 @@ class quickorderController extends Controller
                 else
                 {
                     //add to cart item select
-                    Cart::add($item->shortcode,$item->name, 1, $item->price,['cost' => $item->cost,'description' => $item->description, 'category' => $item->category, 'remark' => '']);
+                    $price = $item->price - ($item->price * $item->discount / 100);
+                    Cart::add($item->shortcode,$item->name, 1, $price,['cost' => $item->cost,'description' => $item->description, 'category' => $item->category, 'remark' => '', 'discount' => $item->discount]);
                     return redirect(route('quick.list').'?user_id='.$validated['user_id'])->with('success','item enter added');
                 }
     
@@ -170,6 +171,7 @@ class quickorderController extends Controller
                 $quickorder_detail->quantity = $row->qty;
                 $quickorder_detail->price = $row->price;
                 $quickorder_detail->cost = $row->options->cost;
+                $quickorder_detail->discount = $row->options->discount;
                 $quickorder_detail->description = $row->options->description;
                 $quickorder_detail->category = $row->options->category;
                 $quickorder_detail->remark = $row->options->remark;
@@ -245,6 +247,7 @@ class quickorderController extends Controller
             'cost' => 'required',                    // Validate cost
             'description' => 'nullable',      // Validate description
             'category' => 'required',        // Validate category
+            'discount' => 'required',
         ]);
 
         if(!company::where('user_id',$validated['user_id'])->first())
@@ -265,6 +268,7 @@ class quickorderController extends Controller
             'cost' => $validated['cost'],
             'description' => $validated['description'],
             'category' => $validated['category'],
+            'discount' => $validated['discount'],
         ];
 
         //Cart::update($validated['rowid'], ['remark' => $validated['remark']]);
@@ -464,6 +468,7 @@ class quickorderController extends Controller
             $invoice_detail->quantity = $row->qty;
             $invoice_detail->price = $row->price;
             $invoice_detail->cost = $row->options->cost;
+            $invoice_detail->discount = $row->options->discount;
             $invoice_detail->description = $row->options->description;
             $invoice_detail->category = $row->options->category;
             $invoice_detail->remark = $row->options->remark;
