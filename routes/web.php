@@ -131,6 +131,7 @@ Route::controller(customerController::class)->group(function () {
     Route::get('/customer_edit','edit')->name('customer.edit')->middleware(['auth']);
     Route::post('/customer_update','update')->name('customer.update')->middleware(['auth']);
     Route::get('/customer_purchase_detail','purchase_detail')->name('customer.purchase.detail')->middleware(['auth','verified']);
+    Route::post('/customer/enter/member','enter_member')->name('customer.enter.member')->middleware(['auth']);
     
 
 });

@@ -31,7 +31,6 @@ class userController extends Controller
 
     public function change_password()
     {
-        
         return view('user.change_password');
     }//end method
 
@@ -226,85 +225,85 @@ class userController extends Controller
 
     }//end method
 
-            //edit image for profile 
-            public function company_update_image(Request $request)
-            {
-                // validated input
-                $validated = $request->validate([
-                    'id' => 'required',
-                    'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                ]);
-        
-                $company = company::find($validated['id']);// find table  based id
-        
-                // validate file upload 
-                if ($request->hasFile('file')) 
-                {
-                    // get upload image to change and validated rule
-                    $file = $request->file('file');
-                    $fileName = time().'.'.$file->getClientOriginalExtension();// change name file avoid redundant
-            
-                    $file->move(public_path('logo/'), $fileName); // location image store
-        
-                    if($company->logo != '42862.jpg')
-                    {
-                        
-                        $filePath = public_path('logo/'.$company->logo); // store file to location
-        
-                        // delete fine from past
-                        if (File::exists($filePath)) {
-                            File::delete($filePath);
-                        }
-        
-                    }
-                    
-                    // store image name to database
-                    $company->logo = $fileName;
-                    $company->save();
+    //edit image for profile 
+    public function company_update_image(Request $request)
+    {
+        // validated input
+        $validated = $request->validate([
+            'id' => 'required',
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $company = company::find($validated['id']);// find table  based id
+
+        // validate file upload 
+        if ($request->hasFile('file')) 
+        {
+            // get upload image to change and validated rule
+            $file = $request->file('file');
+            $fileName = time().'.'.$file->getClientOriginalExtension();// change name file avoid redundant
     
-                    activity_log::addActivity('Change image logo',' change it image logo to new');
-                    return back()->with('success',$fileName);
-                    
-                }//end validated file
-        
-                return back()->with('error','fail edit image');
-        
-            }//end method
+            $file->move(public_path('logo/'), $fileName); // location image store
+
+            if($company->logo != '42862.jpg')
+            {
+                
+                $filePath = public_path('logo/'.$company->logo); // store file to location
+
+                // delete fine from past
+                if (File::exists($filePath)) {
+                    File::delete($filePath);
+                }
+
+            }
+            
+            // store image name to database
+            $company->logo = $fileName;
+            $company->save();
+
+            activity_log::addActivity('Change image logo',' change it image logo to new');
+            return back()->with('success',$fileName);
+            
+        }//end validated file
+
+        return back()->with('error','fail edit image');
+
+    }//end method
 
 
                     //edit image for profile 
-        public function company_remove_image(Request $request)
-        {
-            // validated input
-            $validated = $request->validate([
-                'id' => 'required',
-            ]);
-    
-            $company = company::find($validated['id']);// find table  based id
-    
-    
-                if($company->logo != '42862.jpg')
-                {
-                    
-                    $filePath = public_path('logo/'.$company->logo); // store file to location
-    
-                    // delete fine from past
-                    if (File::exists($filePath)) {
-                        File::delete($filePath);
-                    }
-    
+    public function company_remove_image(Request $request)
+    {
+        // validated input
+        $validated = $request->validate([
+            'id' => 'required',
+        ]);
+
+        $company = company::find($validated['id']);// find table  based id
+
+
+            if($company->logo != '42862.jpg')
+            {
+                
+                $filePath = public_path('logo/'.$company->logo); // store file to location
+
+                // delete fine from past
+                if (File::exists($filePath)) {
+                    File::delete($filePath);
                 }
-                
-                // store image name to database
-                    $company->logo = '42862.jpg';
-                    $company->save();
-    
-                    activity_log::addActivity('remove logo company ',' remove image company to empty');
-    
-                return back()->with('success','success remove image company');
-                
-    
-        }//end method
+
+            }
+            
+            // store image name to database
+                $company->logo = '42862.jpg';
+                $company->save();
+
+                activity_log::addActivity('remove logo company ',' remove image company to empty');
+
+            return back()->with('success','success remove image company');
+            
+
+    }//end method
 
         public function company_update_detail(Request $request)
         {

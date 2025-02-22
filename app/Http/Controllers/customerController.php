@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-
+use App\Models\invoice;
 use App\Models\customer;
+
 use App\Models\activity_log;
+use Illuminate\Http\Request;
 use App\Models\purchase_detail;
+use Illuminate\Validation\Rule;
 use App\Models\customeritemredeen;
+use App\Models\invoice_detail;
 
 class customerController extends Controller
 {
@@ -108,20 +110,81 @@ class customerController extends Controller
 
     }//end method
 
-        //get all list custmer member purchase
-        public function purchase_detail(Request $request)
-        {
-                    // validate data employee update base rule
+    //get all list custmer member purchase
+    public function purchase_detail(Request $request)
+    {
+                // validate data employee update base rule
         $validated = $request->validate([
             'id_cust' => 'required',
         ]);
 
-            //get all list custmer data
-            $purchase_detail = purchase_detail::where('id_cust',$validated['id_cust'])->orderBy('created_at', 'desc')->get();
-            $customeritemredeen = customeritemredeen::where('id_customer',$validated['id_cust'])->orderBy('created_at', 'desc')->get();
-            $customer = customer::find($validated['id_cust']);
-    
-            return view('customer.purchase_detail',['purchase_detail' => $purchase_detail,'customer' => $customer,'customeritemredeen' => $customeritemredeen]);
-        }//end method
+        //get all list custmer data
+        $purchase_detail = purchase_detail::where('id_cust',$validated['id_cust'])->orderBy('created_at', 'desc')->get();
+        $customeritemredeen = customeritemredeen::where('id_customer',$validated['id_cust'])->orderBy('created_at', 'desc')->get();
+        $customer = customer::find($validated['id_cust']);
+
+        return view('customer.purchase_detail',['purchase_detail' => $purchase_detail,'customer' => $customer,'customeritemredeen' => $customeritemredeen]);
+    }//end method
+
+    public function enter_member(Request $request)
+    {
+        $user_id =auth()->user()->id;
+
+        // validate data employee update base rule
+        $validated = $request->validate([
+            'cust_phone' => 'required',
+            'invoice_id' => 'required',
+            'id' => 'required',
+            
+            
+        ]);
+
+        $invoice = invoice::where('invoice_id',$validated['invoice_id'])->where('user_id',$user_id)->first();
+
+        if(!$invoice)
+        {
+            return redirect(route('customer.purchase.detail').'?id_cust='.$validated['id'])->with('error','invoice enter not exist '.$validated['invoice_id']);
+        }
+
+        if(!$invoice->phone_cust == null)
+        {
+            return redirect(route('customer.purchase.detail').'?id_cust='.$validated['id'])->with('error','invoice enter already have member '.$validated['invoice_id']);
+        }
+
+
+
+
+        $customer = customer::where('id',$validated['id'])->where('user_id',$user_id)->first();
+        $customer->point += $invoice->subtotal;
+        $customer->save();
+
+        foreach(invoice_detail::where('invoice_id', $validated['invoice_id'])->get() as $row)
+        {
+            $purchase_detail = new purchase_detail;
+            $purchase_detail->id_cust = $customer->id;
+            $purchase_detail->invoice_id = $invoice->invoice_id;
+            
+            $purchase_detail->shortcode = $row->shortcode;
+            $purchase_detail->name = $row->name;
+            $purchase_detail->quantity = $row->quantity;
+            $purchase_detail->price = $row->price;
+            $purchase_detail->cost = $row->cost;
+            $purchase_detail->discount = $row->discount;
+            $purchase_detail->description = $row->description;
+            $purchase_detail->user_id = $invoice->user_id;
+            $purchase_detail->save();
+        }
+
+        $invoice->phone_cust = $customer->phone;
+        $invoice->email_cust = $customer->email;
+        $invoice->name_cust = $customer->name;
+        $invoice->save();
+
+        activity_log::addActivity('enter member on Invoice ',' enter invoice '.$validated['invoice_id']);
+
+        return redirect(route('customer.purchase.detail').'?id_cust='.$validated['id'])->with('success','enter member to invoice '.$validated['invoice_id']);
+
+    }//end method
+
 
 }//end class

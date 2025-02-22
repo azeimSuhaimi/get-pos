@@ -254,27 +254,27 @@
 </script>
 
 
-  <script>
-    function showPassword() {
-    // Get the password input and checkbox elements
-    var password = document.getElementById("password");
-    var password1 = document.getElementById("password1");
-    var password2 = document.getElementById("password2");
-    var checkbox = document.getElementById("show_password");
+<script>
+      function showPassword() {
+        // Get the password input and checkbox elements
+        var password = document.getElementById("password");
+        var password1 = document.getElementById("password1");
+        var password2 = document.getElementById("password2");
+        var checkbox = document.getElementById("show_password");
 
-    // Check the state of the checkbox
-    if (checkbox.checked) {
-        // If the checkbox is checked, change the input type to "text"
-        password.type = "text";
-        password1.type = "text";
-        password2.type = "text";
-    } else {
-        // If the checkbox is not checked, change the input type back to "password"
-        password.type = "password";
-        password1.type = "password";
-        password2.type = "password";
-    }
-}
+        // Check the state of the checkbox
+        if (checkbox.checked) {
+            // If the checkbox is checked, change the input type to "text"
+            password.type = "text";
+            password1.type = "text";
+            password2.type = "text";
+        } else {
+            // If the checkbox is not checked, change the input type back to "password"
+            password.type = "password";
+            password1.type = "password";
+            password2.type = "password";
+        }
+      }
 
 </script>
 

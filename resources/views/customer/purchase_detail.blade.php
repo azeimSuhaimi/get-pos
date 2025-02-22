@@ -92,12 +92,26 @@
                 </div>
 
 
+        </form>
 
+        <form onsubmit="confirmAndSubmit(this)" action="{{route('customer.enter.member')}}" method="post">
 
+            @csrf
+            <input type="hidden" name="cust_phone" value="{{$customer->phone}}">
+            <input type="hidden" name="id" value="{{$customer->id}}">
+            @error('id')
+            <span class=" invalid-feedback mt-2">{{ $message }}</span>
+        @enderror
 
+            <div class="col-md-6 m-2">
+                <label for="invoice_id" class="form-label">Bill Invoice <span class="text-danger"></span></label>
+                <input type="text" class="form-control @error('invoice_id') is-invalid @enderror" value="{{old('invoice_id')}}" name="invoice_id" id="invoice_id">
+                @error('invoice_id')
+                    <span class=" invalid-feedback mt-2">{{ $message }}</span>
+                @enderror
+            </div>
 
-
-
+            <button class="btn btn-primary" type="submit">submit</button>
         </form>
 
 
