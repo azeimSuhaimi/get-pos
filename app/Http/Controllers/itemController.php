@@ -239,4 +239,39 @@ class itemController extends Controller
 
     }//end method
 
+    public function list_quickorder()
+    {
+        $items = item::where('user_id',auth()->user()->id)->orderBy('created_at','desc')->get();
+
+        return view('item.list_quickorder',['items' => $items]);
+    }//end method
+
+    public function list_quickorder_status(Request $request,$id)
+    {
+
+
+        $item = item::find($id);
+
+        if($item->quickorder_status == 'true')
+        {
+            $item->quickorder_status = 'false';
+            $item->save();
+            
+            activity_log::addActivity('change status',' change status quickorder '.$item->name.' item to deactive');
+            return redirect(route('item.list_quickorder').'?id='.$request->input('id'))->with('success','item is deactive');
+        }
+        else
+        {
+            $item->quickorder_status = 'true';
+            $item->save();
+
+            activity_log::addActivity('change status',' change status quickorder '.$item->name.' item to active back');
+            return redirect(route('item.list_quickorder').'?id='.$request->input('id'))->with('success','item is active back');
+        }
+
+        return back();
+    }//end method
+
+
+
 }//end class

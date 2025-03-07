@@ -50,7 +50,7 @@ class quickorderController extends Controller
             return redirect(route('quick'));
         }
 
-        $item = item::where('user_id',$validated['user_id'])->where('quickorder_status','true')->get();// get all suspend list
+        $item = item::where('user_id',$validated['user_id'])->where('status',true)->where('quickorder_status','true')->get();// get all suspend list
         return view('quickorder.list',['item'=>$item,'validated'=>$validated]);
     }//end method
 

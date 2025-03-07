@@ -178,6 +178,8 @@ Route::controller(itemController::class)->group(function () {
     Route::post('/item_remove_image','remove_image')->name('item.remove.image')->middleware(['auth']);
     Route::post('/item_update','update')->name('item.update')->middleware(['auth']);
     Route::post('/item_status','status')->name('item.status')->middleware(['auth']);
+    Route::get('/item/list_quickorder','list_quickorder')->name('item.list_quickorder')->middleware(['auth']);
+    Route::get('/item/list_quickorder/status/{id}','list_quickorder_status')->name('item.list_quickorder.status')->middleware(['auth']);
     //::post('/reset_password_employee','reset_password_employee')->name('employee.reset.password')->middleware(['auth']);
 });
 
