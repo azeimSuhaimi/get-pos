@@ -20,6 +20,13 @@
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
         Bill Payment Method
+
+            <div class="row">
+
+                <div class="col-2 mt-3">
+                <a href="{{route('pos')}}" class="btn btn-primary ">BACK</a>
+                </div>
+            </div>
     </div>
     <div class="card-body">
         <table id="" class="table table-bordered table-hover text-center ">

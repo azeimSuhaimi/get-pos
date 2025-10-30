@@ -6,6 +6,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\posController;
 
+
+use App\Models\company;
+use Illuminate\Support\Carbon;
+use Illuminate\Auth\Events\Registered;
+
 use App\Http\Controllers\authController;
 use App\Http\Controllers\itemController;
 use App\Http\Controllers\userController;
@@ -22,6 +27,7 @@ use App\Http\Controllers\pointRedeenController;
 use App\Http\Controllers\invoice_voidController;
 use App\Http\Controllers\notificationController;
 use App\Http\Controllers\customer_orderController;
+use App\Http\Controllers\wasteController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 /*
 |--------------------------------------------------------------------------
@@ -198,6 +204,9 @@ Route::controller(posController::class)->group(function () {
     Route::get('/pos_suspend_view','suspend_view')->name('pos.suspend.list')->middleware(['auth']);
     Route::post('/pos_unsuspend','unsuspend')->name('pos.unsuspend')->middleware(['auth']);
 
+    Route::get('/pos/search/member','search_member')->name('pos.search.member')->middleware(['auth','verified']);
+    Route::post('/pos/add/member','add_member')->name('pos.add.member')->middleware(['auth','verified']);
+
     Route::get('/pos_add_remark','add_remark')->name('pos.add.remark')->middleware(['auth']);
     Route::post('/pos_update_remark','update_remark')->name('pos.update.remark')->middleware(['auth']);
 
@@ -214,10 +223,6 @@ Route::controller(invoiceController::class)->group(function () {
     Route::get('/invoice_digital_method','digital_method')->name('invoice.digital.method')->middleware(['auth']);
     Route::get('/invoice_hybrid_method','hybrid_method')->name('invoice.hybrid.method')->middleware(['auth']);
     Route::get('/invoice_toyyibpay_method','toyyibpay_method')->name('invoice.toyyibpay.method')->middleware(['auth','check_toyyip']);
-    Route::get('/invoice_add_member_cash','add_member_cash')->name('invoice.add_member.cash')->middleware(['auth']);
-    Route::get('/invoice_add_member_digital','add_member_digital')->name('invoice.add_member.digital')->middleware(['auth']);
-    Route::get('/invoice_add_member_hybrid','add_member_hybrid')->name('invoice.add_member.hybrid')->middleware(['auth']);
-    Route::get('/invoice_add_member_toyyibpay','add_member_toyyibpay')->name('invoice.add_member.toyyibpay')->middleware(['auth']);
     Route::post('/invoice_pay','pay')->name('invoice.pay')->middleware(['auth']);
     Route::get('/invoice_receipt','invoice_receipt')->name('invoice.receipt')->middleware(['auth']);
     Route::get('/list_online_manual','list_online_manual')->name('invoice.list_online_manual')->middleware(['auth']);
@@ -258,6 +263,18 @@ Route::controller(quickorderController::class)->group(function () {
     Route::get('/quick/order/update_quantity_page','update_quantity_page')->name('quick.update_quantity_page')->middleware(['guest']);
     Route::post('/quick/order/update_quantity','update_quantity')->name('quick.update_quantity')->middleware(['guest']);
     //::post('/reset_password_employee','reset_password_employee')->name('employee.reset.password')->middleware(['auth']);
+});
+
+
+Route::controller(wasteController::class)->group(function () {
+
+    Route::get('/waste','index')->name('waste')->middleware(['auth']);
+    Route::get('/waste_create','create')->name('waste.create')->middleware(['auth','verified']);
+    Route::post('/waste_store','store')->name('waste.store')->middleware(['auth']);
+    Route::get('/waste_view','show')->name('waste.view')->middleware(['auth']);
+    //Route::get('/waste_edit','edit')->name('waste.edit')->middleware(['auth']);
+    
+
 });
 
 
@@ -307,7 +324,26 @@ Route::get('/auth/github/callback', function () {
         
             return redirect('/dashboard');
     } else{
-        //return redirect(route('auth'));
+        $now = Carbon::now();// get date today
+        
+        //store data to database 
+        $user = new user;
+        $user->name = $githubUser->name;
+        $user->email = $githubUser->email;
+        $user->phone = '';
+        $user->date_register = $now;
+        $user->key = Str::random(32);
+        $user->github_id = $githubUser->id;
+        $user->github_token = $githubUser->token;
+        $user->save();
+
+        $company = company::add_company($user->id);
+
+        Auth::login($user);
+
+        event(new Registered($user));
+        
+        return redirect('/dashboard');
     }
     return redirect(route('auth'))->with('error','accout or password is not exit');
 });
@@ -335,7 +371,29 @@ Route::get('/auth/google/callback', function () {
         
             return redirect('/dashboard');
     } else{
-        //return redirect(route('auth'));
+       // dd($googleUser);
+        $now = Carbon::now();// get date today
+        
+        //store data to database 
+        $user = new user;
+        $user->name = $googleUser->name;
+        $user->email = $googleUser->email;
+        $user->phone = '';
+        $user->date_register = $now;
+        $user->key = Str::random(32);
+        $user->google_id = $googleUser->id;
+        $user->google_token = $googleUser->token;
+        $user->save();
+
+        $company = company::add_company($user->id);
+
+        Auth::login($user);
+
+        event(new Registered($user));
+        
+        return redirect('/dashboard');
+    
+
     }
     return redirect(route('auth'))->with('error','accout or password is not exit');
 });
@@ -364,7 +422,26 @@ Route::get('/auth/linkedin/callback', function () {
         
             return redirect('/dashboard');
     } else{
-        //return redirect(route('auth'));
+        $now = Carbon::now();// get date today
+        
+        //store data to database 
+        $user = new user;
+        $user->name = $linkedinUser->name;
+        $user->email = $linkedinUser->email;
+        $user->phone = '';
+        $user->date_register = $now;
+        $user->key = Str::random(32);
+        $user->linkedin_id = $linkedinUser->id;
+        $user->linkedin_token = $linkedinUser->token;
+        $user->save();
+
+        $company = company::add_company($user->id);
+
+        Auth::login($user);
+
+        event(new Registered($user));
+        
+        return redirect('/dashboard');
     }
     return redirect(route('auth'))->with('error','accout or password is not exit');
 });

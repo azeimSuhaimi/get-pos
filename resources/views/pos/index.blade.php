@@ -22,11 +22,16 @@
         
 
 
-        <div >
-          <form id="search_page" class="text-start" autocomplete="off" action="{{route('pos.search.item')}}" method="get">
-              @csrf
-              <button class="btn btn-success" type="submit"><i class="bi bi-search"></i></button>
-          </form>
+        <div class="d-flex justify-content-between align-items-center">
+            <form id="search_page" class="text-start" autocomplete="off" action="{{route('pos.search.item')}}" method="get">
+                @csrf
+                <button class="btn btn-success" type="submit"><i class="bi bi-search"></i></button>
+            </form>
+
+            <form id="search_page" class="text-start" autocomplete="off" action="{{route('pos.search.member')}}" method="get">
+                @csrf
+                <button class="btn btn-warning" type="submit"><i class="bi bi-people"></i></button>
+            </form>
 
           <form class="text-end" autocomplete="off" action="{{route('pos.add.item')}}" method="post">
             @csrf
@@ -35,7 +40,13 @@
           </form>
         </div>
     </div>
+
+    
+
     <div class="card-body">
+        name : {{ session('cust_name') }}
+        email : {{ session('cust_email') }}
+        id : {{ session('cust_id') }}
         <table id="" class="table table-bordered table-hover text-center ">
             <thead >
                 <tr >
@@ -128,7 +139,14 @@
                 <tr>
                     <th colspan="6">&nbsp;</th>
                     <th>Total</th>
-                    <th><?php echo round(Cart::total() * 20) / 20; ?></td>
+                    <th>            
+                        <form class="mt-2 p-2"  action="{{route('invoice')}}" method="get">
+                            @csrf
+                            <div class=" mt-2">
+                                <button class="{{Cart::total() <= 0 ? 'disabled':''}} btn btn-primary " type="submit"><?php echo round(Cart::total() * 20) / 20; ?></button>
+                            </div>
+                        </form>
+                    </th>
                 </tr>
     
                 
@@ -154,12 +172,7 @@
         @endforeach 
 
         <div class="card-footer d-flex text-center ">
-            <form class="mt-2 p-2"  action="{{route('invoice')}}" method="get">
-                @csrf
-                <div class=" mt-2">
-                    <button class="{{Cart::total() <= 0 ? 'disabled':''}} btn btn-primary " type="submit">Invoice</button>
-                </div>
-              </form>
+
       
               <form id="new_sale" class="mt-2 p-2" onsubmit="confirmAndSubmit(this)" action="{{route('pos.remove.all')}}" method="post">
                 @csrf

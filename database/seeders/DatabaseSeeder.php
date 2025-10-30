@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('123456'),
             'name' => 'abu bakar',//
             'phone' => '0148254347',//
-            'ic' => '962311115669',//
             'role' => 1,
             'date_register' => '2024-10-19 00:44:09',
             
@@ -54,7 +53,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('123456'),
             'name' => 'ali bakar',//
             'phone' => '0148254357',//
-            'ic' => '962311115670',//
             'role' => 2,
             'date_register' => '2024-10-19 00:44:09',
             //'toyyip_key' => Crypt::encryptString(''),

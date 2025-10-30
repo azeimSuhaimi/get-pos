@@ -35,17 +35,24 @@
         </div>
 
           <h1 class="card-title text-uppercase text-center font-weight-bold"> {{$invoice->daily_unique_number}}</h1>
-          <h5 class=" text-uppercase text-end font-weight-bold">bill id : {{$invoice->invoice_id}}</h5>
-          <h5 class=" text-uppercase text-end font-weight-bold">date : {{$invoice->created_at}}</h5>
-          @if ($invoice->name)
-            <h5 class=" text-uppercase text-end font-weight-bold">name customer : {{$invoice->name}}</h5>
-          @endif
-          @if ($invoice->email_cust !== null)
-              
-            <h5 class=" text-uppercase text-start font-weight-bold">name  : {{$invoice->name_cust}}</h5>
-            <h5 class=" text-uppercase text-start font-weight-bold">email  : {{$invoice->email_cust}}</h5>
-            <h5 class=" text-uppercase text-start font-weight-bold">phone  : {{$invoice->phone_cust}}</h5>
-          @endif
+        
+          <div class="d-flex justify-content-between">
+            <h5 class="text-uppercase font-weight-bold">bill id : {{$invoice->invoice_id}}</h5>
+            <h5 class="text-uppercase font-weight-bold">date : {{$invoice->created_at}}</h5>
+        </div>
+        
+        @if ($invoice->name)
+            <h5 class="text-uppercase text-end font-weight-bold">name customer : {{$invoice->name}}</h5>
+        @endif
+        
+        @if ($invoice->email_cust !== null)
+            <div class="d-flex gap-5 text-uppercase font-weight-bold">
+                {{-- You can remove the individual h5 text-start classes since the parent div controls the display --}}
+                <h5>name : {{$invoice->name_cust}}</h5>
+                <h5>email : {{$invoice->email_cust}}</h5>
+                <h5>phone : {{$invoice->phone_cust}}</h5>
+            </div>
+        @endif
 
           <table id="datatablesSimple" class="table table-bordered table-hover text-center">
               <thead>

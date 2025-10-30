@@ -62,18 +62,18 @@ class authController extends Controller
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|numeric|unique:users,phone',
-            'ic' => 'required|integer|unique:users,ic',
+            
             
         ]);
 
-        $user = user::add_user($validated['name'],$validated['email'],$validated['phone'],$validated['ic']);
+        $user = user::add_user($validated['name'],$validated['email'],$validated['phone']);
 
         $company = company::add_company($user->id);
 
         // Manually fire the Registered event
         event(new Registered($user));
 
-        return back()->with('success','success create new account, your password will be your I.C '.$validated['name']);
+        return back()->with('success','success create new account, your password will be your email '.$validated['name']);
         
     }//end method
 

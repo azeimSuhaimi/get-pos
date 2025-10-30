@@ -73,7 +73,7 @@ class User extends Authenticatable implements MustVerifyEmail
             return true;
     }//end method
 
-    public static function add_user($name,$email,$phone,$ic)
+    public static function add_user($name,$email,$phone)
     {
         $now = Carbon::now();// get date today
         
@@ -82,8 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $user->name = $name;
         $user->email = $email;
         $user->phone = $phone;
-        $user->ic = $ic;
-        $user->password = Hash::make($ic);
+        $user->password = Hash::make($email);
         $user->date_register = $now;
 
         $user->key = Str::random(32);

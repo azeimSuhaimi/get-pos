@@ -79,12 +79,6 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-3 col-md-4 label">I.C</div>
-                  <div class="col-lg-9 col-md-8">{{auth()->user()->ic}}</div>
-                </div>
-
-
-                <div class="row">
                   <div class="col-lg-3 col-md-4 label">Last Login</div>
                   <div class="col-lg-9 col-md-8">{{auth()->user()->last_login}}</div>
                 </div>
@@ -181,7 +175,7 @@
                   <div class="row mb-3">
                     <label for="password1" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="password" type="password" class="form-control @error('password') is-invalid @enderror" value="{{ old('password') }}" id="password">
+                      <input name="password" type="password" class="form-control @error('password') is-invalid @enderror" value="{{ old('password') }}" id="password" placeholder="empty this if you register with google etc">
                       @error('password')
                           <span class=" invalid-feedback mt-2">{{ $message }}</span>
                       @enderror

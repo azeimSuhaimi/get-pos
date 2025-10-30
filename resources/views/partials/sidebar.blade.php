@@ -100,7 +100,12 @@
       </a>
     </li><!-- End item Nav -->
 
-
+    <li class="nav-item">
+      <a class="nav-link {{ (Request::is('waste') || Request::is('waste_view')) || ((Request::is('waste_edit') || Request::is('waste_create')) || Request::is('waste')) ? '':'collapsed' }}" href="{{route('waste')}}">
+        <i class="bi bi-grid"></i>
+        <span>Waste</span>
+      </a>
+    </li><!-- End item Nav -->
 
 
 

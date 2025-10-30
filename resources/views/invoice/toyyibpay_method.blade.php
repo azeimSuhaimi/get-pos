@@ -24,10 +24,7 @@
     </div>
     <div class="card-body">
 
-        <form id="search_page" class="text-start" autocomplete="off" action="{{route('invoice.add_member.toyyibpay')}}" method="get">
-            @csrf
-            <button class="btn btn-primary" type="submit">Search Member</button>
-        </form>
+
 
         <div class="row d-flex justify-content-center align-items-center">
             <h6 class="card-title text-center text-uppercase font-weight-bold">amount</h6>
@@ -59,7 +56,7 @@
                     
                     <div class="mb-3">
 
-                        <input type="text" class="form-control @error('name_cust') is-invalid @enderror" name="name_cust" id="name_cust" value="{{ ($request->has('name') ? $request->input('name'):'') }}" placeholder="Name Customer" readonly>
+                        <input type="text" class="form-control @error('name_cust') is-invalid @enderror" name="name_cust" id="name_cust" value="{{ (session('cust_name')  ? session('cust_name'):'') }}" placeholder="Name Customer" readonly>
                         @error('name_cust')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
                         @enderror
@@ -67,7 +64,7 @@
 
                     <div class="mb-3">
 
-                        <input type="email" class="form-control @error('email_cust') is-invalid @enderror" name="email_cust" id="email_cust" value="{{ ($request->has('email') ? $request->input('email'):'') }}" placeholder="email Customer" readonly>
+                        <input type="email" class="form-control @error('email_cust') is-invalid @enderror" name="email_cust" id="email_cust" value="{{ (session('cust_email')  ? session('cust_email'):'') }}" placeholder="email Customer" readonly>
                         @error('email_cust')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
                         @enderror
@@ -75,7 +72,7 @@
 
                     <div class="mb-3">
 
-                        <input type="tel" class="form-control @error('phone_cust') is-invalid @enderror" name="phone_cust" id="phone_cust" value="{{ ($request->has('phone') ? $request->input('phone'):'') }}" placeholder="Phone Customer" readonly>
+                        <input type="tel" class="form-control @error('phone_cust') is-invalid @enderror" name="phone_cust" id="phone_cust" value="{{ (session('cust_phone')  ? session('cust_phone'):'') }}" placeholder="Phone Customer" readonly>
                         @error('phone_cust')
                             <span class=" invalid-feedback mt-2">{{ $message }}</span>
                         @enderror

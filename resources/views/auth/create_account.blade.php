@@ -47,13 +47,7 @@
           @enderror
         </div>
 
-        <div class="col-md-12">
-          <label for="ic" class="form-label"> I.C</label>
-          <input type="text" class="form-control @error('ic') is-invalid @enderror" value="{{  old('ic') }}" name="ic" id="ic">
-          @error('ic')
-              <span class=" invalid-feedback mt-2">{{ $message }}</span>
-          @enderror
-        </div>
+
 
         <div class="text-center">
           <button type="submit" class="btn btn-primary">Submit</button>

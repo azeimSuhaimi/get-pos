@@ -96,57 +96,8 @@ class invoiceController extends Controller
         return view('invoice.toyyibpay_method',['customer'=>$customer,'request'=>$request]);
     }//end method
 
-    public function add_member_cash(Request $request)
-    {
-        //get all list custmer data
-        $customer = customer::where('user_id',auth()->user()->id)->get();
 
-        // check total amount in cart exist or not
-        if(Cart::total() <= 0)
-        {
-            return redirect()->back()->with('error', 'item cannot empty  to create bill!!!');
-        }
-        return view('invoice.add_member',['customer'=>$customer,'request'=>$request]);
-    }//end method
 
-    public function add_member_digital(Request $request)
-    {
-        //get all list custmer data
-        $customer = customer::where('user_id',auth()->user()->id)->get();
-
-        // check total amount in cart exist or not
-        if(Cart::total() <= 0)
-        {
-            return redirect()->back()->with('error', 'item cannot empty  to create bill!!!');
-        }
-        return view('invoice.add_member',['customer'=>$customer,'request'=>$request]);
-    }//end method
-
-    public function add_member_hybrid(Request $request)
-    {
-        //get all list custmer data
-        $customer = customer::where('user_id',auth()->user()->id)->get();
-
-        // check total amount in cart exist or not
-        if(Cart::total() <= 0)
-        {
-            return redirect()->back()->with('error', 'item cannot empty  to create bill!!!');
-        }
-        return view('invoice.add_member',['customer'=>$customer,'request'=>$request]);
-    }//end method
-
-    public function add_member_toyyibpay(Request $request)
-    {
-        //get all list custmer data
-        $customer = customer::where('user_id',auth()->user()->id)->get();
-
-        // check total amount in cart exist or not
-        if(Cart::total() <= 0)
-        {
-            return redirect()->back()->with('error', 'item cannot empty  to create bill!!!');
-        }
-        return view('invoice.add_member',['customer'=>$customer,'request'=>$request]);
-    }//end method
 
 
     // proses cash method 
@@ -239,19 +190,19 @@ class invoiceController extends Controller
         }
 
         
-        if($request->input('id_cust') !== null)
+        if($request->session()->get('cust_id') !== null)
         {
             if($request->input('TOYYIBPAY') !== 'TOYYIBPAY')
             {
-                $customer = customer::find($request->input('id_cust'));
+                $customer = customer::find($request->session()->get('cust_id'));
                 $customer->point += Cart::subtotal();
                 $customer->save();
             }
 
 
-            $invoice->phone_cust = $request->input('phone_cust');
-            $invoice->email_cust = $request->input('email_cust');
-            $invoice->name_cust = $request->input('name_cust');
+            $invoice->phone_cust = $request->session()->get('cust_phone');
+            $invoice->email_cust = $request->session()->get('cust_email');
+            $invoice->name_cust = $request->session()->get('cust_name');
         }
         $invoice->save();
 
@@ -368,10 +319,10 @@ class invoiceController extends Controller
         // store items list for bill
         foreach(Cart::content() as $row)
         {
-            if($request->input('id_cust') !== null && $request->input('TOYYIBPAY') !== 'TOYYIBPAY')
+            if($request->session()->get('cust_id') !== null && $request->input('TOYYIBPAY') !== 'TOYYIBPAY')
             {
                 $purchase_detail = new purchase_detail;
-                $purchase_detail->id_cust = $request->input('id_cust');
+                $purchase_detail->id_cust = $request->session()->get('cust_id');
                 $purchase_detail->invoice_id = $bill_id;
                 
                 $purchase_detail->shortcode = $row->id;
@@ -406,7 +357,7 @@ class invoiceController extends Controller
                 if($request->input('TOYYIBPAY') !== 'TOYYIBPAY')
                 {
                     //store data update to database
-                    $item = item::where('shortcode',$row->id)->first();
+                    $item = item::where('user_id',auth()->user()->id)->where('shortcode',$row->id)->first();
                     $item->quantity = $item->quantity - $row->qty;
                     $item->save();
                 }
@@ -416,6 +367,11 @@ class invoiceController extends Controller
         }//end loop product details
 
         Cart::destroy();// remove all items in cart 
+
+        $request->session()->forget('cust_id');
+        $request->session()->forget('cust_name');
+        $request->session()->forget('cust_phone');
+        $request->session()->forget('cust_email');
 
         if($request->input('TOYYIBPAY') == 'TOYYIBPAY')
         {

@@ -37,7 +37,7 @@ class userController extends Controller
     public function change_password_process(Request $request)
     {
         $validated = $request->validate([
-            'password' => 'required',
+            'password' => 'nullable',
             'password1' => 'required|min:4',
             'password2' => 'required|min:4|same:password1',
         ]);

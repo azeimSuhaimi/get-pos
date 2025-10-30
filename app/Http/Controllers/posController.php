@@ -9,6 +9,7 @@ use App\Models\item;
 use App\Models\suspend;
 use App\Models\suspend_details;
 use App\Models\activity_log;
+use App\Models\customer;
 use Illuminate\Support\Carbon;
 
 use App\Models\quickorder;
@@ -171,6 +172,10 @@ class posController extends Controller
     public function remove_all(Request $request)
     {
         Cart::destroy();
+        $request->session()->forget('cust_id');
+        $request->session()->forget('cust_name');
+        $request->session()->forget('cust_phone');
+        $request->session()->forget('cust_email');
         return redirect(route('pos'))->with('success', ' new sale created.');
     }//end method
 
@@ -208,6 +213,12 @@ class posController extends Controller
             }
 
             Cart::destroy(); // remove all items in cart
+
+            $request->session()->forget('cust_id', $validated['id']);
+            $request->session()->forget('cust_name', $validated['name']);
+            $request->session()->forget('cust_phone', $validated['phone']);
+            $request->session()->forget('cust_email', $validated['email']);
+    
 
             return redirect()->back()->with('success', 'item suspend now!!!');
         }
@@ -370,6 +381,33 @@ class posController extends Controller
 
         return redirect(route('pos'));
         
+    }//end method
+
+    public function search_member(Request $request)
+    {
+        //get all list custmer data
+        $customer = customer::where('user_id',auth()->user()->id)->get();
+
+
+        return view('pos.search_member',['customer'=>$customer,'request'=>$request]);
+    }//end method
+
+    public function add_member(Request $request)
+    {
+
+        $validated = $request->validate([
+            'id' => 'required',
+            'name' => 'required',
+            'phone' => 'required',
+            'email' => 'required',
+        ]);
+
+        $request->session()->put('cust_id', $validated['id']);
+        $request->session()->put('cust_name', $validated['name']);
+        $request->session()->put('cust_phone', $validated['phone']);
+        $request->session()->put('cust_email', $validated['email']);
+
+        return redirect(route('pos'))->with('success', 'add member');
     }//end method
 
 }//end class
