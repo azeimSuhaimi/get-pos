@@ -54,6 +54,7 @@ class notificationController extends Controller
         ]);
         $notification = notification::where('invoice_id',$validated['id'])->first();
         $notification->status = true;
+        $notification->status_read = true;
         $notification->save();
         return redirect(route('notification'))->with('success', 'success ');
     }//end method

@@ -68,7 +68,7 @@
                                             <div class="card-body">
                                         
                                                 <div class="row mb-3 mt-5">
-                                                    <label for="inputText" class="col-sm-3 col-form-label">Order number</label>
+                                                    <label for="inputText" class="col-sm-3 col-form-label">Invoice number</label>
                                                     <div class="col-sm-9">
                                                         #{{$invoice->invoice_id}}
                                                     </div>

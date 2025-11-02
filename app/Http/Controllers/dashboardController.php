@@ -151,17 +151,7 @@ class dashboardController extends Controller
               $company = company::where('user_id',$invoice->user_id)->first();
               $payment_type = payment_type::all();
               
-        $datas = [
-            'payment_type' => $payment_type,
-            'company' => $company,
-            'status_id' => $validated['status_id'],
-            'billcode' => $validated['billcode'],
-            'invoice_id' => $validated['order_id'],
-            'invoice' => $invoice,
-            'invoice_detail' => invoice_detail::where('invoice_id', $validated['order_id'])->get(),
-            'payment_method' => payment_method::where('invoice_id', $validated['order_id'])->get(),
-            'obj' => $obj[0]
-        ];
+
 
             $invoice = invoice::firstWhere('invoice_id', $validated['order_id']);
 
@@ -204,11 +194,35 @@ class dashboardController extends Controller
                 $payment_method->user_id = $invoice->user_id;//auth()->user()->id;
                 $payment_method->save();
 
-                invoice::where('invoice_id', $validated['order_id'])->update(['status' => true]);
+                $invoice = invoice::where('invoice_id', $validated['order_id'])->update(['status' => true]);
                 //payment_method::where('invoice_id', $validated['order_id'])->update(['status' => true]);
+                $datas = [
+                    'payment_type' => $payment_type,
+                    'company' => $company,
+                    'status_id' => $validated['status_id'],
+                    'billcode' => $validated['billcode'],
+                    'invoice_id' => $validated['order_id'],
+                    'invoice' => $invoice,
+                    'invoice_detail' => invoice_detail::where('invoice_id', $validated['order_id'])->get(),
+                    'payment_method' => payment_method::where('invoice_id', $validated['order_id'])->get(),
+                    'obj' => $obj[0]
+                ];
+
 
                 Mail::to($obj[0]->billEmail)->send(new send_receipt( $datas));
             }
+
+        $datas = [
+            'payment_type' => $payment_type,
+            'company' => $company,
+            'status_id' => $validated['status_id'],
+            'billcode' => $validated['billcode'],
+            'invoice_id' => $validated['order_id'],
+            'invoice' => $invoice,
+            'invoice_detail' => invoice_detail::where('invoice_id', $validated['order_id'])->get(),
+            'payment_method' => payment_method::where('invoice_id', $validated['order_id'])->get(),
+            'obj' => $obj[0]
+        ];
 
         return view('payment_status',$datas);
     }// end method

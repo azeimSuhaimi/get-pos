@@ -720,7 +720,17 @@ class quickorderController extends Controller
 
                     Mail::to($arr['payer']['payer_info']['email'])->send(new send_receipt( $datas));
                 }
-
+                $datas = [
+                    'payment_type' => $payment_type,
+                    'company' => $company,
+                    'status_id' => $arr['id'],
+                    'billcode' => $arr['cart'],
+                    'invoice_id' => $arr['transactions'][0]['invoice_number'],
+                    'invoice' => invoice::where('invoice_id', $arr['transactions'][0]['invoice_number'])->first(),
+                    'invoice_detail' => invoice_detail::where('invoice_id', $arr['transactions'][0]['invoice_number'])->get(),
+                    'payment_method' => payment_method::where('invoice_id', $arr['transactions'][0]['invoice_number'])->get(),
+                    'obj' => 0//$obj[0]
+                ];
 
                 //return "Payment is Successfull. Your Transaction Id is : " . $arr['id'];
                 return view('payment_status',$datas);
