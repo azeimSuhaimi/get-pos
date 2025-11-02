@@ -21,6 +21,7 @@ use App\Models\user;
 use App\Models\activity_log;
 use App\Models\company;
 use App\Models\toyyibpay;
+use App\Models\paypal;
 
 class userController extends Controller
 {
@@ -176,10 +177,12 @@ class userController extends Controller
     {
         $company = company::where('user_id',auth()->user()->id)->first();
         $toyyibpay = toyyibpay::where('user_id',auth()->user()->id)->first();
+        $paypal = paypal::where('user_id',auth()->user()->id)->first();
 
         $data = [
             'company' => $company,
-            'toyyibpay' => $toyyibpay
+            'toyyibpay' => $toyyibpay,
+            'paypal' => $paypal
         ];
         return view('user.account_setting',$data);
     }// end method
@@ -222,6 +225,40 @@ class userController extends Controller
         activity_log::addActivity('update toyyip pay ',' change it toyyip pay key and category ');
 
         return back()->with('success','edit toyyip pay details please log out first before use ');
+
+    }//end method
+
+        //update toyyip pay data 
+    public function update_paypal(Request $request)
+    {
+        // validate data employee update base rule
+        $validated = $request->validate([
+            'client_id' => 'required',
+            'secret_key' => 'required',
+        ]);
+
+
+        //store data update to database
+        $user = paypal::where('user_id',auth()->user()->id)->first();
+        if($user)
+        {
+            $user->client_id = Crypt::encryptString($validated['client_id']) ;
+            $user->secret_key = Crypt::encryptString($validated['secret_key']);
+            $user->save();
+        }
+        else
+        {
+            $user = new paypal;
+            $user->client_id = Crypt::encryptString($validated['client_id']) ;
+            $user->secret_key = Crypt::encryptString($validated['secret_key']);
+            $user->user_id = auth()->user()->id;
+            $user->save();
+        }
+
+
+        activity_log::addActivity('update paypal ',' change it paypal client id and secret key ');
+
+        return back()->with('success','edit  paypal details please log out first before use ');
 
     }//end method
 

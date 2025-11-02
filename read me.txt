@@ -20,3 +20,6 @@ https://docs.laravel-excel.com/3.1/getting-started/installation.html
 
 laravel smart ads 
 https://github.com/5balloons/laravel-smart-ads
+
+omnipay payment gateway interface
+https://github.com/thephpleague/omnipay

@@ -126,6 +126,8 @@
                   <form id="checkoutForm" method="post" onsubmit="confirmAndSubmit(this)" action="{{route('quick.cart.checkout.quick_order').'?user_id='.$validated['user_id']}}">
             
                     @csrf
+                    <input type="hidden" id="currentUrl" name="current_url" value="">
+                    
                     <div class="row mb-3">
                         <label for="user_email" class="col-md-4 col-lg-3 col-form-label">your Name <span class="text-danger">*</span></label>
                         <div class="col-md-8 col-lg-9">
@@ -149,14 +151,40 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="row mb-3">
+                        <label for="user_phone" class="col-md-4 col-lg-3 col-form-label">your Phone <span class="text-danger">*</span></label>
+                        <div class="col-md-8 col-lg-9">
+    
+                            <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror " id="phone" value="{{ old('phone') }}" >
+                            
+                            @error('phone')
+                                <span class=" invalid-feedback mt-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
             
                     <div class="text-center">
                       <button type="button" id="quickOrderButton" class="btn btn-primary">quick order</button>
                       <button type="button" id="payOnlineButton" class="btn btn-primary">pay online</button>
+                      <button type="button" id="paypalButton" class="btn btn-primary">paypal</button>
                       <button type="reset" class="btn btn-secondary">Reset</button>
                     </div>
                   </form><!-- End Multi Columns Form -->
 
+                  <script>
+                    // Get the value of the current URL
+                    const currentHref = window.location.href;
+
+                    // Find the hidden input element by its ID
+                    const hiddenInput = document.getElementById('currentUrl');
+
+                    // Check if the element exists and then set its value
+                    if (hiddenInput) {
+                        hiddenInput.value = currentHref;
+                        console.log('Current URL set to hidden input:', hiddenInput.value);
+                    }
+                    </script>
                   <script>
                     // Handle button clicks to differentiate actions
                     document.getElementById('quickOrderButton').addEventListener('click', function() {
@@ -168,6 +196,12 @@
                     document.getElementById('payOnlineButton').addEventListener('click', function() {
                         // Optionally add any additional logic here for the pay online process.
                         document.getElementById('checkoutForm').action = '{{ route('quick.cart.checkout.pay_online').'?user_id='.$validated['user_id'] }}'; // Update the action URL for online payment
+                        document.getElementById('checkoutForm').submit(); // Submit the form
+                    });
+
+                        document.getElementById('paypalButton').addEventListener('click', function() {
+                        // Optionally add any additional logic here for the pay online process.
+                        document.getElementById('checkoutForm').action = '{{ route('quick.cart.checkout.paypal').'?user_id='.$validated['user_id'] }}'; // Update the action URL for online payment
                         document.getElementById('checkoutForm').submit(); // Submit the form
                     });
                 

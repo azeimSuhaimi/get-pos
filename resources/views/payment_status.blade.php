@@ -57,37 +57,61 @@
 <hr>
 
                                     <p>Amount</p>
-                                    <h3 class="mt-0">RM {{$obj->billpaymentAmount}}</h3>
+
+                                    <h3 class="mt-0">RM {{$invoice->total}}</h3>
 
 
 
                                     <!-- -->
-                                    @if ($status_id == 1)
+                                    @if ($invoice->status == 1)
                                         <div class="card text-bg-light">
                                             <div class="card-body">
                                         
                                                 <div class="row mb-3 mt-5">
                                                     <label for="inputText" class="col-sm-3 col-form-label">Order number</label>
                                                     <div class="col-sm-9">
-                                                        #{{$invoice_id}}
+                                                        #{{$invoice->invoice_id}}
                                                     </div>
                                                 </div>
 
                                                 <div class="row mb-3">
                                                     <label for="inputText" class="col-sm-3 col-form-label">transaction ID</label>
                                                     <div class="col-sm-9">
-                                                        #{{$obj->billpaymentInvoiceNo}}
+                                                        #{{$invoice->invoice_id}}
                                                     </div>
                                                 </div>
 
                                                 <div class="row mb-3">
                                                     <label for="inputText" class="col-sm-3 col-form-label">paid on</label>
                                                     <div class="col-sm-9">
-                                                        {{$obj->billPaymentDate}}
+                                                        {{$invoice->created_at}}
                                                     </div>
                                                 </div>
 
-                                                <a target="_blank" href="http://dev.toyyibpay.com/{{$billcode}}">click here for details</a>
+                                                <div class="row mb-3">
+                                                    <label for="inputText" class="col-sm-3 col-form-label">order number</label>
+                                                    <div class="col-sm-9">
+                                                        {{$invoice->daily_unique_number}}
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <label for="inputText" class="col-sm-3 col-form-label">name</label>
+                                                    <div class="col-sm-9">
+                                                        {{$invoice->name}}
+                                                    </div>
+                                                </div>
+
+                                                
+                                                @foreach ($payment_method as $row)
+                                                    @if ($row->payment_type == 'TOYYIBPAY')
+                                                    
+                                                        <a target="_blank" href="http://dev.toyyibpay.com/{{$billcode}}">click here for details</a>
+                                                    @endif
+                                                @endforeach
+
+
+                                                <a  href="{{route('quick')}}">click here for return</a>
 
                                             </div>
                                         </div>

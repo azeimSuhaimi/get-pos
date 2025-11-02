@@ -31,7 +31,7 @@ class notificationController extends Controller
 
             $invoice = invoice::find($validated['id']);
             $invoice_detail = invoice_detail::where('invoice_id',$invoice->invoice_id)->get();
-            $payment_method = payment_method::where('invoice_id',$request->input('invoice_id'))->get();
+            $payment_method = payment_method::where('invoice_id',$invoice->invoice_id)->get();
             $payment_type = payment_type::all();
 
             $data = [

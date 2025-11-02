@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+
 use App\Models\item;
 use App\Models\company;
 use App\Models\purchase_detail;
@@ -9,6 +11,9 @@ use App\Models\invoice;
 use App\Models\customer;
 use App\Models\invoice_detail;
 use App\Models\toyyibpay;
+use App\Models\payment_type;
+use App\Models\payment_method;
+use App\Models\notification;
 use App\Models\quickorder;
 use App\Mail\quickordermail;
 use Illuminate\Http\Request;
@@ -18,6 +23,10 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Crypt;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use App\Mail\toyyibpay_link;
+use App\Models\paypal;
+use Omnipay\Omnipay;
+
+use App\Mail\send_receipt;
 
 class quickorderController extends Controller
 {
@@ -498,5 +507,244 @@ class quickorderController extends Controller
 
 
     }//end method
+
+    public function paypal(Request $request)
+    {
+        $validated = $request->validate([
+    
+            'name' => 'required',
+            'email' => 'required|email',
+            'user_id' => 'required',
+            'phone' => 'required|numeric',
+            'current_url' => 'required|',
+
+        ]);
+
+        $bill_id = Carbon::now()->timestamp; // get timestamp for bill id
+
+        $paypal = paypal::where('user_id',$validated['user_id'])->first();
+        
+        if(!$paypal)
+        {
+            return redirect(route('quick.list').'?user_id='.$validated['user_id'])->with('error', 'seller paypal online is not ready');
+        }
+
+        $gateway = Omnipay::create('PayPal_Rest');
+        $gateway->setClientId(Crypt::decryptString($paypal->client_id));
+        $gateway->setSecret(Crypt::decryptString($paypal->secret_key));
+        $gateway->setTestMode(true);
+
+        try {
+            $response = $gateway->purchase(array(
+                'amount' => round(Cart::total() * 20)/ 20,
+                'currency' => 'MYR',
+                // BUTIRAN TAMBAHAN
+                'transactionId' => $bill_id,
+                'returnUrl' => route('quick.cart.checkout.paypal.status').'?user_id='.$validated['user_id'],
+                'cancelUrl' => $validated['current_url']
+            ))->send();
+
+            //dd($response->isRedirect());
+
+            if ($response->isRedirect()) 
+            {
+                                // Get today's date in 'Y-m-d' format
+                $today = Carbon::today()->toDateString();
+
+                // Find the highest number for today's date, default to 0 if no records
+                $lastInvoice = Invoice::whereDate('created_at', $today)
+                                        ->orderByDesc('daily_unique_number')
+                                        ->first();
+        
+                // If no record exists today, start from 1, otherwise increment the last number
+                $newNumber = $lastInvoice ? $lastInvoice->daily_unique_number + 1 : 1;
+
+                // store payment cash sales 
+                $invoice = new invoice;
+                $invoice->invoice_id = $bill_id;
+                $invoice->user_id = $validated['user_id'];
+                
+                $invoice->subtotal = Cart::subtotal();
+                $invoice->tax = round(Cart::tax() * 20)/ 20;
+                $invoice->total = round(Cart::total() * 20)/ 20;
+                $invoice->status = false;
+                $invoice->name = $validated['name'];
+                $invoice->daily_unique_number = $newNumber;
+
+                $customer = customer::where('email',$validated['email'])->where('user_id',$validated['user_id'])->first();
+                if($customer)
+                {
+        
+                    $invoice->phone_cust = $customer->phone;
+                    $invoice->email_cust = $customer->email;
+                    $invoice->name_cust = $customer->name;
+                }
+                $invoice->save();
+
+                foreach(Cart::content() as $row)
+                {
+
+                    //store data to list item buy
+                    $invoice_detail = new invoice_detail;
+                    $invoice_detail->invoice_id = $bill_id;
+                    $invoice_detail->shortcode = $row->id;
+                    $invoice_detail->name = $row->name;
+                    $invoice_detail->quantity = $row->qty;
+                    $invoice_detail->price = $row->price;
+                    $invoice_detail->cost = $row->options->cost;
+                    $invoice_detail->discount = $row->options->discount;
+                    $invoice_detail->description = $row->options->description;
+                    $invoice_detail->category = $row->options->category;
+                    $invoice_detail->remark = $row->options->remark;
+                    $invoice_detail->user_id = $validated['user_id'];
+                    $invoice_detail->save();
+
+                    if($row->options->category== 'retail')
+                    {
+
+                            //store data update to database
+                            $item = item::where('shortcode',$row->id)->first();
+                            $item->quantity = $item->quantity - $row->qty;
+                            $item->save();
+                        
+
+                    }
+
+                }//end loop product details
+                
+
+                Cart::destroy();// remove all items in cart 
+
+                $response->redirect();
+            }
+            else{
+                return redirect(route('quick.cart.view').'?user_id='.$validated['user_id'])->with('error', $response->getMessage());
+            }
+
+        } catch (\Throwable $th) {
+                return redirect(route('quick.cart.view').'?user_id='.$validated['user_id'])->with('error', $th->getMessage());
+        }
+
+
+        
+
+    }
+
+    public function paypal_status(Request $request)
+    {
+        $paypal = paypal::where('user_id',$request->input('user_id'))->first();
+        
+
+        $gateway = Omnipay::create('PayPal_Rest');
+        $gateway->setClientId(Crypt::decryptString($paypal->client_id));
+        $gateway->setSecret(Crypt::decryptString($paypal->secret_key));
+        $gateway->setTestMode(true);
+
+        if ($request->input('paymentId') && $request->input('PayerID')) 
+        {
+            $transaction = $gateway->completePurchase(array(
+                'payer_id' => $request->input('PayerID'),
+                'transactionReference' => $request->input('paymentId')
+            ));
+
+        $response = $transaction->send();
+
+        if ($response->isSuccessful()) {
+
+                $arr = $response->getData();
+                //dd($arr);
+                $invoice = invoice::where('invoice_id', $arr['transactions'][0]['invoice_number'])->first();
+
+                $company = company::where('user_id',$invoice->user_id)->first();
+                $payment_type = payment_type::all();
+
+                //dd($arr);
+                //$arr['state'];
+                //$arr['payer']['payer_info']['email'];
+
+                $datas = [
+                    'payment_type' => $payment_type,
+                    'company' => $company,
+                    'status_id' => $arr['id'],
+                    'billcode' => $arr['cart'],
+                    'invoice_id' => $arr['transactions'][0]['invoice_number'],
+                    'invoice' => $invoice,
+                    'invoice_detail' => invoice_detail::where('invoice_id', $arr['transactions'][0]['invoice_number'])->get(),
+                    'payment_method' => payment_method::where('invoice_id', $arr['transactions'][0]['invoice_number'])->get(),
+                    'obj' => 0//$obj[0]
+                ];
+
+                $invoice = invoice::where('invoice_id', $arr['transactions'][0]['invoice_number'])->first();
+
+                if($invoice->status == false && $arr['state'] == 'approved')
+                {
+                    $customer = customer::where('email',$invoice->email_cust)->where('user_id',$invoice->user_id)->first();
+                    if($customer )
+                    {
+                        $customer->point += $invoice->subtotal;
+                        $customer->save();
+                        foreach(invoice_detail::where('invoice_id', $arr['transactions'][0]['invoice_number'])->get() as $row)
+                        {
+                            $purchase_detail = new purchase_detail;
+                            $purchase_detail->id_cust = $customer->id;
+                            $purchase_detail->invoice_id = $invoice->invoice_id;
+                            
+                            $purchase_detail->shortcode = $row->shortcode;
+                            $purchase_detail->name = $row->name;
+                            $purchase_detail->quantity = $row->quantity;
+                            $purchase_detail->price = $row->price;
+                            $purchase_detail->cost = $row->cost;
+                            $purchase_detail->description = $row->description;
+                            $purchase_detail->user_id = $invoice->user_id;
+                            $purchase_detail->save();
+                        }
+        
+                    }
+
+                    $notification = new notification;
+                    $notification->user_id = $invoice->user_id ;
+                    $notification->invoice_id = $invoice->id ;
+                    $notification->save();
+
+                    $payment_method = new payment_method;
+                    $payment_method->invoice_id = $arr['transactions'][0]['invoice_number'];
+                    $payment_method->payment_type = 'PAYPAL';
+                    $payment_method->tender = invoice::where('invoice_id', $arr['transactions'][0]['invoice_number'])->first()->total;
+                    $payment_method->reference_no = $arr['transactions'][0]['invoice_number'];
+                    $payment_method->status = true;
+                    $payment_method->user_id = $invoice->user_id;//auth()->user()->id;
+                    $payment_method->save();
+
+                    invoice::where('invoice_id', $arr['transactions'][0]['invoice_number'])->update(['status' => true]);
+                    //payment_method::where('invoice_id', $validated['order_id'])->update(['status' => true]);
+
+                    Mail::to($arr['payer']['payer_info']['email'])->send(new send_receipt( $datas));
+                }
+
+
+                //return "Payment is Successfull. Your Transaction Id is : " . $arr['id'];
+                return view('payment_status',$datas);
+
+            }
+            else{
+                return $response->getMessage();
+            }
+        }
+        else
+        {
+            return 'Payment declined!!';
+        }
+/*
+
+
+
+
+              
+
+
+
+
+        return view('payment_status',$datas); */
+    }// end method
 
 }//end class

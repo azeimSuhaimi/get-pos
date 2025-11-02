@@ -23,7 +23,7 @@ return new class extends Migration
             $table->double('price');
             $table->integer('discount')->default(0);
             $table->boolean('status')->default(true);
-            $table->string('quickorder_status')->default('false');
+            $table->string('quickorder_status')->default('true');
             $table->timestamps();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

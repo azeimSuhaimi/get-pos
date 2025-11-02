@@ -41,6 +41,40 @@
     </div>
 </div>
 
+<div class="card text-bg-light">
+    <div class="card-body">
+      <h5 class="card-title">Setting Paypal</h5>
+
+      <!-- Multi Columns Form -->
+      <form class="row g-3" method="POST" onsubmit="confirmAndSubmit(this)" action="{{route('user.account.setting.paypal')}}">
+
+        @csrf
+        <div class="col-md-12">
+          <label for="client_id" class="form-label">paypal client id</label>
+          <input type="text" class="form-control @error('client_id') is-invalid @enderror" value="{{  ($paypal ? Crypt::decryptString($paypal->client_id) : '')  }}" name="client_id" id="client_id">
+          @error('client_id')
+              <span class=" invalid-feedback mt-2">{{ $message }}</span>
+          @enderror
+        </div>
+
+        <div class="col-md-12">
+            <label for="secret_key" class="form-label">secret key</label>
+            <input type="text" class="form-control @error('secret_key') is-invalid @enderror" value="{{ ($paypal ? Crypt::decryptString($paypal->secret_key) : '') }}" name="secret_key" id="secret_key">
+            @error('secret_key')
+                <span class=" invalid-feedback mt-2">{{ $message }}</span>
+            @enderror
+          </div>
+
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+      </form><!-- End Multi Columns Form -->
+
+    </div>
+</div>
+
 
 <div class="card text-bg-light">
   <div class="card-body">

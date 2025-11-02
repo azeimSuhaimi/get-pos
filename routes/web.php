@@ -108,6 +108,7 @@ Route::controller(userController::class)->group(function () {
 
     Route::get('/account_setting','account_setting')->name('user.account.setting')->middleware(['auth']);
     Route::post('/update_toyyip','update_toyyip')->name('user.account.setting.toyyip')->middleware('auth');
+    Route::post('/update_paypal','update_paypal')->name('user.account.setting.paypal')->middleware('auth');
 
     Route::post('/company_update_detail','company_update_detail')->name('user.company.update.detail')->middleware('auth');
     Route::post('/company_remove_image','company_remove_image')->name('user.company.remove.image')->middleware('auth');
@@ -263,6 +264,9 @@ Route::controller(quickorderController::class)->group(function () {
     Route::get('/quick/order/update_quantity_page','update_quantity_page')->name('quick.update_quantity_page')->middleware(['guest']);
     Route::post('/quick/order/update_quantity','update_quantity')->name('quick.update_quantity')->middleware(['guest']);
     //::post('/reset_password_employee','reset_password_employee')->name('employee.reset.password')->middleware(['auth']);
+
+    Route::post('/quick/order/paypal','paypal')->name('quick.cart.checkout.paypal')->middleware(['guest']);
+    Route::get('/quick/order/paypal/status','paypal_status')->name('quick.cart.checkout.paypal.status')->middleware(['guest']);
 });
 
 

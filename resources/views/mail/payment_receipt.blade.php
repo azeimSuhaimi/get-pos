@@ -107,6 +107,7 @@
         <p><strong>Subtotal:</strong> {{$invoice->subtotal}}</p>
         <p><strong>Tax:</strong> {{$invoice->tax}}</p>
         <p><strong>Total:</strong> {{$invoice->total}}</p>
+        
         @foreach ($payment_method as $pay)
             @if ($pay->payment_type == 'CASH')
                 <p><strong>{{$pay->payment_type}}</strong> {{$pay->tender}} </p>

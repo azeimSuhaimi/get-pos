@@ -145,6 +145,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('payment_types')->insert([
+            'payment_name' => 'PAYPAL',//
+        ]);
+
+        DB::table('payment_types')->insert([
             'payment_name' => 'BOOTS PAY',//
         ]);
 
