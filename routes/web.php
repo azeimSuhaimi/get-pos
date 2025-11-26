@@ -154,8 +154,6 @@ Route::controller(expenseController::class)->group(function () {
     Route::post('/expense_update','update')->name('expense.update')->middleware(['auth']);
     Route::post('/expense_remove','remove')->name('expense.remove')->middleware(['auth']);
     
-    
-
 });
 
 Route::controller(customer_orderController::class)->group(function () {

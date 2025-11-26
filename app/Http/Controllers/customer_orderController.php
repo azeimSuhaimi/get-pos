@@ -82,8 +82,6 @@ class customer_orderController extends Controller
         
         activity_log::addActivity('update status contact',' update status contact ');
             
-
-
         return back()->with('success','update customer order contact ');
     }//end method
 
@@ -101,8 +99,6 @@ class customer_orderController extends Controller
 
         return back()->with('success','update customer order status ');
     }//end method
-
-
         
     public function remove (Request $request)
     {

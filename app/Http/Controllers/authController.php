@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Crypt;
-
-
+use Illuminate\Http\RedirectResponse;
 use App\Models\user;
 use App\Models\company;
 
@@ -112,7 +111,7 @@ class authController extends Controller
 
     public function reset(string $token)
     {   
-        return view('auth.reset_forgot_password', ['token' => $token]);
+        return view('auth.reset-forgot-password', ['token' => $token]);
 
     }//end method
 

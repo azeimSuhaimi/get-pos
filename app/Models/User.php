@@ -84,7 +84,6 @@ class User extends Authenticatable implements MustVerifyEmail
         $user->phone = $phone;
         $user->password = Hash::make($email);
         $user->date_register = $now;
-
         $user->key = Str::random(32);
         $user->save();
 

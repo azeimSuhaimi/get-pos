@@ -23,7 +23,7 @@
           <div class="card-body">
             <h5 class="card-title">All Customer</h5>
 
-            <a href="{{route('customer.create')}}" class="btn btn-primary ">ADD ITEM</a>
+            <a href="{{route('customer.create')}}" class="btn btn-primary ">ADD CUSTOMER</a>
 
             <!-- Table with stripped rows -->
             <table class="table datatable table-hover">

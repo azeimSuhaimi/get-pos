@@ -100,8 +100,8 @@
             <input type="hidden" name="cust_phone" value="{{$customer->phone}}">
             <input type="hidden" name="id" value="{{$customer->id}}">
             @error('id')
-            <span class=" invalid-feedback mt-2">{{ $message }}</span>
-        @enderror
+                <span class=" invalid-feedback mt-2">{{ $message }}</span>
+            @enderror
 
             <div class="col-md-6 m-2">
                 <label for="invoice_id" class="form-label">Bill Invoice <span class="text-danger"></span></label>
